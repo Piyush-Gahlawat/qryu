@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free QR Code Generator</title>
+    <meta name="description"
+        content="Generate a QR code from any text or URL in seconds. Free, no signup, works on mobile." />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <main class="container">
+        <h1>QR Code Generator</h1>
+        <p class="subtitle">Turn any text or link into a scannable QR code.</p>
+
+        <div class="field">
+            <label for="qr-input">Text or URL</label>
+            <input id="qr-input" type="text" inputmode="url" placeholder="https://example.com" autocomplete="off" />
+        </div>
+
+        <button id="generate-btn" class="btn btn-primary">Generate QR</button>
+        <button id="download-btn" class="btn btn-secondary" style="display:none;">
+            Download PNG
+        </button>
+
+        <p id="error-msg"></p>
+
+        <div id="qr-container"></div>
+
+        <p class="footer-note">
+            Free · No signup · Runs entirely in your browser
+        </p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
