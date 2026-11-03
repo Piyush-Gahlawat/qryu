@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qryu.shiryu.workers.dev/sitemap.xml
