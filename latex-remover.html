@@ -5,21 +5,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>LaTeX Remover for DOCX — Make Resumes ATS-Friendly | QRyu</title>
+    <title>LaTeX Remover for PDF & DOCX — ATS-Friendly | QRyu</title>
     <meta name="description"
-        content="Remove invisible LaTeX, OMML math, and hidden text from DOCX resumes. 100% in-browser — your file never leaves your device. Free, no signup." />
-    <meta name="keywords" content="latex remover docx, remove latex from resume, ats friendly resume, docx latex cleaner, remove omml docx" />
+        content="Remove invisible LaTeX from PDF or DOCX resumes. Extract text, clean it, and download as a new PDF or DOCX. 100% in-browser — files never leave your device." />
+    <meta name="keywords" content="latex remover pdf, remove latex from pdf, latex remover docx, ats friendly resume, pdf to docx latex cleaner" />
     <link rel="canonical" href="https://qryu.shiryu.workers.dev/latex-remover.html" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="LaTeX Remover for DOCX — ATS-Friendly Resumes" />
-    <meta property="og:description" content="Strip invisible LaTeX, OMML math, and hidden text from DOCX. Runs entirely in your browser." />
+    <meta property="og:title" content="LaTeX Remover for PDF & DOCX" />
+    <meta property="og:description" content="Clean LaTeX from PDF or DOCX and export as PDF or DOCX. Runs locally in your browser." />
     <meta property="og:url" content="https://qryu.shiryu.workers.dev/latex-remover.html" />
     <meta property="og:site_name" content="QRyu" />
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="LaTeX Remover for DOCX" />
-    <meta name="twitter:description" content="Make your resume ATS-friendly — remove LaTeX residue locally." />
 
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>Q</text></svg>" />
@@ -37,7 +33,6 @@
             --border: #e5e7eb;
             --error: #dc2626;
             --ok: #059669;
-            --warn: #d97706;
             --radius: 14px;
             --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
         }
@@ -56,7 +51,7 @@
 
         .container {
             width: 100%;
-            max-width: 640px;
+            max-width: 680px;
             background: var(--card);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -147,6 +142,31 @@
             cursor: pointer;
             flex: 0 0 auto;
             margin-top: 2px;
+        }
+
+        /* Output format */
+        .output-format {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .output-format label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .output-format input[type="radio"] {
+            accent-color: var(--brand);
+            width: 16px;
+            height: 16px;
         }
 
         /* Buttons */
@@ -244,6 +264,7 @@
             }
             #drop:hover, #drop.dragover { background: #1e1b3a; }
             .stat { background: #0f1117; }
+            .output-format label { background: #1e2230; }
         }
     </style>
 </head>
@@ -253,38 +274,39 @@
     <main class="container">
         <nav class="nav"><a href="/">← QRyu home</a></nav>
 
-        <h1>LaTeX Remover for DOCX</h1>
-        <p class="subtitle">Remove invisible LaTeX, OMML equations, and hidden text from resumes. Your file never leaves your browser.</p>
+        <h1>LaTeX Remover for PDF & DOCX</h1>
+        <p class="subtitle">Clean LaTeX residue from resumes. Export as a fresh PDF or DOCX. Everything runs in your browser.</p>
 
         <div id="drop">
             <span class="icon">📄</span>
-            <div class="main-text">Drop a .docx file here, or click to browse</div>
-            <div class="sub-text">Only .docx is supported (not .pdf or .doc)</div>
+            <div class="main-text">Drop a .pdf or .docx file here, or click to browse</div>
+            <div class="sub-text">PDF text is extracted and rebuilt — formatting is simplified</div>
             <div id="file-name"></div>
         </div>
-        <input id="file-input" type="file" accept=".docx" style="display:none" />
+        <input id="file-input" type="file" accept=".pdf,.docx" style="display:none" />
 
         <div class="options">
-            <label class="check">
-                <input id="opt-omml" type="checkbox" checked />
-                <span>Remove OMML math equations (<code>m:oMath</code>) — the most common ATS blocker</span>
-            </label>
             <label class="check">
                 <input id="opt-latex" type="checkbox" checked />
                 <span>Strip visible LaTeX commands and math (<code>\textbf{}</code>, <code>$...$</code>, <code>\begin{}</code>)</span>
             </label>
-            <label class="check">
-                <input id="opt-hidden" type="checkbox" checked />
-                <span>Remove hidden text runs (<code>w:vanish</code>, <code>w:webHidden</code>)</span>
+            <label class="check" id="docx-only-option">
+                <input id="opt-omml" type="checkbox" checked />
+                <span>(DOCX only) Remove OMML math equations (<code>m:oMath</code>) — the most common ATS blocker</span>
             </label>
-            <label class="check">
-                <input id="opt-comments" type="checkbox" checked />
-                <span>Remove comments and tracked-change anchors</span>
+            <label class="check" id="docx-only-option-2">
+                <input id="opt-hidden" type="checkbox" checked />
+                <span>(DOCX only) Remove hidden text runs (<code>w:vanish</code>, <code>w:webHidden</code>)</span>
             </label>
         </div>
 
+        <div class="output-format" id="output-format">
+            <label><input type="radio" name="outfmt" value="pdf" checked /> Output as PDF</label>
+            <label><input type="radio" name="outfmt" value="docx" /> Output as DOCX</label>
+        </div>
+
         <button id="process-btn" class="btn btn-primary" type="button" disabled>
-            Clean & Download DOCX
+            Clean & Download
         </button>
 
         <p id="status"></p>
@@ -318,12 +340,21 @@
         </p>
     </main>
 
-    <!-- JSZip from CDN -->
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 
     <script>
         (function () {
             'use strict';
+
+            /* ---------- pdf.js worker ---------- */
+            if (window.pdfjsLib) {
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+                    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+            }
 
             const dropZone   = document.getElementById('drop');
             const fileInput  = document.getElementById('file-input');
@@ -332,10 +363,13 @@
             const statusEl   = document.getElementById('status');
             const statsEl    = document.getElementById('stats');
 
-            const optOmml    = document.getElementById('opt-omml');
-            const optLatex   = document.getElementById('opt-latex');
-            const optHidden  = document.getElementById('opt-hidden');
-            const optComments= document.getElementById('opt-comments');
+            const optLatex    = document.getElementById('opt-latex');
+            const optOmml     = document.getElementById('opt-omml');
+            const optHidden   = document.getElementById('opt-hidden');
+            const docxOnlyOpts = [
+                document.getElementById('docx-only-option'),
+                document.getElementById('docx-only-option-2')
+            ];
 
             const statBefore = document.getElementById('stat-before');
             const statAfter  = document.getElementById('stat-after');
@@ -343,6 +377,7 @@
             const statSaving = document.getElementById('stat-saving');
 
             let selectedFile = null;
+            let fileType = null; // 'pdf' or 'docx'
 
             /* ---------- Helpers ---------- */
 
@@ -368,47 +403,14 @@
                 setTimeout(() => URL.revokeObjectURL(url), 2000);
             }
 
-            /* ---------- File selection ---------- */
-
-            function handleFile(file) {
-                if (!file) return;
-
-                if (!file.name.toLowerCase().endsWith('.docx')) {
-                    setStatus('err', '✗ Please select a .docx file (not .pdf or .doc)');
-                    selectedFile = null;
-                    processBtn.disabled = true;
-                    fileNameEl.textContent = '';
-                    return;
-                }
-
-                selectedFile = file;
-                fileNameEl.textContent = file.name;
-                processBtn.disabled = false;
-                setStatus('info', 'Ready — click "Clean & Download DOCX"');
-                statsEl.classList.remove('show');
+            function updateDocxOnlyOptions() {
+                const isPdf = fileType === 'pdf';
+                docxOnlyOpts.forEach(el => {
+                    if (!el) return;
+                    el.style.opacity = isPdf ? '0.4' : '1';
+                    el.style.pointerEvents = isPdf ? 'none' : 'auto';
+                });
             }
-
-            dropZone.addEventListener('click', () => fileInput.click());
-
-            dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('dragover');
-            });
-
-            dropZone.addEventListener('dragleave', () => {
-                dropZone.classList.remove('dragover');
-            });
-
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-                const f = e.dataTransfer.files && e.dataTransfer.files[0];
-                handleFile(f);
-            });
-
-            fileInput.addEventListener('change', () => {
-                handleFile(fileInput.files && fileInput.files[0]);
-            });
 
             /* ---------- LaTeX stripping ---------- */
 
@@ -436,7 +438,7 @@
                 return t;
             }
 
-            /* ---------- XML cleaning ---------- */
+            /* ---------- DOCX cleaning (same as before) ---------- */
 
             const MATH_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/math';
             const WORD_NS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
@@ -450,58 +452,194 @@
             }
 
             function removeHiddenRuns(doc) {
-                // Runs whose rPr contains w:vanish or w:webHidden
                 const runs = Array.from(doc.getElementsByTagNameNS(WORD_NS, 'r'));
                 let removed = 0;
-
                 runs.forEach((run) => {
                     const rPr = run.getElementsByTagNameNS(WORD_NS, 'rPr')[0];
                     if (!rPr) return;
-
                     const hasVanish =
                         rPr.getElementsByTagNameNS(WORD_NS, 'vanish').length > 0 ||
                         rPr.getElementsByTagNameNS(WORD_NS, 'webHidden').length > 0;
-
                     if (hasVanish && run.parentNode) {
                         run.parentNode.removeChild(run);
                         removed++;
                     }
                 });
-
-                return removed;
-            }
-
-            function removeCommentAnchors(doc) {
-                const tags = ['commentRangeStart', 'commentRangeEnd', 'commentReference'];
-                let removed = 0;
-
-                tags.forEach((tag) => {
-                    const els = Array.from(doc.getElementsByTagNameNS(WORD_NS, tag));
-                    els.forEach((el) => {
-                        if (el.parentNode) el.parentNode.removeChild(el);
-                        removed++;
-                    });
-                });
-
                 return removed;
             }
 
             function stripLatexFromTextNodes(doc) {
                 const textNodes = Array.from(doc.getElementsByTagNameNS(WORD_NS, 't'));
                 let changed = 0;
-
                 textNodes.forEach((node) => {
                     const original = node.textContent || '';
                     const cleaned = stripLatex(original);
-
                     if (cleaned !== original) {
                         node.textContent = cleaned;
                         changed++;
                     }
                 });
-
                 return changed;
             }
+
+            async function processDocx(buffer) {
+                const zip = await JSZip.loadAsync(buffer);
+                const docFile = zip.file('word/document.xml');
+                if (!docFile) {
+                    throw new Error('This file does not look like a valid .docx.');
+                }
+
+                const xmlText = await docFile.async('text');
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+
+                if (xmlDoc.getElementsByTagName('parsererror')[0]) {
+                    throw new Error('Could not parse document XML.');
+                }
+
+                let totalRemoved = 0;
+
+                if (optOmml.checked) {
+                    totalRemoved += removeElementsNS(xmlDoc, MATH_NS, 'oMath');
+                    totalRemoved += removeElementsNS(xmlDoc, MATH_NS, 'oMathPara');
+                }
+                if (optHidden.checked) {
+                    totalRemoved += removeHiddenRuns(xmlDoc);
+                }
+                if (optLatex.checked) {
+                    stripLatexFromTextNodes(xmlDoc);
+                }
+
+                const serializer = new XMLSerializer();
+                const cleanedXml = serializer.serializeToString(xmlDoc);
+                zip.file('word/document.xml', cleanedXml);
+
+                const outBlob = await zip.generateAsync({
+                    type: 'blob',
+                    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    compression: 'DEFLATE'
+                });
+
+                return { blob: outBlob, removedCount: totalRemoved };
+            }
+
+            /* ---------- PDF extraction ---------- */
+
+            async function extractPdfText(arrayBuffer) {
+                if (!window.pdfjsLib) {
+                    throw new Error('pdf.js failed to load. Check your connection and refresh.');
+                }
+
+                const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let fullText = '';
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n\n';
+                }
+
+                return fullText.trim();
+            }
+
+            /* ---------- Output generation ---------- */
+
+            function generatePdfBlob(text) {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                const margin = 15;
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const maxWidth = pageWidth - margin * 2;
+                let y = margin;
+
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'normal');
+
+                const lines = doc.splitTextToSize(text, maxWidth);
+                const lineHeight = 6;
+
+                lines.forEach((line) => {
+                    if (y > pageHeight - margin) {
+                        doc.addPage();
+                        y = margin;
+                    }
+                    doc.text(line, margin, y);
+                    y += lineHeight;
+                });
+
+                return doc.output('blob');
+            }
+
+            async function generateDocxBlob(text) {
+                if (!window.docx) {
+                    throw new Error('docx library failed to load.');
+                }
+
+                const { Document, Packer, Paragraph } = window.docx;
+
+                const paragraphs = text.split(/\n\s*\n/).map(block => {
+                    return new Paragraph({
+                        children: [],
+                        text: block.replace(/\n/g, ' ').trim()
+                    });
+                }).filter(p => p);
+
+                const doc = new Document({
+                    sections: [{
+                        children: paragraphs
+                    }]
+                });
+
+                return await Packer.toBlob(doc);
+            }
+
+            /* ---------- File selection ---------- */
+
+            function handleFile(file) {
+                if (!file) return;
+
+                const name = file.name.toLowerCase();
+                let type = null;
+
+                if (name.endsWith('.docx')) type = 'docx';
+                else if (name.endsWith('.pdf')) type = 'pdf';
+                else {
+                    setStatus('err', '✗ Please select a .pdf or .docx file');
+                    selectedFile = null;
+                    processBtn.disabled = true;
+                    fileNameEl.textContent = '';
+                    return;
+                }
+
+                selectedFile = file;
+                fileType = type;
+                fileNameEl.textContent = file.name;
+                processBtn.disabled = false;
+                setStatus('info', 'Ready — choose output format and click "Clean & Download"');
+                statsEl.classList.remove('show');
+                updateDocxOnlyOptions();
+            }
+
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                handleFile(f);
+            });
+
+            fileInput.addEventListener('change', () => {
+                handleFile(fileInput.files && fileInput.files[0]);
+            });
 
             /* ---------- Main processing ---------- */
 
@@ -509,80 +647,60 @@
                 if (!selectedFile) return;
 
                 processBtn.disabled = true;
-                setStatus('info', 'Reading file…');
+                setStatus('info', 'Processing…');
                 statsEl.classList.remove('show');
 
                 try {
-                    if (typeof JSZip === 'undefined') {
-                        throw new Error('JSZip failed to load. Check your connection and refresh.');
-                    }
-
                     const buffer = await selectedFile.arrayBuffer();
-                    const zip = await JSZip.loadAsync(buffer);
+                    let outputBlob;
+                    let removedCount = 0;
+                    let outputExt;
 
-                    const docFile = zip.file('word/document.xml');
-                    if (!docFile) {
-                        throw new Error('This file does not look like a valid .docx (missing word/document.xml).');
+                    const outFmt = document.querySelector('input[name="outfmt"]:checked').value;
+
+                    if (fileType === 'docx') {
+                        const result = await processDocx(buffer);
+                        outputBlob = result.blob;
+                        removedCount = result.removedCount;
+
+                        if (outFmt === 'docx') {
+                            outputExt = 'docx';
+                        } else {
+                            // Convert cleaned DOCX to PDF would require extraction again.
+                            // For simplicity, extract text from cleaned DOCX and build PDF.
+                            const text = await extractTextFromDocxBlob(outputBlob);
+                            outputBlob = generatePdfBlob(text);
+                            outputExt = 'pdf';
+                        }
+                    } else {
+                        // PDF input
+                        setStatus('info', 'Extracting text from PDF…');
+                        const rawText = await extractPdfText(buffer);
+                        const cleanedText = optLatex.checked ? stripLatex(rawText) : rawText;
+
+                        if (outFmt === 'pdf') {
+                            outputBlob = generatePdfBlob(cleanedText);
+                            outputExt = 'pdf';
+                        } else {
+                            outputBlob = await generateDocxBlob(cleanedText);
+                            outputExt = 'docx';
+                        }
                     }
-
-                    const xmlText = await docFile.async('text');
-
-                    const parser = new DOMParser();
-                    const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
-
-                    // Check for parse errors
-                    const parseError = xmlDoc.getElementsByTagName('parsererror')[0];
-                    if (parseError) {
-                        throw new Error('Could not parse document XML.');
-                    }
-
-                    let totalRemoved = 0;
-
-                    if (optOmml.checked) {
-                        totalRemoved += removeElementsNS(xmlDoc, MATH_NS, 'oMath');
-                        totalRemoved += removeElementsNS(xmlDoc, MATH_NS, 'oMathPara');
-                    }
-
-                    if (optHidden.checked) {
-                        totalRemoved += removeHiddenRuns(xmlDoc);
-                    }
-
-                    if (optComments.checked) {
-                        totalRemoved += removeCommentAnchors(xmlDoc);
-                    }
-
-                    if (optLatex.checked) {
-                        stripLatexFromTextNodes(xmlDoc);
-                    }
-
-                    // Serialize back
-                    const serializer = new XMLSerializer();
-                    const cleanedXml = serializer.serializeToString(xmlDoc);
-
-                    // Put it back into the zip
-                    zip.file('word/document.xml', cleanedXml);
-
-                    const outBlob = await zip.generateAsync({
-                        type: 'blob',
-                        mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                        compression: 'DEFLATE'
-                    });
 
                     // Stats
                     const before = selectedFile.size;
-                    const after = outBlob.size;
+                    const after = outputBlob.size;
                     const diff = Math.max(0, before - after);
                     const pct = before > 0 ? Math.round((diff / before) * 100) : 0;
 
                     statBefore.textContent = formatBytes(before);
                     statAfter.textContent  = formatBytes(after);
-                    statRemoved.textContent= String(totalRemoved);
+                    statRemoved.textContent= String(removedCount || '—');
                     statSaving.textContent = pct + '%';
                     statsEl.classList.add('show');
 
-                    // Download
-                    const base = selectedFile.name.replace(/\.docx$/i, '');
-                    download(outBlob, base + '-ats.docx');
+                    const base = selectedFile.name.replace(/\.(docx|pdf)$/i, '');
+                    download(outputBlob, base + '-cleaned.' + outputExt);
 
                     setStatus('ok', '✓ Done — cleaned file downloaded');
                     processBtn.disabled = false;
@@ -592,6 +710,19 @@
                     setStatus('err', '✗ ' + (err && err.message ? err.message : 'Something went wrong.'));
                     processBtn.disabled = false;
                 }
+            }
+
+            /* Helper: extract text from a DOCX blob (for DOCX→PDF conversion) */
+            async function extractTextFromDocxBlob(blob) {
+                const arrayBuffer = await blob.arrayBuffer();
+                const zip = await JSZip.loadAsync(arrayBuffer);
+                const docFile = zip.file('word/document.xml');
+                if (!docFile) return '';
+                const xmlText = await docFile.async('text');
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+                const textNodes = Array.from(xmlDoc.getElementsByTagNameNS(WORD_NS, 't'));
+                return textNodes.map(n => n.textContent).join(' ');
             }
 
             processBtn.addEventListener('click', processFile);
