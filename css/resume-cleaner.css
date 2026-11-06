@@ -1,0 +1,72 @@
+/* resume-cleaner.css — only what shared.css doesn't already cover */
+
+/* Drop zone */
+#drop {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 34px 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    margin-bottom: 16px;
+}
+
+#drop:hover,
+#drop.dragover {
+    border-color: var(--brand);
+    background: #f5f3ff;
+}
+
+#drop .icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#drop .main-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+#drop .sub-text {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+#file-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--brand);
+    margin-top: 8px;
+    word-break: break-all;
+}
+
+/* Options use .checks/.check from shared.css — only tweak spacing here */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.options .check code {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    background: #f3f4f6;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    #drop:hover,
+    #drop.dragover {
+        background: #1e1b3a;
+    }
+
+    .options .check code {
+        background: #2a2e3a;
+    }
+}

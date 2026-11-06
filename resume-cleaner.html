@@ -8,12 +8,14 @@
     <title>ATS Resume Cleaner — Fix DOCX for Job Applications | QRyu</title>
     <meta name="description"
         content="Clean your DOCX resume for ATS parsers. Remove LaTeX residue, OMML equations, hidden text, and text boxes. 100% in-browser — your file never leaves your device." />
-    <meta name="keywords" content="ats resume cleaner, ats friendly resume, docx cleaner, remove latex from resume, resume sanitizer, resume fixer" />
+    <meta name="keywords"
+        content="ats resume cleaner, ats friendly resume, docx cleaner, remove latex from resume, resume sanitizer, resume fixer" />
     <link rel="canonical" href="https://qryu.shiryu.workers.dev/resume-cleaner.html" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ATS Resume Cleaner — Fix DOCX for Job Applications" />
-    <meta property="og:description" content="Remove LaTeX, OMML math, hidden text, and text boxes from your DOCX resume. Runs entirely in your browser." />
+    <meta property="og:description"
+        content="Remove LaTeX, OMML math, hidden text, and text boxes from your DOCX resume. Runs entirely in your browser." />
     <meta property="og:url" content="https://qryu.shiryu.workers.dev/resume-cleaner.html" />
     <meta property="og:site_name" content="QRyu" />
 
@@ -24,244 +26,17 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>Q</text></svg>" />
 
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg: #f5f7fb;
-            --card: #ffffff;
-            --text: #1a1d29;
-            --muted: #6b7280;
-            --brand: #4f46e5;
-            --brand-dark: #4338ca;
-            --border: #e5e7eb;
-            --error: #dc2626;
-            --ok: #059669;
-            --radius: 14px;
-            --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-        }
-
-        body {
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.55;
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 32px 16px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 640px;
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 26px 24px 28px;
-        }
-
-        .nav { margin-bottom: 18px; }
-        .nav a {
-            font-size: 0.85rem;
-            color: var(--brand);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .nav a:hover { text-decoration: underline; }
-
-        h1 {
-            font-size: 1.45rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 6px;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            color: var(--muted);
-            margin-bottom: 20px;
-        }
-
-        /* Drop zone */
-        #drop {
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            padding: 34px 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
-            margin-bottom: 16px;
-        }
-        #drop:hover, #drop.dragover {
-            border-color: var(--brand);
-            background: #f5f3ff;
-        }
-        #drop .icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            display: block;
-        }
-        #drop .main-text {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-        #drop .sub-text {
-            font-size: 0.82rem;
-            color: var(--muted);
-            margin-top: 4px;
-        }
-        #file-name {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--brand);
-            margin-top: 8px;
-            word-break: break-all;
-        }
-
-        /* Options */
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .check {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            font-size: 0.88rem;
-            color: var(--text);
-            cursor: pointer;
-            user-select: none;
-            line-height: 1.4;
-        }
-        .check input {
-            width: 17px;
-            height: 17px;
-            accent-color: var(--brand);
-            cursor: pointer;
-            flex: 0 0 auto;
-            margin-top: 2px;
-        }
-        .check code {
-            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-            font-size: 0.82rem;
-            background: #f3f4f6;
-            padding: 1px 5px;
-            border-radius: 4px;
-        }
-
-        /* Buttons */
-        .btn {
-            display: block;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: inherit;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.08s, background 0.15s;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-        .btn:active { transform: scale(0.98); }
-        .btn:focus-visible { outline: 3px solid rgba(79, 70, 229, 0.4); outline-offset: 2px; }
-
-        .btn-primary {
-            background: var(--brand);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28);
-        }
-        .btn-primary:hover { background: var(--brand-dark); }
-        .btn-primary:disabled {
-            background: #c7d2fe;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        /* Status */
-        #status {
-            font-size: 0.88rem;
-            font-weight: 600;
-            min-height: 1.5em;
-            margin-top: 14px;
-            text-align: center;
-            word-break: break-word;
-        }
-        #status.ok { color: var(--ok); }
-        #status.err { color: var(--error); }
-        #status.info { color: var(--muted); font-weight: 500; }
-
-        /* Stats */
-        #stats {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 8px;
-            margin-top: 16px;
-        }
-        #stats.show { display: grid; }
-
-        .stat {
-            background: #fafbfc;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--brand);
-            font-variant-numeric: tabular-nums;
-        }
-        .stat-label {
-            font-size: 0.68rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-top: 2px;
-            font-weight: 600;
-        }
-
-        /* Footer */
-        .footer-note {
-            margin-top: 22px;
-            font-size: 0.78rem;
-            color: var(--muted);
-            text-align: center;
-        }
-        .footer-note a { color: var(--brand); text-decoration: none; }
-        .footer-note a:hover { text-decoration: underline; }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117;
-                --card: #171a23;
-                --text: #e8eaf0;
-                --muted: #9096a3;
-                --border: #2a2e3a;
-                --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-            }
-            #drop:hover, #drop.dragover { background: #1e1b3a; }
-            .stat { background: #0f1117; }
-            .check code { background: #2a2e3a; }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/shared.css" />
+    <link rel="stylesheet" href="/css/resume-cleaner.css" />
 </head>
 
 <body>
-
     <main class="container">
         <nav class="nav"><a href="/">← QRyu home</a></nav>
 
         <h1>ATS Resume Cleaner</h1>
-        <p class="subtitle">Remove LaTeX residue, OMML equations, hidden text, and text boxes from your DOCX resume. Runs entirely in your browser — nothing is uploaded.</p>
+        <p class="subtitle">Remove LaTeX residue, OMML equations, hidden text, and text boxes from your DOCX resume.
+            Runs entirely in your browser.</p>
 
         <div id="drop">
             <span class="icon">📄</span>
@@ -278,7 +53,8 @@
             </label>
             <label class="check">
                 <input id="opt-latex" type="checkbox" checked />
-                <span>Strip visible LaTeX commands and math (<code>\textbf{}</code>, <code>$...$</code>, <code>\begin{}</code>)</span>
+                <span>Strip visible LaTeX commands and math (<code>\textbf{}</code>, <code>$...$</code>,
+                    <code>\begin{}</code>)</span>
             </label>
             <label class="check">
                 <input id="opt-hidden" type="checkbox" checked />
@@ -286,17 +62,16 @@
             </label>
             <label class="check">
                 <input id="opt-textbox" type="checkbox" checked />
-                <span>Remove text boxes, drawings, and shapes (<code>w:drawing</code>, <code>w:pict</code>) — ATS parsers can't read inside these</span>
+                <span>Remove text boxes, drawings, and shapes (<code>w:drawing</code>, <code>w:pict</code>) — ATS
+                    parsers can't read inside these</span>
             </label>
         </div>
 
-        <button id="process-btn" class="btn btn-primary" type="button" disabled>
-            Clean & Download DOCX
-        </button>
+        <button id="process-btn" class="btn btn-primary" type="button" disabled>Clean & Download DOCX</button>
 
-        <p id="status"></p>
+        <p id="status" class="status" aria-live="polite"></p>
 
-        <div id="stats">
+        <div id="stats" class="stats">
             <div class="stat">
                 <div class="stat-value" id="stat-before">—</div>
                 <div class="stat-label">Before</div>
@@ -316,284 +91,19 @@
         </div>
 
         <p class="footer-note" style="margin-bottom: 10px;">
-            Also try: <a href="/">QR Code Generator</a> · <a href="/password-generator.html">Password Generator</a> ·
+            Also try: <a href="/qr-generator.html">QR Code Generator</a> · <a href="/password-generator.html">Password
+                Generator</a> ·
             <a href="/word-counter.html">Word Counter</a> · <a href="/json-formatter.html">JSON Formatter</a>
         </p>
         <p class="footer-note">
             Built by <strong>Shiryu</strong> · Free forever ·
-            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on GitHub</a>
+            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on
+                GitHub</a>
         </p>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
-    <script>
-        (function () {
-            'use strict';
-
-            const dropZone   = document.getElementById('drop');
-            const fileInput  = document.getElementById('file-input');
-            const fileNameEl = document.getElementById('file-name');
-            const processBtn = document.getElementById('process-btn');
-            const statusEl   = document.getElementById('status');
-            const statsEl    = document.getElementById('stats');
-
-            const optOmml    = document.getElementById('opt-omml');
-            const optLatex   = document.getElementById('opt-latex');
-            const optHidden  = document.getElementById('opt-hidden');
-            const optTextbox = document.getElementById('opt-textbox');
-
-            const statBefore = document.getElementById('stat-before');
-            const statAfter  = document.getElementById('stat-after');
-            const statRemoved= document.getElementById('stat-removed');
-            const statSaving = document.getElementById('stat-saving');
-
-            let selectedFile = null;
-
-            /* ---------- Helpers ---------- */
-
-            function setStatus(type, msg) {
-                statusEl.className = type || '';
-                statusEl.textContent = msg || '';
-            }
-
-            function formatBytes(n) {
-                if (n < 1024) return n + ' B';
-                if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
-                return (n / 1024 / 1024).toFixed(2) + ' MB';
-            }
-
-            function download(blob, name) {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = name;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(() => URL.revokeObjectURL(url), 2000);
-            }
-
-            /* ---------- LaTeX stripping ---------- */
-
-            function stripLatex(text) {
-                let t = text;
-
-                // Display math $$...$$
-                t = t.replace(/\$\$[\s\S]*?\$\$/g, '');
-
-                // Inline math $...$
-                t = t.replace(/\$[^$]*?\$/g, '');
-
-                // Environments \begin{...}...\end{...}
-                t = t.replace(/\\begin\{[^}]+\}[\s\S]*?\\end\{[^}]+\}/g, '');
-
-                // Commands with optional args: \cmd[..]{..}
-                t = t.replace(/\\[a-zA-Z]+\*?(?:\[[^\]]*\])?(?:\{[^{}]*\})?/g, '');
-
-                // Leftover backslash commands
-                t = t.replace(/\\[a-zA-Z]+/g, '');
-
-                // Collapse whitespace
-                t = t.replace(/\s{2,}/g, ' ').trim();
-
-                return t;
-            }
-
-            /* ---------- DOCX XML cleaning ---------- */
-
-            const MATH_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/math';
-            const WORD_NS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
-
-            function removeElementsNS(doc, ns, tagName) {
-                const els = Array.from(doc.getElementsByTagNameNS(ns, tagName));
-                els.forEach((el) => {
-                    if (el.parentNode) el.parentNode.removeChild(el);
-                });
-                return els.length;
-            }
-
-            function removeElementsByTag(doc, tagName) {
-                // Removes regardless of namespace — useful for w:drawing etc.
-                const els = Array.from(doc.getElementsByTagNameNS(WORD_NS, tagName));
-                els.forEach((el) => {
-                    if (el.parentNode) el.parentNode.removeChild(el);
-                });
-                return els.length;
-            }
-
-            function removeHiddenRuns(doc) {
-                const runs = Array.from(doc.getElementsByTagNameNS(WORD_NS, 'r'));
-                let removed = 0;
-                runs.forEach((run) => {
-                    const rPr = run.getElementsByTagNameNS(WORD_NS, 'rPr')[0];
-                    if (!rPr) return;
-                    const hasVanish =
-                        rPr.getElementsByTagNameNS(WORD_NS, 'vanish').length > 0 ||
-                        rPr.getElementsByTagNameNS(WORD_NS, 'webHidden').length > 0;
-                    if (hasVanish && run.parentNode) {
-                        run.parentNode.removeChild(run);
-                        removed++;
-                    }
-                });
-                return removed;
-            }
-
-            function stripLatexFromTextNodes(doc) {
-                const textNodes = Array.from(doc.getElementsByTagNameNS(WORD_NS, 't'));
-                let changed = 0;
-                textNodes.forEach((node) => {
-                    const original = node.textContent || '';
-                    const cleaned = stripLatex(original);
-                    if (cleaned !== original) {
-                        node.textContent = cleaned;
-                        changed++;
-                    }
-                });
-                return changed;
-            }
-
-            async function processDocx(buffer) {
-                if (typeof JSZip === 'undefined') {
-                    throw new Error('JSZip failed to load. Check your connection and refresh.');
-                }
-
-                const zip = await JSZip.loadAsync(buffer);
-                const docFile = zip.file('word/document.xml');
-                if (!docFile) {
-                    throw new Error('This file does not look like a valid .docx (missing word/document.xml).');
-                }
-
-                const xmlText = await docFile.async('text');
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
-
-                if (xmlDoc.getElementsByTagName('parsererror')[0]) {
-                    throw new Error('Could not parse document XML.');
-                }
-
-                let totalRemoved = 0;
-
-                if (optOmml.checked) {
-                    totalRemoved += removeElementsNS(xmlDoc, MATH_NS, 'oMath');
-                    totalRemoved += removeElementsNS(xmlDoc, MATH_NS, 'oMathPara');
-                }
-
-                if (optHidden.checked) {
-                    totalRemoved += removeHiddenRuns(xmlDoc);
-                }
-
-                if (optTextbox.checked) {
-                    totalRemoved += removeElementsByTag(xmlDoc, 'drawing');
-                    totalRemoved += removeElementsByTag(xmlDoc, 'pict');
-                    totalRemoved += removeElementsByTag(xmlDoc, 'object');
-                    totalRemoved += removeElementsByTag(xmlDoc, 'txbxContent');
-                }
-
-                if (optLatex.checked) {
-                    stripLatexFromTextNodes(xmlDoc);
-                }
-
-                // Serialize back
-                const serializer = new XMLSerializer();
-                const cleanedXml = serializer.serializeToString(xmlDoc);
-
-                // Put back into the zip
-                zip.file('word/document.xml', cleanedXml);
-
-                const outBlob = await zip.generateAsync({
-                    type: 'blob',
-                    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    compression: 'DEFLATE'
-                });
-
-                return { blob: outBlob, removedCount: totalRemoved };
-            }
-
-            /* ---------- File selection ---------- */
-
-            function handleFile(file) {
-                if (!file) return;
-
-                if (!file.name.toLowerCase().endsWith('.docx')) {
-                    setStatus('err', '✗ Please select a .docx file (not .pdf or .doc)');
-                    selectedFile = null;
-                    processBtn.disabled = true;
-                    fileNameEl.textContent = '';
-                    return;
-                }
-
-                selectedFile = file;
-                fileNameEl.textContent = file.name;
-                processBtn.disabled = false;
-                setStatus('info', 'Ready — click "Clean & Download DOCX"');
-                statsEl.classList.remove('show');
-            }
-
-            dropZone.addEventListener('click', () => fileInput.click());
-
-            dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('dragover');
-            });
-
-            dropZone.addEventListener('dragleave', () => {
-                dropZone.classList.remove('dragover');
-            });
-
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-                const f = e.dataTransfer.files && e.dataTransfer.files[0];
-                handleFile(f);
-            });
-
-            fileInput.addEventListener('change', () => {
-                handleFile(fileInput.files && fileInput.files[0]);
-            });
-
-            /* ---------- Main processing ---------- */
-
-            async function processFile() {
-                if (!selectedFile) return;
-
-                processBtn.disabled = true;
-                setStatus('info', 'Processing…');
-                statsEl.classList.remove('show');
-
-                try {
-                    const buffer = await selectedFile.arrayBuffer();
-                    const result = await processDocx(buffer);
-
-                    // Stats
-                    const before = selectedFile.size;
-                    const after = result.blob.size;
-                    const diff = Math.max(0, before - after);
-                    const pct = before > 0 ? Math.round((diff / before) * 100) : 0;
-
-                    statBefore.textContent = formatBytes(before);
-                    statAfter.textContent  = formatBytes(after);
-                    statRemoved.textContent= String(result.removedCount);
-                    statSaving.textContent = pct + '%';
-                    statsEl.classList.add('show');
-
-                    // Download
-                    const base = selectedFile.name.replace(/\.docx$/i, '');
-                    download(result.blob, base + '-ats.docx');
-
-                    setStatus('ok', '✓ Done — cleaned file downloaded');
-                    processBtn.disabled = false;
-
-                } catch (err) {
-                    console.error(err);
-                    setStatus('err', '✗ ' + (err && err.message ? err.message : 'Something went wrong.'));
-                    processBtn.disabled = false;
-                }
-            }
-
-            processBtn.addEventListener('click', processFile);
-        })();
-    </script>
+    <script type="module" src="/js/tools/resume-cleaner/controller.js"></script>
 </body>
 
 </html>

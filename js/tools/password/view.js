@@ -37,19 +37,21 @@ export function setPassword(text) {
 export function getPassword() { return els.output.value; }
 
 export function setStrength(label, cls, bits) {
+    els.strength.classList.remove('weak', 'good', 'strong');
     if (!label) {
         els.strength.textContent = '';
-        els.strength.className = 'strength';
         return;
     }
     els.strength.textContent = `Strength: ${label} (~${bits} bits)`;
-    els.strength.className = `strength ${cls}`;
+    els.strength.classList.add(cls);
 }
 
+let copyTimeout;
 export function flashCopied() {
+    clearTimeout(copyTimeout);
     els.copyBtn.textContent = 'Copied';
     els.copyBtn.classList.add('copied');
-    setTimeout(() => {
+    copyTimeout = setTimeout(() => {
         els.copyBtn.textContent = 'Copy';
         els.copyBtn.classList.remove('copied');
     }, 1500);

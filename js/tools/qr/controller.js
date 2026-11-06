@@ -28,8 +28,10 @@ function generate() {
         new QRCode(View.getQRContainer(), options);
 
         setTimeout(() => {
-            View.showDownloadButton(Model.buildFilename(validation.value));
-        }, 50);
+            if (View.getQRDataUrl()) {
+                View.showDownloadButton(Model.buildFilename(validation.value));
+            }
+        }, 100);
     } catch (err) {
         console.error(err);
         View.showError('Could not generate QR code. Please try again.');
