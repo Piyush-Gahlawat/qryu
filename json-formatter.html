@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>JSON Formatter & Validator — Beautify, Minify, Validate JSON | QRyu</title>
+    <meta name="description"
+        content="Free online JSON formatter and validator. Beautify or minify JSON instantly, catch syntax errors with clear messages. Runs entirely in your browser — no data uploaded." />
+    <meta name="keywords" content="json formatter, json validator, json beautifier, json minifier, format json online, pretty print json" />
+    <link rel="canonical" href="https://qryu.shiryu.workers.dev/json-formatter.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="JSON Formatter & Validator" />
+    <meta property="og:description" content="Beautify, minify, and validate JSON instantly. Free, no signup, runs in your browser." />
+    <meta property="og:url" content="https://qryu.shiryu.workers.dev/json-formatter.html" />
+    <meta property="og:site_name" content="QRyu" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="JSON Formatter & Validator" />
+    <meta name="twitter:description" content="Beautify, minify, validate JSON. Free, no signup." />
+
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>Q</text></svg>" />
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1a1d29;
+            --muted: #6b7280;
+            --brand: #4f46e5;
+            --brand-dark: #4338ca;
+            --border: #e5e7eb;
+            --error: #dc2626;
+            --ok: #059669;
+            --radius: 14px;
+            --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+            --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1040px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 26px 24px 28px;
+        }
+
+        .nav { margin-bottom: 18px; }
+        .nav a {
+            font-size: 0.85rem;
+            color: var(--brand);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav a:hover { text-decoration: underline; }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.92rem;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        /* Options bar */
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .options label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 4px;
+        }
+
+        .options select {
+            font-family: inherit;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .btn-sm {
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, transform 0.08s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-sm:hover { background: #f3f4f6; border-color: #d1d5db; }
+        .btn-sm:active { transform: scale(0.97); }
+
+        .btn-sm.primary {
+            background: var(--brand);
+            color: #fff;
+            border-color: var(--brand);
+        }
+        .btn-sm.primary:hover { background: var(--brand-dark); border-color: var(--brand-dark); }
+
+        /* Two-panel layout */
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .panels { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fafbfc;
+        }
+
+        .panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f3f4f6;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            gap: 8px;
+        }
+
+        .panel-actions { display: flex; align-items: center; gap: 6px; }
+
+        .panel-meta {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: none;
+            letter-spacing: 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .btn-mini {
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 9px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.15s;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .btn-mini:hover { background: #e5e7eb; }
+        .btn-mini.copied { background: #d1fae5; color: var(--ok); border-color: #a7f3d0; }
+
+        .panel textarea {
+            width: 100%;
+            min-height: 300px;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            padding: 12px;
+            resize: vertical;
+        }
+
+        .panel textarea:focus {
+            outline: none;
+            background: #fff;
+        }
+
+        /* Status */
+        .status {
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-height: 1.5em;
+            margin-bottom: 8px;
+            text-align: center;
+            word-break: break-word;
+        }
+        .status.ok { color: var(--ok); }
+        .status.err { color: var(--error); }
+
+        /* Footer */
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        .footer-note a { color: var(--brand); text-decoration: none; }
+        .footer-note a:hover { text-decoration: underline; }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1117;
+                --card: #171a23;
+                --text: #e8eaf0;
+                --muted: #9096a3;
+                --border: #2a2e3a;
+                --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+            }
+            .panel { background: #0f1117; }
+            .panel-head { background: #1e2230; }
+            .btn-sm, .btn-mini, .options select { background: #1e2230; color: var(--text); border-color: #2a2e3a; }
+            .btn-sm:hover { background: #262b3c; }
+            .btn-mini:hover { background: #262b3c; }
+            .panel textarea:focus { background: #0f1117; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+        <nav class="nav"><a href="/">← QRyu home</a></nav>
+
+        <h1>JSON Formatter & Validator</h1>
+        <p class="subtitle">Beautify, minify, and validate JSON. Everything runs in your browser — nothing is uploaded.</p>
+
+        <div class="options">
+            <label for="indent">Indent
+                <select id="indent">
+                    <option value="2" selected>2 spaces</option>
+                    <option value="4">4 spaces</option>
+                    <option value="tab">Tab</option>
+                </select>
+            </label>
+            <button id="btn-format" class="btn-sm primary" type="button">Format</button>
+            <button id="btn-minify" class="btn-sm" type="button">Minify</button>
+            <button id="btn-sample" class="btn-sm" type="button">Load Sample</button>
+            <button id="btn-clear" class="btn-sm" type="button">Clear</button>
+        </div>
+
+        <div class="panels">
+            <div class="panel">
+                <div class="panel-head">
+                    <span>Input</span>
+                    <span class="panel-meta" id="in-meta">0 B</span>
+                </div>
+                <textarea id="input" spellcheck="false" placeholder='Paste JSON here, e.g. {"hello":"world"}'></textarea>
+            </div>
+            <div class="panel">
+                <div class="panel-head">
+                    <span>Output</span>
+                    <div class="panel-actions">
+                        <span class="panel-meta" id="out-meta">0 B</span>
+                        <button id="btn-copy" class="btn-mini" type="button">Copy</button>
+                        <button id="btn-download" class="btn-mini" type="button">Download</button>
+                    </div>
+                </div>
+                <textarea id="output" spellcheck="false" readonly placeholder="Formatted JSON will appear here"></textarea>
+            </div>
+        </div>
+
+        <p id="status" class="status" aria-live="polite"></p>
+
+        <p class="footer-note" style="margin-bottom: 10px;">
+            Also try: <a href="/">QR Code Generator</a> · <a href="/password-generator.html">Password Generator</a> ·
+            <a href="/word-counter.html">Word Counter</a>
+        </p>
+        <p class="footer-note">
+            Built by <strong>Shiryu</strong> · Free forever ·
+            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+    </main>
+
+    <script>
+        (function () {
+            'use strict';
+
+            const inputEl  = document.getElementById('input');
+            const outputEl = document.getElementById('output');
+            const indentEl = document.getElementById('indent');
+            const statusEl = document.getElementById('status');
+            const inMeta   = document.getElementById('in-meta');
+            const outMeta  = document.getElementById('out-meta');
+            const btnFormat   = document.getElementById('btn-format');
+            const btnMinify   = document.getElementById('btn-minify');
+            const btnSample   = document.getElementById('btn-sample');
+            const btnClear    = document.getElementById('btn-clear');
+            const btnCopy     = document.getElementById('btn-copy');
+            const btnDownload = document.getElementById('btn-download');
+
+            const SAMPLE = JSON.stringify({
+                name: "QRyu",
+                version: "1.0.0",
+                builtBy: "Shiryu",
+                url: "https://qryu.shiryu.workers.dev",
+                tools: [
+                    "QR Code Generator",
+                    "Password Generator",
+                    "Word Counter",
+                    "JSON Formatter"
+                ],
+                free: true,
+                stats: { visitors: 0, uptime: 99.9, tags: ["json", "tools", "free"] }
+            });
+
+            function indentValue() {
+                const v = indentEl.value;
+                return v === 'tab' ? '\t' : parseInt(v, 10);
+            }
+
+            function byteSize(str) {
+                return new Blob([str]).size;
+            }
+
+            function formatBytes(n) {
+                if (n < 1024) return n + ' B';
+                if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+                return (n / 1024 / 1024).toFixed(2) + ' MB';
+            }
+
+            function updateMeta() {
+                inMeta.textContent  = formatBytes(byteSize(inputEl.value));
+                outMeta.textContent = formatBytes(byteSize(outputEl.value));
+            }
+
+            function setStatus(type, message) {
+                statusEl.className = 'status' + (type ? ' ' + type : '');
+                statusEl.textContent = message;
+            }
+
+            function clearStatus() {
+                statusEl.className = 'status';
+                statusEl.textContent = '';
+            }
+
+            function prettyError(e) {
+                // Chromium: "Unexpected token } in JSON at position 45"
+                // Firefox: "JSON.parse: unexpected character at line 3 column 5 of the JSON data"
+                return e && e.message ? e.message : 'Invalid JSON';
+            }
+
+            function format() {
+                const text = inputEl.value.trim();
+                if (!text) {
+                    outputEl.value = '';
+                    clearStatus();
+                    updateMeta();
+                    return;
+                }
+                try {
+                    const obj = JSON.parse(text);
+                    outputEl.value = JSON.stringify(obj, null, indentValue());
+                    setStatus('ok', '✓ Valid JSON — formatted');
+                } catch (e) {
+                    outputEl.value = '';
+                    setStatus('err', '✗ ' + prettyError(e));
+                }
+                updateMeta();
+            }
+
+            function minify() {
+                const text = inputEl.value.trim();
+                if (!text) {
+                    outputEl.value = '';
+                    clearStatus();
+                    updateMeta();
+                    return;
+                }
+                try {
+                    const obj = JSON.parse(text);
+                    outputEl.value = JSON.stringify(obj);
+                    setStatus('ok', '✓ Valid JSON — minified');
+                } catch (e) {
+                    outputEl.value = '';
+                    setStatus('err', '✗ ' + prettyError(e));
+                }
+                updateMeta();
+            }
+
+            function copyOutput() {
+                const text = outputEl.value;
+                if (!text) {
+                    setStatus('err', 'Nothing to copy — format some JSON first');
+                    return;
+                }
+
+                const done = () => {
+                    btnCopy.textContent = 'Copied';
+                    btnCopy.classList.add('copied');
+                    setTimeout(() => {
+                        btnCopy.textContent = 'Copy';
+                        btnCopy.classList.remove('copied');
+                    }, 1500);
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(done).catch(fallback);
+                } else {
+                    fallback();
+                }
+
+                function fallback() {
+                    outputEl.select();
+                    outputEl.setSelectionRange(0, 999999);
+                    try { document.execCommand('copy'); done(); } catch (e) { /* ignore */ }
+                }
+            }
+
+            function download() {
+                const text = outputEl.value || inputEl.value;
+                if (!text) {
+                    setStatus('err', 'Nothing to download');
+                    return;
+                }
+                try {
+                    const blob = new Blob([text], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'formatted.json';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                } catch (e) {
+                    setStatus('err', 'Download failed');
+                }
+            }
+
+            /* Wire up */
+            inputEl.addEventListener('input', () => {
+                updateMeta();
+                clearStatus();
+            });
+
+            indentEl.addEventListener('change', () => {
+                // If output already has content, re-format with new indent
+                if (outputEl.value) format();
+            });
+
+            btnFormat.addEventListener('click', format);
+            btnMinify.addEventListener('click', minify);
+            btnCopy.addEventListener('click', copyOutput);
+            btnDownload.addEventListener('click', download);
+
+            btnSample.addEventListener('click', () => {
+                inputEl.value = SAMPLE;
+                format();
+            });
+
+            btnClear.addEventListener('click', () => {
+                if (inputEl.value && !confirm('Clear input and output?')) return;
+                inputEl.value = '';
+                outputEl.value = '';
+                clearStatus();
+                updateMeta();
+                inputEl.focus();
+            });
+
+            /* Init */
+            updateMeta();
+        })();
+    </script>
+</body>
+
+</html>
