@@ -8,12 +8,14 @@
     <title>Word Counter — Count Words, Characters & Reading Time | QRyu</title>
     <meta name="description"
         content="Free online word counter. Instantly count words, characters, sentences, and paragraphs. Get reading time estimates as you type. No signup, works offline in your browser." />
-    <meta name="keywords" content="word counter, character counter, word count, character count, reading time calculator, online word counter" />
+    <meta name="keywords"
+        content="word counter, character counter, word count, character count, reading time calculator, online word counter" />
     <link rel="canonical" href="https://qryu.shiryu.workers.dev/word-counter.html" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Word Counter — Count Words, Characters & Reading Time" />
-    <meta property="og:description" content="Count words, characters, sentences, and paragraphs instantly. Free, no signup." />
+    <meta property="og:description"
+        content="Count words, characters, sentences, and paragraphs instantly. Free, no signup." />
     <meta property="og:url" content="https://qryu.shiryu.workers.dev/word-counter.html" />
     <meta property="og:site_name" content="QRyu" />
 
@@ -24,174 +26,12 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>Q</text></svg>" />
 
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg: #f5f7fb;
-            --card: #ffffff;
-            --text: #1a1d29;
-            --muted: #6b7280;
-            --brand: #4f46e5;
-            --brand-dark: #4338ca;
-            --border: #e5e7eb;
-            --radius: 14px;
-            --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-        }
-
-        body {
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.55;
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 32px 16px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 760px;
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 26px 24px 28px;
-        }
-
-        .nav { margin-bottom: 18px; }
-        .nav a {
-            font-size: 0.85rem;
-            color: var(--brand);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .nav a:hover { text-decoration: underline; }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 6px;
-        }
-
-        .subtitle {
-            font-size: 0.92rem;
-            color: var(--muted);
-            margin-bottom: 20px;
-        }
-
-        /* Stats grid */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .stat {
-            background: #fafbfc;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 14px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--brand);
-            font-variant-numeric: tabular-nums;
-            line-height: 1.2;
-        }
-
-        .stat-label {
-            font-size: 0.72rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        /* Textarea */
-        textarea {
-            width: 100%;
-            min-height: 220px;
-            font-family: inherit;
-            font-size: 1rem;
-            line-height: 1.6;
-            padding: 14px 16px;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            background: #fafbfc;
-            color: var(--text);
-            resize: vertical;
-            transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-        }
-        textarea::placeholder { color: #9ca3af; }
-        textarea:focus {
-            outline: none;
-            border-color: var(--brand);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-        }
-
-        /* Toolbar */
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .btn-sm {
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 8px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            background: #fff;
-            color: var(--text);
-            cursor: pointer;
-            transition: background 0.15s, border-color 0.15s;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .btn-sm:hover { background: #f3f4f6; border-color: #d1d5db; }
-        .btn-sm:active { transform: scale(0.97); }
-        .btn-sm.copied { background: #d1fae5; color: #059669; border-color: #a7f3d0; }
-
-        /* Footer */
-        .footer-note {
-            margin-top: 22px;
-            font-size: 0.78rem;
-            color: var(--muted);
-            text-align: center;
-        }
-        .footer-note a { color: var(--brand); text-decoration: none; }
-        .footer-note a:hover { text-decoration: underline; }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117;
-                --card: #171a23;
-                --text: #e8eaf0;
-                --muted: #9096a3;
-                --border: #2a2e3a;
-                --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-            }
-            .stat, textarea { background: #0f1117; }
-            .btn-sm { background: #1e2230; border-color: #2a2e3a; color: var(--text); }
-            .btn-sm:hover { background: #262b3c; }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/shared.css" />
+    <link rel="stylesheet" href="/css/word-counter.css" />
 </head>
 
 <body>
-
-    <main class="container">
+    <main class="container container-wide">
         <nav class="nav"><a href="/">← QRyu home</a></nav>
 
         <h1>Word & Character Counter</h1>
@@ -235,138 +75,19 @@
             <button class="btn-sm" id="btn-clear" type="button">Clear</button>
         </div>
 
-<p class="footer-note" style="margin-bottom: 10px;">
-    Also try: <a href="/">QR Code Generator</a> · <a href="/password-generator.html">Password Generator</a> · <a href="/json-formatter.html">JSON Formatter</a> · <a href="/resume-cleaner.html">ATS Resume Cleaner</a>
-</p>
+        <p class="footer-note" style="margin-bottom: 10px;">
+            Also try: <a href="/qr-generator.html">QR Code Generator</a> · <a href="/password-generator.html">Password
+                Generator</a> ·
+            <a href="/json-formatter.html">JSON Formatter</a> · <a href="/resume-cleaner.html">ATS Resume Cleaner</a>
+        </p>
         <p class="footer-note">
             Built by <strong>Shiryu</strong> · Free forever ·
-            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on GitHub</a>
+            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on
+                GitHub</a>
         </p>
-
     </main>
 
-    <script>
-        (function () {
-            'use strict';
-
-            const input        = document.getElementById('input');
-            const statWords    = document.getElementById('stat-words');
-            const statChars    = document.getElementById('stat-chars');
-            const statNoSpace  = document.getElementById('stat-chars-nospace');
-            const statSent     = document.getElementById('stat-sentences');
-            const statPara     = document.getElementById('stat-paragraphs');
-            const statRead     = document.getElementById('stat-reading');
-            const btnUpper     = document.getElementById('btn-upper');
-            const btnLower     = document.getElementById('btn-lower');
-            const btnTitle     = document.getElementById('btn-title');
-            const btnSentence  = document.getElementById('btn-sentence');
-            const btnCopy      = document.getElementById('btn-copy');
-            const btnClear     = document.getElementById('btn-clear');
-
-            const WORDS_PER_MIN = 225; // average adult reading speed
-
-            function analyze(text) {
-                const trimmed = text.trim();
-
-                // Characters
-                const chars = text.length;
-                const charsNoSpace = text.replace(/\s/g, '').length;
-
-                // Words: split on whitespace, ignore empties
-                const words = trimmed ? trimmed.split(/\s+/).filter(Boolean).length : 0;
-
-                // Sentences: split on . ! ? followed by space or end
-                const sentences = trimmed
-                    ? (trimmed.match(/[^.!?]+[.!?]+/g) || []).length ||
-                      (trimmed ? 1 : 0)
-                    : 0;
-
-                // Paragraphs: non-empty blocks separated by blank lines
-                const paragraphs = trimmed
-                    ? trimmed.split(/\n\s*\n/).filter(p => p.trim().length > 0).length
-                    : 0;
-
-                // Reading time (rounded up, minimum 1 min if any words)
-                let readMin = 0;
-                if (words > 0) readMin = Math.max(1, Math.round(words / WORDS_PER_MIN));
-                const readLabel = readMin === 0 ? '0m' : (readMin < 1 ? '<1m' : readMin + 'm');
-
-                return { words, chars, charsNoSpace, sentences, paragraphs, readLabel };
-            }
-
-            function render() {
-                const r = analyze(input.value);
-                statWords.textContent   = r.words.toLocaleString();
-                statChars.textContent   = r.chars.toLocaleString();
-                statNoSpace.textContent = r.charsNoSpace.toLocaleString();
-                statSent.textContent    = r.sentences.toLocaleString();
-                statPara.textContent    = r.paragraphs.toLocaleString();
-                statRead.textContent    = r.readLabel;
-            }
-
-            function toTitleCase(s) {
-                return s.replace(/\w\S*/g, w =>
-                    w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-                );
-            }
-
-            function toSentenceCase(s) {
-                return s
-                    .toLowerCase()
-                    .replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase());
-            }
-
-            function copyText() {
-                const text = input.value;
-                if (!text) return;
-
-                const done = () => {
-                    btnCopy.textContent = 'Copied';
-                    btnCopy.classList.add('copied');
-                    setTimeout(() => {
-                        btnCopy.textContent = 'Copy';
-                        btnCopy.classList.remove('copied');
-                    }, 1500);
-                };
-
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(done).catch(fallback);
-                } else {
-                    fallback();
-                }
-
-                function fallback() {
-                    input.select();
-                    input.setSelectionRange(0, 999999);
-                    try { document.execCommand('copy'); done(); } catch (e) { /* ignore */ }
-                }
-            }
-
-            /* Wire up */
-            input.addEventListener('input', render);
-
-            btnUpper.addEventListener('click', () => {
-                input.value = input.value.toUpperCase(); render();
-            });
-            btnLower.addEventListener('click', () => {
-                input.value = input.value.toLowerCase(); render();
-            });
-            btnTitle.addEventListener('click', () => {
-                input.value = toTitleCase(input.value); render();
-            });
-            btnSentence.addEventListener('click', () => {
-                input.value = toSentenceCase(input.value); render();
-            });
-            btnCopy.addEventListener('click', copyText);
-            btnClear.addEventListener('click', () => {
-                if (input.value && !confirm('Clear all text?')) return;
-                input.value = ''; render(); input.focus();
-            });
-
-            /* Init */
-            render();
-        })();
-    </script>
+    <script type="module" src="/js/tools/word-counter/controller.js"></script>
 </body>
 
 </html>
