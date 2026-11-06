@@ -15,7 +15,6 @@ export function validateFile(file) {
 }
 
 /* ---------- LaTeX text stripping ---------- */
-
 export function stripLatex(text) {
     let t = text;
 
