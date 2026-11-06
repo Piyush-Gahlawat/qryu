@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://qryu.shiryu.workers.dev/sitemap.xml
+Sitemap: https://shiryu-kit.shiryu.workers.dev/sitemap.xml
