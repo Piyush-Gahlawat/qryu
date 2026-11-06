@@ -1,0 +1,162 @@
+/* json-formatter.css — JSON-formatter-specific styles */
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.options label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 4px;
+    margin-bottom: 0;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.options select {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+}
+
+/* Two-panel layout */
+.panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 700px) {
+    .panels {
+        grid-template-columns: 1fr;
+    }
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fafbfc;
+}
+
+.panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    gap: 8px;
+}
+
+.panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.panel-meta {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.btn-mini {
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.btn-mini:hover {
+    background: #e5e7eb;
+}
+
+.btn-mini.copied {
+    background: #d1fae5;
+    color: var(--ok);
+    border-color: #a7f3d0;
+}
+
+/* Override shared textarea inside panels — monospace, no border, resizable */
+.panel textarea {
+    width: 100%;
+    min-height: 300px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding: 12px;
+    resize: vertical;
+}
+
+.panel textarea:focus {
+    outline: none;
+    background: #fff;
+    box-shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .options select {
+        background: #1e2230;
+        color: var(--text);
+        border-color: #2a2e3a;
+    }
+
+    .panel {
+        background: #0f1117;
+    }
+
+    .panel-head {
+        background: #1e2230;
+    }
+
+    .btn-mini {
+        background: #1e2230;
+        color: var(--text);
+        border-color: #2a2e3a;
+    }
+
+    .btn-mini:hover {
+        background: #262b3c;
+    }
+
+    .panel textarea:focus {
+        background: #0f1117;
+    }
+}
