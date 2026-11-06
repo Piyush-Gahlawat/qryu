@@ -1,0 +1,27 @@
+/* qr.css — QR-generator-specific styles only */
+
+#qr-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#qr-container img,
+#qr-container canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+}
+
+@media (prefers-color-scheme: dark) {
+
+    #qr-container img,
+    #qr-container canvas {
+        background: #fff;
+    }
+}
