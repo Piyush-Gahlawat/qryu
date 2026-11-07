@@ -82,12 +82,18 @@ function doClear() {
 
 /* Wiring */
 View.events.onInput(() => {
+    View.refreshInputHighlight();
     refreshMeta();
     View.clearStatus();
 });
+
+View.events.onInputScroll(() => View.syncInputScroll());
+View.events.onOutputScroll(() => View.syncOutputScroll());
+
 View.events.onIndentChange(() => {
     if (View.getOutput()) doFormat();
 });
+
 View.events.onFormat(doFormat);
 View.events.onMinify(doMinify);
 View.events.onCopy(doCopy);

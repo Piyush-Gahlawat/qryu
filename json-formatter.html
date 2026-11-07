@@ -63,6 +63,18 @@
             </div>
             <div class="panel">
                 <div class="panel-head">
+                    <span>Input</span>
+                    <span class="panel-meta" id="in-meta">0 B</span>
+                </div>
+                <div class="editor-wrap">
+                    <pre id="input-highlight" class="highlight" aria-hidden="true"></pre>
+                    <textarea id="input" spellcheck="false"
+                        placeholder='Paste JSON here, e.g. {"hello":"world"}'></textarea>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
                     <span>Output</span>
                     <div class="panel-actions">
                         <span class="panel-meta" id="out-meta">0 B</span>
@@ -70,8 +82,11 @@
                         <button id="btn-download" class="btn-mini" type="button">Download</button>
                     </div>
                 </div>
-                <textarea id="output" spellcheck="false" readonly
-                    placeholder="Formatted JSON will appear here"></textarea>
+                <div class="editor-wrap">
+                    <pre id="output-highlight" class="highlight" aria-hidden="true"></pre>
+                    <textarea id="output" spellcheck="false" readonly
+                        placeholder="Formatted JSON will appear here"></textarea>
+                </div>
             </div>
         </div>
 

@@ -110,25 +110,136 @@
     border-color: #a7f3d0;
 }
 
-/* Override shared textarea inside panels — monospace, no border, resizable */
-.panel textarea {
+/* Editor wrap — overlay technique for syntax highlighting */
+.editor-wrap {
+    position: relative;
+    background: #fafbfc;
+}
+
+.editor-wrap textarea,
+.editor-wrap pre.highlight {
+    /* identical box model so text lines up perfectly */
     width: 100%;
     min-height: 300px;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    color: var(--text);
     font-family: var(--mono);
     font-size: 0.85rem;
     line-height: 1.6;
     padding: 12px;
-    resize: vertical;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    letter-spacing: 0;
+    tab-size: 2;
+    box-sizing: border-box;
 }
 
-.panel textarea:focus {
+/* The transparent textarea on top */
+.editor-wrap textarea {
+    position: relative;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--text);
+    resize: vertical;
+    z-index: 1;
+}
+
+.editor-wrap textarea::placeholder {
+    color: #9ca3af;
+}
+
+.editor-wrap textarea:focus {
     outline: none;
-    background: #fff;
-    box-shadow: none;
+}
+
+.editor-wrap textarea::selection {
+    background: rgba(79, 70, 229, 0.25);
+    color: transparent;
+}
+
+/* The highlighted pre behind the textarea */
+.editor-wrap pre.highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    color: var(--text);
+    background: transparent;
+    overflow: scroll;
+    /* allows programmatic scrollTop */
+    scrollbar-width: none;
+    /* hide the pre's own scrollbar */
+    z-index: 0;
+}
+
+.editor-wrap pre.highlight::-webkit-scrollbar {
+    display: none;
+}
+
+/* JSON token colors — light mode */
+.json-key {
+    color: #2563eb;
+}
+
+/* blue   */
+.json-string {
+    color: #16a34a;
+}
+
+/* green  */
+.json-number {
+    color: #ea580c;
+}
+
+/* orange */
+.json-boolean {
+    color: #9333ea;
+}
+
+/* purple */
+.json-null {
+    color: #dc2626;
+}
+
+/* red    */
+.json-punctuation {
+    color: #6b7280;
+}
+
+/* grey   */
+
+@media (prefers-color-scheme: dark) {
+    .editor-wrap {
+        background: #0f1117;
+    }
+
+    .json-key {
+        color: #7dd3fc;
+    }
+
+    .json-string {
+        color: #86efac;
+    }
+
+    .json-number {
+        color: #fdba74;
+    }
+
+    .json-boolean {
+        color: #d8b4fe;
+    }
+
+    .json-null {
+        color: #fca5a5;
+    }
+
+    .json-punctuation {
+        color: #9ca3af;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -156,7 +267,7 @@
         background: #262b3c;
     }
 
-    .panel textarea:focus {
+    .editor-wrap {
         background: #0f1117;
     }
 }
