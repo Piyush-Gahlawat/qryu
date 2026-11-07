@@ -1,0 +1,18 @@
+# Cloudflare Workers .assetsignore — files here are NEVER uploaded
+.git/
+.gitignore
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+node_modules/
+wrangler.jsonc
+worker.js
+_headers
+.assetsignore
+*.md
+package.json
+package-lock.json
+npm-debug.log*
+.DS_Store
+Thumbs.db
