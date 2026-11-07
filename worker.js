@@ -6,16 +6,26 @@ export default {
         // 1. Block sensitive paths immediately
         const blocked = [
             '/.git',
+            '/.gitignore',
+            '/.gitattributes',
+            '/.env',
+            '/.env.local',
+            '/.dev.vars',
+            '/.assetsignore',
+            '/.wrangler',
+            '/.github',
+            '/.DS_Store',
             '/wrangler.jsonc',
             '/wrangler.toml',
             '/worker.js',
             '/package.json',
             '/package-lock.json',
-            '/.env',
-            '/.dev.vars',
-            '/.assetsignore',
-            '/_headers',
-            '/.gitignore'
+            '/yarn.lock',
+            '/pnpm-lock.yaml',
+            '/README.md',
+            '/LICENSE',
+            '/CHANGELOG.md',
+            '/Thumbs.db'
         ];
 
         if (blocked.some(p => path === p || path.startsWith(p + '/'))) {
