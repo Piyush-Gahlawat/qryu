@@ -1,4 +1,4 @@
-/* resume-templates.css */
+/* resume-templates.css — ATS-safe, print-ready resume templates */
 
 .template-picker {
     display: flex;
@@ -30,12 +30,13 @@
     background: #f3f4f6;
 }
 
+/* Preview wrapper — grey backdrop, like a PDF viewer */
 .preview-wrap {
     border: 1.5px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 16px;
-    background: #fafbfc;
+    background: #e5e7eb;
 }
 
 .preview-toolbar {
@@ -56,10 +57,19 @@
     margin-right: auto;
 }
 
+/* Resume page — mimics A4 paper (210 × 297 mm) */
 .resume-preview {
-    padding: 24px;
+    width: 100%;
+    max-width: 8.27in;
+    /* A4 width */
+    min-height: 11.69in;
+    /* A4 height */
+    margin: 20px auto;
+    padding: 0.75in;
+    /* 3/4-inch margins — professional standard */
+    box-sizing: border-box;
     background: #fff;
-    min-height: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
     font-size: 11pt;
     line-height: 1.5;
     color: #1a1d29;
@@ -69,7 +79,7 @@
     color: var(--muted);
     font-style: italic;
     text-align: center;
-    margin-top: 80px;
+    margin-top: 120px;
 }
 
 /* ---------- Template: Classic (serif, traditional) ---------- */
@@ -146,7 +156,7 @@
     white-space: pre-wrap;
 }
 
-/* ---------- Template: Compact (tight spacing) ---------- */
+/* ---------- Template: Compact (tight, fits more) ---------- */
 .resume-preview.template-compact {
     font-family: Calibri, Arial, sans-serif;
     font-size: 10.5pt;
@@ -185,8 +195,30 @@
     white-space: pre-wrap;
 }
 
-/* ---------- Print ---------- */
+/* ---------- Mobile: shrink margins, drop page height ---------- */
+@media screen and (max-width: 640px) {
+    .resume-preview {
+        padding: 24px 20px;
+        min-height: auto;
+        margin: 12px;
+    }
+}
+
+/* ---------- Print: 0.75in physical margins via @page ---------- */
+@page {
+    size: A4;
+    margin: 0.75in;
+}
+
 @media print {
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        background: #fff;
+    }
+
     body * {
         visibility: hidden;
     }
@@ -201,10 +233,12 @@
         left: 0;
         top: 0;
         width: 100%;
+        min-height: 0;
         padding: 0;
         margin: 0;
         box-shadow: none;
         border: none;
+        background: #fff;
     }
 
     .preview-toolbar,
