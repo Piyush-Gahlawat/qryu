@@ -5,7 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Resume Templates — Classic, Modern, Compact | Shiryu Kit</title>
-    <meta name="description" content="Build a clean print-ready resume in Classic, Modern, or Compact layouts. Download as PDF. For ATS, use our DOCX cleaner instead." />
+    <meta name="description"
+        content="Build a clean print-ready resume in Classic, Modern, or Compact layouts. Download as PDF. For ATS, use our DOCX cleaner instead." />
     <meta name="keywords"
         content="resume templates, print resume, pdf resume, classic resume, modern resume, compact resume" />
     <link rel="canonical" href="https://shiryu-kit.shiryu.workers.dev/resume-templates.html" />
@@ -46,6 +47,17 @@
         <!-- Input -->
         <div class="field">
             <label for="resume-input">Paste your resume text</label>
+
+            <div class="format-toolbar">
+                <span class="format-hint">Click a line (or select several), then:</span>
+                <button type="button" class="format-btn" id="btn-subheading" title="Toggle subheading (bold line)">
+                    <strong>B</strong> Subheading
+                </button>
+                <button type="button" class="format-btn" id="btn-bullet" title="Toggle bullet">
+                    • Bullet
+                </button>
+            </div>
+
             <textarea id="resume-input" rows="10"
                 placeholder="Paste your resume here. Use standard headings like SUMMARY, EXPERIENCE, EDUCATION, SKILLS..."></textarea>
         </div>

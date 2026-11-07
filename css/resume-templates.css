@@ -306,4 +306,68 @@
     .footer-note {
         display: none !important;
     }
+
+    /* ===== Format toolbar ===== */
+    .format-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+    }
+
+    .format-hint {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-right: auto;
+    }
+
+    .format-btn {
+        font-family: inherit;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 6px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--text);
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .format-btn:hover {
+        background: #f3f4f6;
+    }
+
+    .format-btn:active {
+        transform: scale(0.98);
+    }
+
+    .format-btn.active {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+    }
+
+    .format-btn strong {
+        font-weight: 800;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .format-btn {
+            background: #1e2230;
+            color: var(--text);
+            border-color: #2a2e3a;
+        }
+
+        .format-btn:hover {
+            background: #262b3c;
+        }
+
+        .format-btn.active {
+            background: var(--brand);
+            color: #fff;
+        }
+    }
 }
