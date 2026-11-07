@@ -10,6 +10,8 @@
 | **Classification** | Confidentiality exposure — no confirmed exploitation |
 | **Author** | Piyush Gahlawat |
 
+**📌 Portfolio note:** This post-incident review is published as a portfolio artifact. The full narrative — including the four failed remediation attempts — is preserved because the actual debugging process is more instructive than a sanitized success story. The author email in the git metadata has been redacted.
+
 ---
 
 ## 1. Summary
