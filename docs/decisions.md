@@ -4,6 +4,8 @@ Every significant architectural or operational decision, with the alternatives t
 
 **Why this exists:** So that future-me — or an interviewer, or a collaborator — can understand *why* the project is shaped the way it is, not just *what* it looks like. Where a decision's reasoning changed after an incident, that's recorded too.
 
+**📌 Portfolio note:** This decision log is published as a portfolio artifact. The entries document the actual reasoning behind each choice — including the failed attempts, not just the successes. Some operational specifics (commit SHAs, exact configuration values) are referenced by commit so they remain verifiable in the repository history, but are not duplicated here as copy-paste-able operational recipes.
+
 ---
 
 ## D001 — Hosting: Cloudflare Workers over Vercel, Netlify, or a VPS
@@ -25,7 +27,7 @@ Every significant architectural or operational decision, with the alternatives t
 
 **Initial decision (3 Nov 2026):** Cloudflare Workers, primarily on free-tier terms — unlimited static assets, no commercial-use restriction, and native Git integration.
 
-**Revised reasoning (7 Nov 2026):** After [INC-2026-001](./post-incident-review-git-exposure.md), the `run_worker_first` capability became the decisive factor. Cloudflare Pages — which was the simpler and equally free option — cannot intercept requests before asset serving. Without that capability, sensitive file blocking (`.git`, config files) is not achievable on the free tier. The initial choice turned out to be correct, but for a reason that was not appreciated at the time.
+**Revised reasoning (7 Nov 2026):** After [INC-2026-001](./post-incident-review-git-exposure.md), the `run_worker_first` capability became the decisive factor. Cloudflare Pages — which was the simpler and equally free option — cannot intercept requests before asset serving. Without that capability, sensitive file blocking is not achievable on the free tier. The initial choice turned out to be correct, but for a reason that was not appreciated at the time.
 
 **Reversibility:** High. Migration to another host is a `wrangler.jsonc` change and a DNS update.
 
@@ -115,7 +117,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Date:** 7 November 2026
 **Status:** Decided (in response to INC-2026-001)
 
-**Context:** A self-initiated pre-distribution security audit on 7 November found that `.git/config`, `wrangler.jsonc`, `worker.js`, and `package.json` were all publicly accessible on `shiryu-kit.shiryu.workers.dev`. See [INC-2026-001](./post-incident-review-git-exposure.md) for the full timeline.
+**Context:** A self-initiated pre-distribution security audit on 7 November found that repository metadata, configuration files, and dependency manifests were publicly accessible on `shiryu-kit.shiryu.workers.dev`. See [INC-2026-001](./post-incident-review-git-exposure.md) for the full inventory and timeline.
 
 **Alternatives considered for remediation** — and this is where the history matters. The fix required **four commits over nine minutes**. Each attempt was real, tested, and found insufficient:
 
@@ -187,7 +189,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Date:** 7 November 2026
 **Status:** Decided (commit `6f83e53`, prefix fix at `a73bd98`)
 
-**Context:** Two JavaScript libraries are loaded from public CDNs (jsDelivr for `qrcodejs`, jsDelivr for `jszip`). If a CDN is compromised, malicious code could be injected into every user session.
+**Context:** Two open-source JavaScript libraries are loaded from public CDNs. If a CDN is compromised, malicious code could be injected into every user session.
 
 **Alternatives considered:**
 
@@ -197,7 +199,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 | **Self-host the libraries** | No CDN dependency at all | Adds ~150KB to repo; loses CDN caching benefits | ⏳ Considered — viable alternative |
 | **SRI with SHA-384 hashes** | One attribute per script; browser rejects tampered files | Must be regenerated if library is updated | ✅ **Chosen** |
 
-**Decision:** SRI on every external script. Both `qrcodejs` and `jszip` are pinned to specific versions with SHA-384 hashes. If either CDN serves a modified file, the browser refuses to execute it and the tool fails loudly rather than silently running malicious code.
+**Decision:** SRI on every external script. Both libraries are pinned to specific versions with SHA-384 hashes. If either CDN serves a modified file, the browser refuses to execute it and the tool fails loudly rather than silently running malicious code.
 
 **Note on the prefix:** The first commit (`6f83e53`) included the hash but omitted the required `sha384-` prefix. The tools broke silently — the browser refused to execute the scripts. Fixed at `a73bd98`. The format is `<algorithm>-<base64-hash>`, not just the base64 hash.
 
@@ -218,7 +220,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 
 | Option | Pros | Cons | Decision |
 | :--- | :--- | :--- | :--- |
-| **DOCX only** | ATS-friendly | Requires `docx.js` library; styling limitations; users typically want a "finished" file | ❌ Rejected |
+| **DOCX only** | ATS-friendly | Requires a DOCX generation library; styling limitations; users typically want a "finished" file | ❌ Rejected |
 | **PDF only, no disclaimer** | Simple; browser print-to-PDF | Misleads users into submitting PDFs to ATS systems, which often parse PDF less reliably than DOCX | ❌ Rejected |
 | **PDF output, with clear ATS disclaimer** | Users get a clean print-ready PDF; disclaimed as non-ATS; linked to the DOCX cleaner for ATS submissions | Requires users to understand the distinction | ✅ **Chosen** |
 | **Both DOCX and PDF** | Maximum flexibility | Doubles the implementation work; user confusion about which to pick | ⏳ Deferred — could be added later |
@@ -244,10 +246,10 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 | :--- | :--- | :--- | :--- |
 | **Personal Gmail with `+privacy` suffix** | Free; no new account | **Exposes real email** — anyone can strip the `+privacy` and email directly; unsuitable for a public GDPR contact point | ❌ Rejected |
 | **Paid alias service** (AdGuard, SimpleLogin) | Hides personal email; professional | Adds a sub-processor (must disclose in privacy policy); requires account | ⏳ Viable but not chosen |
-| **Dedicated Gmail** (`shiryukit.privacy@gmail.com`) | Free; isolates privacy correspondence; no personal email exposure; professional reading | Still a `@gmail.com` address | ✅ **Chosen** |
+| **Dedicated Gmail** (documented in privacy policy) | Free; isolates privacy correspondence; no personal email exposure; professional reading | Still a `@gmail.com` address | ✅ **Chosen** |
 | **Cloudflare Email Routing** | Free; first-party; best deliverability | **Requires a custom domain** — not available on `workers.dev` subdomain | ⏳ Deferred until domain purchase |
 
-**Decision:** Dedicated Gmail (`shiryukit.privacy@gmail.com`). 2FA enabled with authenticator app. Recovery email set. Gmail filter configured to flag "Privacy" in subject line.
+**Decision:** Dedicated Gmail, address published in the privacy policy. 2FA enabled with authenticator app. Recovery email set. Gmail filter configured to flag "Privacy" in subject line.
 
 **Trigger for reconsideration:** When a custom domain is purchased (~₹1,000/yr), Cloudflare Email Routing becomes the better option for a `privacy@yourdomain.com` address.
 
@@ -261,5 +263,6 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 | :--- | :--- | :--- | :--- |
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial decision log — 10 decisions recorded |
 | 1.1 | 7 November 2026 | Piyush Gahlawat | D005 corrected to document the four-attempt remediation from actual git log; commit references added throughout |
+| 1.2 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exposed-path list in D005; removed specific library names and email address from D008 and D010 where they added no informational value beyond "open-source JavaScript libraries" and "dedicated Gmail" |
 
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Security Controls](./security-controls.md)
