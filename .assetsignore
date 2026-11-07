@@ -1,18 +1,48 @@
-# Cloudflare Workers .assetsignore — files here are NEVER uploaded
+# Cloudflare Workers .assetsignore
+# Files listed here are never uploaded as static assets.
+# Syntax: same as .gitignore. Negations (!) are NOT supported.
+
+# --- Version control (CRITICAL) ---
 .git/
 .gitignore
-.env
-.env.*
+.gitattributes
+
+# --- Worker configuration and server-side code ---
+# These are read by Wrangler at deploy time but must never be served.
+wrangler.jsonc
+wrangler.toml
+worker.js
 .dev.vars
 .dev.vars.*
+
+# --- Environment files ---
+.env
+.env.*
+.env.local
+
+# --- Node tooling (not needed at runtime) ---
 node_modules/
-wrangler.jsonc
-worker.js
-_headers
-.assetsignore
-*.md
 package.json
 package-lock.json
 npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# --- Local Wrangler cache and build artifacts ---
+.wrangler/
+dist/
+
+# --- Repo metadata (not user-facing) ---
+README.md
+LICENSE
+CHANGELOG.md
+.github/
+
+# --- Self-reference (don't serve the ignore file itself) ---
+.assetsignore
+
+# --- OS junk ---
 .DS_Store
 Thumbs.db
+*.log
+*.swp
