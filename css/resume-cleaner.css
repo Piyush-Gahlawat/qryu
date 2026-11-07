@@ -1,5 +1,27 @@
 /* resume-cleaner.css — only what shared.css doesn't already cover */
 
+/* Callout link to templates page */
+.callout {
+    font-size: 0.88rem;
+    text-align: center;
+    padding: 10px 14px;
+    background: #eef2ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    color: var(--brand-dark);
+}
+
+.callout a {
+    color: var(--brand);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.callout a:hover {
+    text-decoration: underline;
+}
+
 /* Drop zone */
 #drop {
     border: 2px dashed var(--border);
@@ -284,6 +306,11 @@
 }
 
 @media (prefers-color-scheme: dark) {
+    .callout {
+        background: #1e1b3a;
+        border-color: #312e81;
+        color: #c7cdff;
+    }
 
     #drop:hover,
     #drop.dragover {

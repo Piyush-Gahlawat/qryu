@@ -19,6 +19,10 @@
     <meta property="og:url" content="https://shiryu-kit.shiryu.workers.dev/resume-cleaner.html" />
     <meta property="og:site_name" content="Shiryu Kit" />
 
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="ATS Resume Cleaner" />
+    <meta name="twitter:description" content="Make your DOCX resume ATS-friendly — clean it locally in your browser." />
+
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>S</text></svg>" />
 
@@ -33,6 +37,10 @@
         <h1>ATS Resume Cleaner</h1>
         <p class="subtitle">Analyze your DOCX resume, see exactly what ATS reads, and clean it before submitting. Runs
             entirely in your browser.</p>
+
+        <p class="callout">
+            Resume too messy to fix? <a href="/resume-templates.html">Build a clean one from scratch →</a>
+        </p>
 
         <div id="drop">
             <span class="icon">📄</span>
@@ -74,16 +82,13 @@
             </label>
         </div>
 
-        <!-- ATS Score -->
         <div id="score-card" class="score-card">
             <div class="score-value" id="score-value">—</div>
             <div class="score-label" id="score-label">Analyzing…</div>
         </div>
 
-        <!-- Issues list -->
         <div id="issues-list" class="issues-list"></div>
 
-        <!-- Preview panel -->
         <div id="preview-panel" class="preview-panel">
             <div class="preview-header">
                 <span class="preview-title">What ATS will read</span>
@@ -119,9 +124,10 @@
         </div>
 
         <p class="footer-note" style="margin-bottom: 10px;">
-            Also try: <a href="/qr-generator.html">QR Code Generator</a> · <a href="/password-generator.html">Password
+            Also try: <a href="/resume-templates.html">Resume Templates</a> · <a href="/qr-generator.html">QR Code
                 Generator</a> ·
-            <a href="/word-counter.html">Word Counter</a> · <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a> · <a href="/word-counter.html">Word Counter</a> ·
+            <a href="/json-formatter.html">JSON Formatter</a>
         </p>
         <p class="footer-note">
             Built by <strong>Shiryu</strong> · Free forever ·

@@ -5,184 +5,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Shiryu Kit — 5 Free Online Tools (No Signup)</title>
+    <title>Shiryu Kit — 6 Free Online Tools (No Signup)</title>
     <meta name="description"
-        content="Five free browser-based tools: QR code generator, password generator, word counter, JSON formatter, and ATS resume cleaner. No signup, no uploads, works on mobile." />
-    <meta name="keywords" content="free online tools, qr code generator, password generator, word counter, json formatter, ats resume cleaner" />
+        content="Six free browser-based tools: QR code generator, password generator, word counter, JSON formatter, ATS resume cleaner, and resume templates. No signup, no uploads, works on mobile." />
+    <meta name="keywords"
+        content="free online tools, qr code generator, password generator, word counter, json formatter, ats resume cleaner, resume templates" />
     <link rel="canonical" href="https://shiryu-kit.shiryu.workers.dev/" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Shiryu Kit — 5 Free Online Tools" />
-    <meta property="og:description" content="QR codes, passwords, word count, JSON, and ATS-friendly resumes. Free, no signup, runs in your browser." />
+    <meta property="og:title" content="Shiryu Kit — 6 Free Online Tools" />
+    <meta property="og:description"
+        content="QR codes, passwords, word count, JSON, and ATS-friendly resumes. Free, no signup, runs in your browser." />
     <meta property="og:url" content="https://shiryu-kit.shiryu.workers.dev/" />
     <meta property="og:site_name" content="Shiryu Kit" />
 
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Shiryu Kit — 5 Free Online Tools" />
-    <meta name="twitter:description" content="Five free browser tools. No signup, no uploads." />
-
+    <meta name="twitter:title" content="Shiryu Kit — 6 Free Online Tools" />
+    <meta name="twitter:description" content="Six free browser tools. No signup, no uploads." />
 
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>S</text></svg>" />
 
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg: #f5f7fb;
-            --card: #ffffff;
-            --text: #1a1d29;
-            --muted: #6b7280;
-            --brand: #4f46e5;
-            --brand-dark: #4338ca;
-            --border: #e5e7eb;
-            --radius: 14px;
-            --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-        }
-
-        body {
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.55;
-            min-height: 100vh;
-            padding: 32px 16px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 820px;
-            margin: 0 auto;
-        }
-
-        /* Hero */
-        .hero {
-            text-align: center;
-            margin-bottom: 36px;
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            margin-bottom: 8px;
-        }
-
-        .hero .subtitle {
-            font-size: 1rem;
-            color: var(--muted);
-            max-width: 520px;
-            margin: 0 auto;
-        }
-
-        .hero .badges {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .badge {
-            font-size: 0.76rem;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 99px;
-            background: #eef2ff;
-            color: var(--brand-dark);
-        }
-
-        /* Tools grid */
-        .tools {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 14px;
-        }
-
-        .tool {
-            display: block;
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 20px 20px 22px;
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.12s, box-shadow 0.12s;
-            border: 1px solid transparent;
-        }
-
-        .tool:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
-            border-color: #e0e7ff;
-        }
-
-        .tool:active { transform: translateY(0); }
-
-        .tool-icon {
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-            display: block;
-            line-height: 1;
-        }
-
-        .tool h2 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: var(--text);
-        }
-
-        .tool p {
-            font-size: 0.86rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .tool .arrow {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--brand);
-        }
-
-        /* Footer */
-        .footer-note {
-            margin-top: 32px;
-            font-size: 0.8rem;
-            color: var(--muted);
-            text-align: center;
-        }
-        .footer-note a { color: var(--brand); text-decoration: none; }
-        .footer-note a:hover { text-decoration: underline; }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117;
-                --card: #171a23;
-                --text: #e8eaf0;
-                --muted: #9096a3;
-                --border: #2a2e3a;
-                --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-            }
-            .badge { background: #1e1b3a; color: #c7cdff; }
-            .tool:hover { border-color: #2a2e3a; }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.6rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/shared.css" />
+    <link rel="stylesheet" href="/css/index.css" />
 </head>
 
 <body>
 
-    <main class="container">
+    <main class="container container-wide">
 
         <header class="hero">
             <h1>Shiryu Kit</h1>
-            <p class="subtitle">Five free browser-based tools. No signup, no uploads, nothing leaves your device.</p>
+            <p class="subtitle">Six free browser-based tools. No signup, no uploads, nothing leaves your device.</p>
             <div class="badges">
                 <span class="badge">100% free</span>
                 <span class="badge">No signup</span>
@@ -224,7 +78,15 @@
             <a class="tool" href="/resume-cleaner.html">
                 <span class="tool-icon">📄</span>
                 <h2>ATS Resume Cleaner</h2>
-                <p>Remove LaTeX, equations, hidden text, and text boxes from your DOCX resume.</p>
+                <p>Remove LaTeX, tables, hidden text, and text boxes from your DOCX resume. See exactly what ATS reads.
+                </p>
+                <span class="arrow">Open tool →</span>
+            </a>
+
+            <a class="tool" href="/resume-templates.html">
+                <span class="tool-icon">📋</span>
+                <h2>ATS Resume Templates</h2>
+                <p>Build a clean resume from your text. Classic, Modern, or Compact layouts — download as PDF.</p>
                 <span class="arrow">Open tool →</span>
             </a>
 
@@ -232,7 +94,8 @@
 
         <p class="footer-note">
             Built by <strong>Shiryu</strong> · Free forever ·
-            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on GitHub</a>
+            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on
+                GitHub</a>
         </p>
 
     </main>
