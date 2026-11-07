@@ -7,11 +7,15 @@ export default {
         const blocked = [
             '/.git',
             '/wrangler.jsonc',
+            '/wrangler.toml',
             '/worker.js',
             '/package.json',
             '/package-lock.json',
             '/.env',
-            '/.dev.vars'
+            '/.dev.vars',
+            '/.assetsignore',
+            '/_headers',
+            '/.gitignore'
         ];
 
         if (blocked.some(p => path === p || path.startsWith(p + '/'))) {

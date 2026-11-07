@@ -4,12 +4,26 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ATS Resume Templates — Classic, Modern, Compact | Shiryu Kit</title>
-    <meta name="description"
-        content="Build an ATS-friendly resume from your text. Choose Classic, Modern, or Compact templates. Single-column, standard headings, print to PDF." />
+    <title>Resume Templates — Classic, Modern, Compact | Shiryu Kit</title>
+    <meta name="description" content="Build a clean print-ready resume in Classic, Modern, or Compact layouts. Download as PDF. For ATS, use our DOCX cleaner instead." />
+    <meta name="keywords"
+        content="resume templates, print resume, pdf resume, classic resume, modern resume, compact resume" />
     <link rel="canonical" href="https://shiryu-kit.shiryu.workers.dev/resume-templates.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Resume Templates — Classic, Modern, Compact" />
+    <meta property="og:description"
+        content="Build a clean PDF resume for printing or sharing. Classic, Modern, or Compact layouts. For ATS submissions, use DOCX." />
+    <meta property="og:url" content="https://shiryu-kit.shiryu.workers.dev/resume-templates.html" />
+    <meta property="og:site_name" content="Shiryu Kit" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Resume Templates — Classic, Modern, Compact" />
+    <meta name="twitter:description" content="Build a clean PDF resume for printing or sharing. For ATS, use DOCX." />
+
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>S</text></svg>" />
+
     <link rel="stylesheet" href="/css/shared.css" />
     <link rel="stylesheet" href="/css/resume-templates.css" />
 </head>
@@ -17,9 +31,17 @@
 <body>
     <main class="container container-wide">
         <nav class="nav"><a href="/">← Shiryu Kit home</a></nav>
-        <h1>ATS Resume Templates</h1>
-        <p class="subtitle">Paste your resume text, pick a template, and download a clean PDF that parses correctly in
-            applicant tracking systems.</p>
+        <h1>Resume Templates</h1>
+        <p class="subtitle">Paste your resume text, choose a template, and download a clean PDF for printing or sharing
+            directly with recruiters.</p>
+
+        <div class="note-box">
+            <strong>📄 PDF is for humans, not ATS.</strong>
+            Most applicant tracking systems parse DOCX more reliably than PDF. Use this tool to produce a clean PDF for
+            printing, emailing a recruiter directly, or sharing on LinkedIn. <strong>For ATS submissions</strong>, clean
+            your DOCX with the
+            <a href="/resume-cleaner.html">ATS Resume Cleaner</a> instead.
+        </div>
 
         <!-- Input -->
         <div class="field">
@@ -43,7 +65,6 @@
                 <button id="copy-text-btn" class="btn-sm" type="button">Copy text</button>
             </div>
             <div id="resume-preview" class="resume-preview template-classic">
-                <!-- Rendered resume goes here -->
                 <p class="placeholder-text">Paste resume text above to see the preview.</p>
             </div>
         </div>
@@ -55,8 +76,8 @@
             <a href="/json-formatter.html">JSON Formatter</a>
         </p>
         <p class="footer-note">
-            Built by <strong>Shiryu</strong> · Free forever ·
-            <a href="/privacy.html">Privacy</a> · <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on
+            Built by <strong>Shiryu</strong> · Free forever · <a href="/privacy.html">Privacy</a> ·
+            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on
                 GitHub</a>
         </p>
     </main>
