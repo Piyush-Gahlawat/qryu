@@ -97,7 +97,7 @@ The lesson: `.assetsignore` and `run_worker_first` are **separate controls** doc
 | :--- | :--- | :--- |
 | `.git/config` | Remote repository URL | Low — repository already public on GitHub |
 | `.git/HEAD` | Current branch reference | Low |
-| `.git/logs/HEAD` | Commit history with author email (`piyush.gahlawat.blazing@gmail.com`) | **Medium** — author email is personal data |
+| `.git/logs/HEAD` | Commit history with author email | **Medium** — author email is personal data (redacted from this document) |
 | `.git/objects/*` | Full repository history (recoverable with `git-dumper`) | **Medium** — historical commits could contain secrets |
 | `wrangler.jsonc` | Worker configuration and routing rules | Low — no credentials |
 | `worker.js` | Routing logic and blocklist | Low — blocklist added *after* the exposure |
