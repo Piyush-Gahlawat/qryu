@@ -49,6 +49,10 @@ const HEADINGS = {
         'areas of expertise', 'knowledge', 'areas of knowledge',
         'proficiencies', 'proficiency', 'capabilities', 'skill set',
         'skill summary', 'skills summary', 'technical proficiencies',
+        'technical proficiency',          // ← ADD
+        'technical competency',           // ← ADD (singular)
+        'core competency',                // ← ADD (singular)
+        'key competency',                 // ← ADD (singular)
         'technical expertise', 'technical abilities', 'technology stack',
         'tech stack', 'stack', 'tools', 'tools and technologies',
         'technologies', 'programming languages', 'programming',
