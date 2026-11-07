@@ -1,0 +1,217 @@
+/* resume-templates.css */
+
+.template-picker {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.template-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.template-btn.active {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+}
+
+.template-btn:hover:not(.active) {
+    background: #f3f4f6;
+}
+
+.preview-wrap {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #fafbfc;
+}
+
+.preview-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border-bottom: 1px solid var(--border);
+}
+
+.preview-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-right: auto;
+}
+
+.resume-preview {
+    padding: 24px;
+    background: #fff;
+    min-height: 400px;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #1a1d29;
+}
+
+.placeholder-text {
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-top: 80px;
+}
+
+/* ---------- Template: Classic (serif, traditional) ---------- */
+.resume-preview.template-classic {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.template-classic .resume-name {
+    font-size: 20pt;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.template-classic .resume-contact {
+    text-align: center;
+    font-size: 10pt;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.template-classic .resume-section {
+    margin-bottom: 14px;
+}
+
+.template-classic .resume-section-heading {
+    font-size: 12pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 6px;
+    padding-bottom: 2px;
+}
+
+.template-classic .resume-section-content {
+    font-size: 10.5pt;
+    white-space: pre-wrap;
+}
+
+/* ---------- Template: Modern (sans-serif, clean) ---------- */
+.resume-preview.template-modern {
+    font-family: Arial, Calibri, Helvetica, sans-serif;
+}
+
+.template-modern .resume-name {
+    font-size: 22pt;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #1a1d29;
+}
+
+.template-modern .resume-contact {
+    font-size: 10pt;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.template-modern .resume-section {
+    margin-bottom: 12px;
+}
+
+.template-modern .resume-section-heading {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--brand);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+
+.template-modern .resume-section-content {
+    font-size: 10.5pt;
+    white-space: pre-wrap;
+}
+
+/* ---------- Template: Compact (tight spacing) ---------- */
+.resume-preview.template-compact {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.35;
+}
+
+.template-compact .resume-name {
+    font-size: 18pt;
+    font-weight: 700;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.template-compact .resume-contact {
+    text-align: center;
+    font-size: 9.5pt;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.template-compact .resume-section {
+    margin-bottom: 8px;
+}
+
+.template-compact .resume-section-heading {
+    font-size: 10.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid #bbb;
+    margin-bottom: 3px;
+    padding-bottom: 1px;
+}
+
+.template-compact .resume-section-content {
+    font-size: 10pt;
+    white-space: pre-wrap;
+}
+
+/* ---------- Print ---------- */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .resume-preview,
+    .resume-preview * {
+        visibility: visible;
+    }
+
+    .resume-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        border: none;
+    }
+
+    .preview-toolbar,
+    .nav,
+    .template-picker,
+    .field,
+    .footer-note {
+        display: none !important;
+    }
+}

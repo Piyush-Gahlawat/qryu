@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATS Resume Templates — Classic, Modern, Compact | Shiryu Kit</title>
+    <meta name="description"
+        content="Build an ATS-friendly resume from your text. Choose Classic, Modern, or Compact templates. Single-column, standard headings, print to PDF." />
+    <link rel="canonical" href="https://shiryu-kit.shiryu.workers.dev/resume-templates.html" />
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%234f46e5'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' text-anchor='middle' fill='white'>S</text></svg>" />
+    <link rel="stylesheet" href="/css/shared.css" />
+    <link rel="stylesheet" href="/css/resume-templates.css" />
+</head>
+
+<body>
+    <main class="container container-wide">
+        <nav class="nav"><a href="/">← Shiryu Kit home</a></nav>
+        <h1>ATS Resume Templates</h1>
+        <p class="subtitle">Paste your resume text, pick a template, and download a clean PDF that parses correctly in
+            applicant tracking systems.</p>
+
+        <!-- Input -->
+        <div class="field">
+            <label for="resume-input">Paste your resume text</label>
+            <textarea id="resume-input" rows="10"
+                placeholder="Paste your resume here. Use standard headings like SUMMARY, EXPERIENCE, EDUCATION, SKILLS..."></textarea>
+        </div>
+
+        <!-- Template picker -->
+        <div class="template-picker" id="template-picker">
+            <button class="template-btn active" data-template="classic">Classic</button>
+            <button class="template-btn" data-template="modern">Modern</button>
+            <button class="template-btn" data-template="compact">Compact</button>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-wrap">
+            <div class="preview-toolbar">
+                <span class="preview-label">Preview</span>
+                <button id="download-pdf-btn" class="btn-sm primary" type="button">Download PDF</button>
+                <button id="copy-text-btn" class="btn-sm" type="button">Copy text</button>
+            </div>
+            <div id="resume-preview" class="resume-preview template-classic">
+                <!-- Rendered resume goes here -->
+                <p class="placeholder-text">Paste resume text above to see the preview.</p>
+            </div>
+        </div>
+
+        <p class="footer-note" style="margin-bottom: 10px;">
+            Also try: <a href="/resume-cleaner.html">ATS Resume Cleaner</a> · <a href="/qr-generator.html">QR Code
+                Generator</a> ·
+            <a href="/password-generator.html">Password Generator</a> · <a href="/word-counter.html">Word Counter</a> ·
+            <a href="/json-formatter.html">JSON Formatter</a>
+        </p>
+        <p class="footer-note">
+            Built by <strong>Shiryu</strong> · Free forever ·
+            <a href="https://github.com/Piyush-Gahlawat/qr-generator" target="_blank" rel="noopener">Source on
+                GitHub</a>
+        </p>
+    </main>
+
+    <script type="module" src="/js/tools/resume-templates/controller.js"></script>
+</body>
+
+</html>
