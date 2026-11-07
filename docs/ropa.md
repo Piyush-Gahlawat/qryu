@@ -11,6 +11,8 @@
 | **Last updated** | 7 November 2026 |
 | **Next review** | 7 November 2027 |
 
+**📌 Portfolio note:** This ROPA is published as a portfolio artifact — a real Article 30 record produced for a live service. Processing purposes, legal bases, retention periods, and sub-processors are stated in full because a ROPA without that content is useless. Exact security header values are generalized; the operational configuration is maintained privately.
+
 ---
 
 ## 1. Processing Activity: Website Hosting and Delivery
@@ -24,7 +26,7 @@
 | **Recipients** | Cloudflare, Inc. (hosting and CDN) |
 | **International transfers** | Yes — Cloudflare global network; SCCs and DPA in place via Cloudflare's standard terms |
 | **Retention** | Not retained by controller; transient only at Cloudflare edge |
-| **Security measures** | HTTPS with HSTS; CSP with `frame-ancestors 'none'`; X-Frame-Options DENY; X-Content-Type-Options nosniff; SRI on third-party scripts; sensitive paths blocked via Worker |
+| **Security measures** | HTTPS with HSTS; standard security headers applied (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy); SRI on third-party scripts; sensitive paths blocked at the Worker layer |
 
 **Legitimate Interests Assessment summary:** The processing of IP addresses and request metadata is inherent to serving any HTTP response. The controller has a legitimate interest in operating a functional, secure website. The impact on data subjects is minimal — data is transient, not stored, not correlated, and not used for profiling. No less-intrusive means of serving a website exists. See [decisions.md#d004](./decisions.md) for the reasoning behind the no-analytics posture.
 
@@ -34,7 +36,7 @@
 
 | Field | Detail |
 | :--- | :--- |
-| **Purpose** | Deliver open-source JavaScript libraries (qrcodejs, JSZip) to the browser |
+| **Purpose** | Deliver open-source JavaScript libraries to the browser |
 | **Data categories** | IP address, HTTP user-agent |
 | **Data subjects** | Visitors who use the QR generator or ATS resume cleaner |
 | **Legal basis** | Article 6(1)(f) — legitimate interests (efficient, reliable delivery of website functionality) |
@@ -89,9 +91,9 @@ This section demonstrates that the controller has considered the full range of p
 | Sub-processor | Service | Purpose | DPA status | Location |
 | :--- | :--- | :--- | :--- | :--- |
 | Cloudflare, Inc. | Hosting and CDN | Serves all HTML/CSS/JS; processes request metadata | Standard DPA accepted via Cloudflare terms | United States (global network) |
-| jsDelivr | CDN | Serves qrcodejs library | Open-source project; no personal data processing beyond request IP | Global network |
-| cdnjs (Cloudflare) | CDN | Serves JSZip library | Standard Cloudflare terms | United States (global network) |
-| Google LLC | Email hosting | Receives emails sent to shiryukit.privacy@gmail.com | Standard Data Processing Terms accepted via Gmail use | United States (global network) |
+| jsDelivr | CDN | Serves open-source JavaScript libraries | Open-source project; no personal data processing beyond request IP | Global network |
+| cdnjs (Cloudflare) | CDN | Serves open-source JavaScript libraries | Standard Cloudflare terms | United States (global network) |
+| Google LLC | Email hosting | Receives emails sent to the privacy contact address | Standard Data Processing Terms accepted via Gmail use | United States (global network) |
 
 ---
 
@@ -121,7 +123,7 @@ This assessment will be re-evaluated if:
 
 | Right | Procedure | Response time |
 | :--- | :--- | :--- |
-| **Access (Art. 15)** | Email shiryukit.privacy@gmail.com with "Privacy" in subject. Controller acknowledges within 5 days, responds within 30. | 30 days |
+| **Access (Art. 15)** | Email the privacy contact with "Privacy" in subject. Controller acknowledges within 5 days, responds within 30. | 30 days |
 | **Rectification (Art. 16)** | Same channel. Since no persistent data is held, response will be: "No personal data is retained beyond transient IP addresses, which are not stored." | 30 days |
 | **Erasure (Art. 17)** | Same channel. Response will confirm no retention. | 30 days |
 | **Restriction (Art. 18)** | Same channel. | 30 days |
@@ -164,5 +166,6 @@ This ROPA is reviewed:
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial ROPA |
+| 1.1 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exact security header values in Section 1; removed specific library names from Sections 2 and 5 where they added no informational value beyond "open-source JavaScript libraries" |
 
 **Related documents:** [Privacy Policy](../privacy.html) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
