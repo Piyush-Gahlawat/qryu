@@ -2,70 +2,96 @@
 
 import * as Model from './model.js';
 import * as View from './view.js';
-import { formatBytes, downloadBlob } from '../../shared/helpers.js';
+import { formatBytes, downloadBlob, copyText } from '../../shared/helpers.js';
 
 let selectedFile = null;
+let lastBlob = null;
 
 /* ---------- File selection ---------- */
 
-View.events.onFile((file) => {
+View.events.onFile(async (file) => {
     const validation = Model.validateFile(file);
 
     if (!validation.ok) {
         selectedFile = null;
+        lastBlob = null;
         View.clearFileInfo();
         View.setReady(false);
         View.hideStats();
+        View.hideAnalysis();
         View.setStatus('err', '✗ ' + validation.error);
         return;
     }
 
     selectedFile = file;
+    lastBlob = null;
     View.setFileInfo(file.name);
-    View.setReady(true);
-    View.hideStats();
-    View.setStatus('info', 'Ready — click "Clean & Download DOCX"');
-});
-
-/* ---------- Process ---------- */
-
-View.events.onProcess(async () => {
-    if (!selectedFile) return;
-
     View.setReady(false);
     View.hideStats();
-    View.setStatus('info', 'Processing…');
+    View.setStatus('info', 'Analyzing…');
+
+    await analyze();
+});
+
+/* ---------- Analysis + clean ---------- */
+
+async function analyze() {
+    if (!selectedFile) return;
 
     try {
         const options = View.getOptions();
         const buffer = await selectedFile.arrayBuffer();
-        const result = await Model.processDocx(buffer, options);
+        const result = await Model.processDocx(buffer, options, true);
 
         if (!result.ok) {
             View.setStatus('err', '✗ ' + result.error);
-            View.setReady(true);
+            View.setReady(false);
             return;
         }
 
-        const before = selectedFile.size;
-        const after = result.blob.size;
-        const savingPct = before > 0
-            ? Math.round((Math.max(0, before - after) / before) * 100)
-            : 0;
+        const label = Model.scoreLabel(result.score);
+        View.renderAnalysis(result.issues, result.score, label, result.headers, result.footers);
+        View.renderPreview(result.preview);
+
+        lastBlob = result.blob;
 
         View.showStats({
-            before: formatBytes(before),
-            after: formatBytes(after),
+            before: formatBytes(selectedFile.size),
+            after: formatBytes(result.blob.size),
             removed: result.removedCount,
-            savingPct
+            savingPct: selectedFile.size > 0
+                ? Math.round((Math.max(0, selectedFile.size - result.blob.size) / selectedFile.size) * 100)
+                : 0
         });
 
-        downloadBlob(result.blob, Model.outputFilename(selectedFile.name));
-        View.setStatus('ok', '✓ Done — cleaned file downloaded');
+        View.setStatus('ok', '✓ Ready — adjust options or click Clean & Download');
         View.setReady(true);
     } catch (err) {
         console.error(err);
         View.setStatus('err', '✗ ' + ((err && err.message) ? err.message : 'Something went wrong.'));
-        View.setReady(true);
+        View.setReady(false);
     }
+}
+
+/* ---------- Download ---------- */
+
+View.events.onProcess(async () => {
+    if (!selectedFile || !lastBlob) return;
+
+    downloadBlob(lastBlob, Model.outputFilename(selectedFile.name));
+    View.setStatus('ok', '✓ Downloaded — ' + Model.outputFilename(selectedFile.name));
+});
+
+/* ---------- Option changes trigger re-analysis ---------- */
+
+View.events.onOptionChange(analyze);
+
+/* ---------- Copy plain text ---------- */
+
+View.events.onCopyPreview(async () => {
+    const text = View.getPreviewText();
+    if (!text || text === '(empty — nothing would be extracted)') return;
+
+    const ok = await copyText(text);
+    if (ok) View.flashCopyPreview();
 });

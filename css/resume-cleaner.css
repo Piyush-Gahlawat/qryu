@@ -43,7 +43,7 @@
     word-break: break-all;
 }
 
-/* Options use .checks/.check from shared.css — only tweak spacing here */
+/* Options */
 .options {
     display: flex;
     flex-direction: column;
@@ -59,6 +59,230 @@
     border-radius: 4px;
 }
 
+/* Score card */
+.score-card {
+    display: none;
+    text-align: center;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    border: 2px solid var(--border);
+    background: #fafbfc;
+}
+
+.score-card.show {
+    display: block;
+}
+
+.score-value {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.score-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.score-card.excellent {
+    border-color: #a7f3d0;
+    background: #f0fdf4;
+}
+
+.score-card.excellent .score-value,
+.score-card.excellent .score-label {
+    color: var(--ok);
+}
+
+.score-card.good {
+    border-color: #fde68a;
+    background: #fffbeb;
+}
+
+.score-card.good .score-value,
+.score-card.good .score-label {
+    color: var(--warn);
+}
+
+.score-card.fair {
+    border-color: #fcd34d;
+    background: #fffbeb;
+}
+
+.score-card.fair .score-value,
+.score-card.fair .score-label {
+    color: #d97706;
+}
+
+.score-card.poor {
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+.score-card.poor .score-value,
+.score-card.poor .score-label {
+    color: var(--error);
+}
+
+/* Issues */
+.issues-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.issue {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fafbfc;
+    align-items: flex-start;
+}
+
+.issue-badge {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: var(--muted);
+    margin-top: 1px;
+}
+
+.issue.severity-high .issue-badge {
+    background: var(--error);
+}
+
+.issue.severity-medium .issue-badge {
+    background: var(--warn);
+}
+
+.issue.severity-low .issue-badge {
+    background: var(--muted);
+}
+
+.issue-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.issue-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.issue-message {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.45;
+}
+
+.issue-none {
+    padding: 12px;
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--ok);
+    font-weight: 600;
+    background: #f0fdf4;
+    border: 1px solid #a7f3d0;
+    border-radius: 10px;
+}
+
+/* Preview */
+.preview-panel {
+    display: none;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    background: #fafbfc;
+}
+
+.preview-panel.show {
+    display: block;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+}
+
+.preview-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}
+
+.preview-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview-count {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.btn-mini {
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn-mini:hover {
+    background: #e5e7eb;
+}
+
+.btn-mini.copied {
+    background: #d1fae5;
+    color: var(--ok);
+    border-color: #a7f3d0;
+}
+
+.preview-text {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    padding: 12px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 300px;
+    overflow-y: auto;
+    color: var(--text);
+}
+
 @media (prefers-color-scheme: dark) {
 
     #drop:hover,
@@ -68,5 +292,28 @@
 
     .options .check code {
         background: #2a2e3a;
+    }
+
+    .issue,
+    .preview-panel {
+        background: #0f1117;
+    }
+
+    .preview-header {
+        background: #1e2230;
+    }
+
+    .btn-mini {
+        background: #1e2230;
+        color: var(--text);
+        border-color: #2a2e3a;
+    }
+
+    .btn-mini:hover {
+        background: #262b3c;
+    }
+
+    .score-card {
+        background: #0f1117;
     }
 }
