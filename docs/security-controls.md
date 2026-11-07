@@ -6,6 +6,8 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 **Post-incident note:** This inventory was substantially expanded after [INC-2026-001](./post-incident-review-git-exposure.md), which found that several controls assumed to be effective were not. Sections 5 and 6 reflect the corrected, verified state.
 
+**📌 Portfolio note:** This inventory is published as a portfolio artifact. The exact list of paths in the blocklist and the precise header values are generalized here. The full operational version is maintained privately. Control categories, reasoning, and verification approaches below are accurate and complete.
+
 ---
 
 ## 1. Transport Security
@@ -22,7 +24,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
-| Content Security Policy | `default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'` | XSS, injection, unauthorised resource loading | `curl -I` header check; DevTools console |
+| Content Security Policy | Restricts script sources to self and one trusted CDN; disallows inline scripts; `frame-ancestors 'none'` | XSS, injection, unauthorised resource loading | `curl -I` header check; DevTools console |
 | X-Frame-Options | `DENY` | Clickjacking | `curl -I` header check |
 | Frame-ancestors (CSP) | `'none'` | Clickjacking (CSP-level, complements X-Frame-Options) | `curl -I` header check |
 
@@ -45,7 +47,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
 | Referrer-Policy | `strict-origin-when-cross-origin` | Referrer leakage to third parties | `curl -I` header check |
-| Permissions-Policy | `camera=(), microphone=(), geolocation=(), payment=()` | Unauthorised access to browser features | `curl -I` header check |
+| Permissions-Policy | Browser features (camera, microphone, geolocation, payment) explicitly disabled | Unauthorised access to browser features | `curl -I` header check |
 
 **Implemented in commit `7c06235`.**
 
@@ -55,12 +57,14 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
-| `.git` directory blocking | `worker.js` blocklist + `run_worker_first: true` | Source code and commit history disclosure | `curl /.git/config` returns 404 |
-| Configuration file blocking | Blocklist covers `wrangler.jsonc`, `worker.js`, `package.json`, `package-lock.json`, `.env`, `.dev.vars`, `.assetsignore`, `_headers`, `.gitignore` | Configuration and credential disclosure | `curl` on each path returns 404 |
+| `.git` directory blocking | Worker script blocklist + worker-first execution | Source code and commit history disclosure | Probing the path returns 404 |
+| Configuration file blocking | Blocklist covers repository metadata, configuration files, dependency manifests, and environment variable files | Configuration and credential disclosure | Probing each path returns 404 |
 | Build-time exclusion | `.assetsignore` prevents future uploads of sensitive files | Defence in depth against blocklist gaps | `.assetsignore` exists at repo root |
 | Worker-first execution | `"run_worker_first": true` in `wrangler.jsonc` | Ensures blocklist executes before asset serving | Sensitive paths return 404 (verified) |
 
 **Implemented across commits `70b82be`, `7c06235`, `4fd897c`, and `519ae3d`.** The four-commit sequence is documented in [D005](./decisions.md) — each attempt addressed part of the problem, and only the final combination (build-time exclusion + runtime blocklist + worker-first execution) was effective.
+
+**The complete list of protected paths lives in `.assetsignore` in the repository** — that file is the source of truth. It is not duplicated here because publishing the exact list tells an attacker precisely which paths are guarded, allowing them to probe for gaps.
 
 **This is the control most likely to silently regress.** Post-deploy verification Section 4b in the [runbook](./runbook.md) exists specifically to catch this.
 
@@ -72,7 +76,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | :--- | :--- | :--- | :--- |
 | SRI on qrcodejs | `integrity="sha384-..."` on `<script>` tag | CDN compromise / tampered library | Browser console (no errors) + tool works |
 | SRI on JSZip | `integrity="sha384-..."` on `<script>` tag | CDN compromise / tampered library | Browser console (no errors) + tool works |
-| Version pinning | Both libraries loaded from specific versioned URLs (`@1.0.0`, `@3.10.1`) | Silent version bumps | HTML source review |
+| Version pinning | Both libraries loaded from specific versioned URLs | Silent version bumps | HTML source review |
 
 **Implemented in commits `6f83e53` and `a73bd98`.** The first commit omitted the `sha384-` prefix, causing both tools to silently fail. The prefix fix is a reminder that the format is `<algorithm>-<base64>`, not base64 alone.
 
@@ -85,7 +89,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | GitHub 2FA | Authenticator app on GitHub account | Account compromise | GitHub settings |
 | Cloudflare 2FA | Authenticator app on Cloudflare account | Account compromise | Cloudflare settings |
 | PAT (not password) for git | Personal Access Token with `repo` scope | Credential leakage | `git config --list` |
-| Dedicated email 2FA | `shiryukit.privacy@gmail.com` with 2FA | Compromise of GDPR contact point | Gmail settings |
+| Dedicated email 2FA | 2FA enabled on the dedicated privacy contact account | Compromise of GDPR contact point | Email account security settings |
 
 ---
 
@@ -95,7 +99,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | :--- | :--- | :--- | :--- |
 | No cookies | Zero cookies set by code | Tracking, GDPR consent requirement | DevTools → Application → Cookies (empty) |
 | No analytics | No tracking scripts | Behavioural profiling, GDPR complexity | HTML source review |
-| Client-side processing | JSZip, qrcodejs run in browser | Server-side data exposure | DevTools → Network tab during tool use (no outgoing requests) |
+| Client-side processing | File and text processing libraries run entirely in browser | Server-side data exposure | DevTools → Network tab during tool use (no outgoing requests) |
 | No user accounts | No authentication system | Credential breach, account takeover | No login page |
 | Accurate claims | "Your files never leave your browser" (not "nothing leaves") | Misrepresentation, transparency violation | Privacy policy review |
 
@@ -122,7 +126,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | No WAF (free tier) | DDoS / targeted attack relies on Cloudflare's default DDoS protection | Accept; upgrade if threat materialises |
 | No CSP reporting endpoint | CSP violations are not logged | Accept; add `report-uri` if needed |
 | No automated post-deploy verification | Human error possible in manual checks | Backlog: add a shell script for the runbook checklist |
-| No dependency vulnerability scanning | CVE in `qrcodejs` or `jszip` may go unnoticed | Backlog: add GitHub Dependabot |
+| No dependency vulnerability scanning | CVE in a pinned library may go unnoticed | Backlog: add GitHub Dependabot |
 | No custom domain | `workers.dev` BIC may block Googlebot occasionally | Accept; upgrade to custom domain when justified |
 | Manual cache purge after every deploy | Forgetting to purge = stale content served | Documented in runbook as mandatory step |
 | Deployment root is project root | Future files added at root may be unintentionally uploaded | Backlog: consider restructuring to `public/` for served files only |
@@ -138,5 +142,6 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial inventory |
 | 1.1 | 7 November 2026 | Piyush Gahlawat | Post-INC-2026-001: added commit references, expanded Section 5, added 4b check reference, added open item for old `qryu` Worker |
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Closed old `qryu` Worker verification item — verified returning 404 |
+| 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exact blocklist in Section 5; removed named library versions from Sections 6 and 10 where they added no informational value |
 
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
