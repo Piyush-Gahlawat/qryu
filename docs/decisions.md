@@ -256,6 +256,27 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Reversibility:** Medium. Changing the contact email requires updating the privacy policy and any external listings that reference it.
 
 ---
+# D011 — Resume Templates: Comprehensive Heading Detection via Synonym Map
+
+**Date:** 8 November 2026
+**Status:** Decided
+
+**Context:** The resume templates tool initially recognized a narrow set of section headings (Summary, Experience, Education, Skills, Projects, Certifications). Real-world resumes use hundreds of variations — Professional Summary, Technical Proficiency, Core Competencies, Work History, Areas of Expertise — and the narrow list meant most user text was silently dropped into the wrong section or into the contact block.
+
+**Alternatives considered:**
+
+| Option | Pros | Cons | Decision |
+| :--- | :--- | :--- | :--- |
+**Regex-only matching** | Flexible, catches unexpected variants | Fragile — adding a new variant requires careful regex editing; false positives common (e.g. "Note:" in prose would match a heading pattern) | ❌ Rejected
+**Machine learning classification** | Handles arbitrary headings | Overkill for a browser-side tool; requires an external model or a bundled trained classifier; adds latency and complexity | ❌ Rejected
+**Hardcoded synonym map with normalization** | Explicit, extensible, no false positives (exact match on normalized string) | Adding new headings requires a map entry | ✅ Chosen
+
+**Decision:** A hardcoded synonym map of approximately 300 heading variations across 18 categories. Normalization strips decorations (colons, dashes, asterisks, equals signs, numbering), lowercases, removes articles, and standardizes & / and. Matching is exact on the normalized string, which eliminates false positives entirely.
+
+**Trade-off accepted:** New headings require manual map extension. This is intentional friction — it forces a decision about every synonym, rather than accepting regex false positives silently.
+
+**Reversibility:** High. The map can be replaced with a different approach (regex, ML classifier, external service) without changing the caller API — the parseResume(text) function signature stays stable.
+---
 
 ## Document Control
 

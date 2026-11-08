@@ -244,7 +244,8 @@ If the rollback was triggered by production breakage, document it using the [pos
 | 307 redirect on `.html` URL | `html_handling` changed to default | Check `wrangler.jsonc` has `"html_handling": "none"` |
 | Old content still showing | Cache not purged | Purge Everything |
 | Build fails | Syntax error in `worker.js`, or invalid `wrangler.jsonc` | Check Cloudflare build log |
-
+|Resume-templates page loads but is blank / buttons don't respond / no visible error|JS module import silently failing — likely a missing HTML element ID that the controller requires (getElementById(...).addEventListener(...) throws, halting module execution before refresh() runs)|DevTools → Console; look for Cannot read properties of null (reading 'addEventListener'). Confirm every ID the controller needs exists in the HTML (resume-input, resume-preview, download-pdf-btn, copy-text-btn). If IDs match and console is clean, hard-refresh (Ctrl+Shift+R) — stale cache can serve old HTML with new JS
+|Note-box or similar styled element renders with wrong colors in dark mode|Duplicated CSS block or nested @media query overriding the earlier rule|Inspect element in DevTools → check computed styles → search the CSS file for duplicate selectors or nested media queries. Each @media block should be top-level, not inside another
 ---
 
 ## 7. Security Incident Procedure
