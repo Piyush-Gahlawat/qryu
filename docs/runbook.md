@@ -280,6 +280,7 @@ Always: complete deploy → purge everything → verify with `curl -H "Cache-Con
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Rewrote Section 5 with explicit placeholder handling, worked examples, Cloudflare dashboard rollback path, common mistakes table, post-rollback documentation requirement |
 | 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass: added portfolio note; removed exact blocklist paths from Sections 2 and 6 |
 | 1.4 | 7 November 2026 | Piyush Gahlawat | Section 4b rewritten to be content-aware — distinguishes 404 (blocked) from 200-with-homepage (SPA fallback, safe) from 200-with-content (leak). Curated path list replaces the flawed `grep .assetsignore` approach |
+| 1.5 | 8 November 2026 | Piyush Gahlawat | Added resume-templates failure modes to Section 6 (module init crash, CSS duplication) |
 
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
 ```

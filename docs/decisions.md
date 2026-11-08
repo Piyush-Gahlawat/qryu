@@ -285,5 +285,6 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial decision log — 10 decisions recorded |
 | 1.1 | 7 November 2026 | Piyush Gahlawat | D005 corrected to document the four-attempt remediation from actual git log; commit references added throughout |
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exposed-path list in D005; removed specific library names and email address from D008 and D010 where they added no informational value beyond "open-source JavaScript libraries" and "dedicated Gmail" |
+| 1.3 | 8 November 2026 | Piyush Gahlawat | D011 added — comprehensive heading detection via synonym map |
 
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Security Controls](./security-controls.md)
