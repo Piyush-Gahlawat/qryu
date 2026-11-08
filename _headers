@@ -1,21 +1,38 @@
-# Block access to sensitive paths (redundant if .assetsignore works, but safe)
-/.git/*
-  X-Robots-Tag: noindex
-  Disallow: /
+# _headers — Cloudflare Workers static assets
+# All matching rules apply cumulatively.
+# The file itself is not served — it's excluded via .assetsignore.
 
-/wrangler.jsonc
-  X-Robots-Tag: noindex
-  Disallow: /
-
-/worker.js
-  X-Robots-Tag: noindex
-  Disallow: /
-
-# Global security headers
 /*
+  # ---- Transport security ----
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # ---- MIME sniffing prevention ----
   X-Content-Type-Options: nosniff
+
+  # ---- Clickjacking prevention ----
   X-Frame-Options: DENY
+
+  # ---- Referrer leakage control ----
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';
+
+  # ---- Browser feature restrictions ----
+  Permissions-Policy: accelerometer=(), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), xr-spatial-tracking=(), interest-cohort=(), browsing-topics=(), join-ad-interest-group=(), run-ad-auction=()
+
+  # ---- Cross-origin isolation ----
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+  # ---- Legacy XSS auditor disabled (OWASP recommendation) ----
+  X-XSS-Protection: 0
+
+  # ---- Content Security Policy ----
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests
+
+  # ---- Cache policy ----
+  # max-age=0 with must-revalidate means every visit checks for freshness.
+  # Correct for a site with static filenames (shared.css, not shared.a1b2.css).
+  Cache-Control: public, max-age=0, must-revalidate
+
+# ---- Additional hardening for the privacy page ----
+/privacy.html
+  Cache-Control: public, max-age=3600
