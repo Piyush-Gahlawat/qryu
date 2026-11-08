@@ -101,7 +101,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | GitHub 2FA | Authenticator app on GitHub account | Account compromise | GitHub settings |
 | Cloudflare 2FA | Authenticator app on Cloudflare account | Account compromise | Cloudflare settings |
 | PAT (not password) for git | Personal Access Token with `repo` scope | Credential leakage | `git config --list` |
-| Dedicated email 2FA | 2FA enabled on the dedicated privacy contact account | Compromise of GDPR contact point | Email account security settings |
+| Dedicated email 2FA | 2FA enabled on the dedicated privacy contact account | Compromise of GDPR / DPDP contact point | Email account security settings |
 
 ---
 
@@ -109,11 +109,13 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
-| No cookies | Zero cookies set by code | Tracking, GDPR consent requirement | DevTools → Application → Cookies (empty) |
+| No tracking cookies | Zero cookies set by code; only strictly necessary Cloudflare security cookies may exist | Tracking, GDPR/ePrivacy consent requirement | DevTools → Application → Cookies (only `__cf_bm` / `cf_clearance` if present) |
 | No analytics | No tracking scripts | Behavioural profiling, GDPR complexity | HTML source review |
 | Client-side processing | File and text processing libraries run entirely in browser | Server-side data exposure | DevTools → Network tab during tool use (no outgoing requests) |
 | No user accounts | No authentication system | Credential breach, account takeover | No login page |
 | Accurate claims | "Your files never leave your browser" (not "nothing leaves") | Misrepresentation, transparency violation | Privacy policy review |
+| DPDP Grievance Officer | Named officer with contact, acknowledgment SLA, 90-day resolution commitment, DPB escalation path | DPDP Section 13 / Rule 14(3) non-compliance | Privacy policy review |
+| DPDP lawful basis documented | ROPA Section 4 — reasoned Section 7(a) position with explicit caveat | DPDP Act processing without lawful basis | ROPA review |
 
 ---
 
@@ -122,7 +124,8 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
 | Post-incident review template | [post-incident-review-git-exposure.md](./post-incident-review-git-exposure.md) | Unstructured incident handling | Document exists |
-| Breach assessment process | Documented in [ROPA Section 8](./ropa.md) | GDPR Article 33 non-compliance | Document exists |
+| Breach assessment process (GDPR) | Documented in [ROPA Section 9](./ropa.md) | GDPR Article 33 non-compliance | Document exists |
+| Breach notification procedure (DPDP) | Documented in [Runbook Section 7a](./runbook.md) | DPDP Section 8(6) / Rule 7 non-compliance | Document exists |
 | Deployment verification checklist | [Runbook Section 4](./runbook.md) | Unverified deploys | Document exists |
 | Mandatory sensitive-path check | [Runbook Section 4b](./runbook.md) | Regression of `.git` exposure | Document exists |
 
@@ -135,6 +138,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Gap | Residual risk | Mitigation plan |
 | :--- | :--- | :--- |
 | ~~Old `qryu` Worker verification~~ | ✅ **Closed** — verified 7 Nov 2026: all paths return 404 | N/A |
+| ~~DPDP compliance documentation~~ | ✅ **Closed 8 Nov 2026** — privacy policy updated with Grievance Officer and DPDP rights; ROPA Section 4 added with DPDP lawful-basis analysis and caveat; runbook Section 7a added with Rule 7 breach procedure | N/A |
 | **No WAF** | No edge-level blocking of known attack signatures, IP reputation, or geo-based rules. Cloudflare WAF requires a zone, and `workers.dev` is not a zone. | Accept while on free tier. Upgrade to custom domain (~₹800/year) when traffic or threat profile justifies it. |
 | **No Bot Fight Mode** | Automated scrapers and known bots not challenged at the edge. Zone-level feature, unavailable on `workers.dev`. | Same as WAF — requires custom domain. |
 | No CSP reporting endpoint | CSP violations are not logged centrally. Detected only in individual browser consoles. | Accept. Add `report-to` and a reporting endpoint if a zone becomes available. |
@@ -157,7 +161,8 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial inventory |
 | 1.1 | 7 November 2026 | Piyush Gahlawat | Post-INC-2026-001: added commit references, expanded Section 6, added 4b check reference, added open item for old `qryu` Worker |
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Closed old `qryu` Worker verification item — verified returning 404 |
-| 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exact blocklist in Section 6; removed named library versions where they added no informational value |
-| **1.4** | **8 November 2026** | **Piyush Gahlawat** | **Header hardening: expanded Section 2 to cover 14 CSP directives and disabled legacy XSS auditor; expanded Section 4 to 16 Permissions-Policy features; added Section 5 (Cross-Origin Isolation); added WAF and Bot Fight Mode gaps to Section 11** |
+| 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio |
+| 1.4 | 8 November 2026 | Piyush Gahlawat | Header hardening: expanded Section 2 (14 CSP directives, disabled legacy XSS auditor), expanded Section 4 (16 Permissions-Policy features), added Section 5 (Cross-Origin Isolation), added WAF and Bot Fight Mode gaps |
+| **1.5** | **8 November 2026** | **Piyush Gahlawat** | **Closed DPDP compliance documentation gap — privacy policy, ROPA, and runbook updated with DPDP Act 2023 obligations; added DPDP controls to Section 9; added DPDP breach procedure reference to Section 10; updated ROPA cross-reference from Section 8 to Section 9** |
 
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
