@@ -16,7 +16,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
 
   # ---- Browser feature restrictions ----
-  Permissions-Policy: accelerometer=(), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), xr-spatial-tracking=(), interest-cohort=(), browsing-topics=(), join-ad-interest-group=(), run-ad-auction=()
+ Permissions-Policy: accelerometer=(), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), xr-spatial-tracking=(), browsing-topics=()
 
   # ---- Cross-origin isolation ----
   Cross-Origin-Opener-Policy: same-origin
