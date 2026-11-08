@@ -4,7 +4,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 **Purpose:** Demonstrates that security was implemented deliberately, not accidentally. Each control exists for a specific reason and addresses a specific threat.
 
-**Post-incident note:** This inventory was substantially expanded after [INC-2026-001](./post-incident-review-git-exposure.md), which found that several controls assumed to be effective were not. Sections 5 and 6 reflect the corrected, verified state.
+**Post-incident note:** This inventory was substantially expanded after [INC-2026-001](./post-incident-review-git-exposure.md), which found that several controls assumed to be effective were not. Sections 6 and 7 reflect the corrected, verified state.
 
 **📌 Portfolio note:** This inventory is published as a portfolio artifact. The exact list of paths in the blocklist and the precise header values are generalized here. The full operational version is maintained privately. Control categories, reasoning, and verification approaches below are accurate and complete.
 
@@ -15,8 +15,8 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
 | HTTPS enforced | Cloudflare automatic | Man-in-the-middle, eavesdropping | Browser padlock |
-| HSTS | `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` | Protocol downgrade, SSL stripping | `curl -I` header check |
-| No mixed content | All resources served over HTTPS or from HTTPS CDN | Downgrade attacks | Browser console |
+| HSTS | One-year max-age with includeSubDomains and preload | Protocol downgrade, SSL stripping | `curl -I` header check |
+| No mixed content | All resources served over HTTPS or from HTTPS CDN; CSP `upgrade-insecure-requests` enforces this | Downgrade attacks, mixed-content warnings | Browser console |
 
 ---
 
@@ -24,11 +24,12 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
-| Content Security Policy | Restricts script sources to self and one trusted CDN; disallows inline scripts; `frame-ancestors 'none'` | XSS, injection, unauthorised resource loading | `curl -I` header check; DevTools console |
+| Content Security Policy | Fourteen directives — restricts scripts to self and one trusted CDN, blocks plugin content, blocks iframes, prevents base-tag hijacking, restricts form submission to same origin, upgrades any accidental HTTP subresource, restricts manifest and worker sources | XSS, injection, clickjacking, unauthorised resource loading, base-tag hijacking, form exfiltration | `curl -I` header check; DevTools console showing zero CSP violations |
 | X-Frame-Options | `DENY` | Clickjacking | `curl -I` header check |
 | Frame-ancestors (CSP) | `'none'` | Clickjacking (CSP-level, complements X-Frame-Options) | `curl -I` header check |
+| Legacy XSS auditor disabled | `X-XSS-Protection: 0` | Prevents the legacy auditor from introducing vulnerabilities (OWASP recommendation) | `curl -I` header check |
 
-**Implemented in commit `7c06235`.**
+**Implemented in commit `7c06235`; expanded on 8 November 2026 to cover the additional CSP directives.**
 
 ---
 
@@ -47,30 +48,41 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
 | Referrer-Policy | `strict-origin-when-cross-origin` | Referrer leakage to third parties | `curl -I` header check |
-| Permissions-Policy | Browser features (camera, microphone, geolocation, payment) explicitly disabled | Unauthorised access to browser features | `curl -I` header check |
+| Permissions-Policy | Sixteen browser features explicitly disabled — sensors, media devices, location, USB, payment, screen wake lock, picture-in-picture, display capture, encrypted media, MIDI, credential APIs, XR, and the Topics ad-targeting API | Unauthorised access to browser hardware and APIs | `curl -I` header check |
 
-**Implemented in commit `7c06235`.**
+**Permissions-Policy expanded on 8 November 2026 to cover the full set of disabled features. Three deprecated directives (`interest-cohort`, `join-ad-interest-group`, `run-ad-auction`) were removed to eliminate browser console warnings — those APIs have been removed from modern browsers.**
 
 ---
 
-## 5. Sensitive File Protection
+## 5. Cross-Origin Isolation
+
+| Control | Implementation | Threat mitigated | Verified by |
+| :--- | :--- | :--- | :--- |
+| Cross-Origin-Opener-Policy | `same-origin` | Cross-origin window access; Spectre-class side-channel attacks | `curl -I` header check |
+| Cross-Origin-Resource-Policy | `same-origin` | Other origins embedding assets without permission | `curl -I` header check |
+
+**Added on 8 November 2026 as part of the header-hardening pass.**
+
+---
+
+## 6. Sensitive File Protection
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
 | `.git` directory blocking | Worker script blocklist + worker-first execution | Source code and commit history disclosure | Probing the path returns 404 |
 | Configuration file blocking | Blocklist covers repository metadata, configuration files, dependency manifests, and environment variable files | Configuration and credential disclosure | Probing each path returns 404 |
 | Build-time exclusion | `.assetsignore` prevents future uploads of sensitive files | Defence in depth against blocklist gaps | `.assetsignore` exists at repo root |
-| Worker-first execution | `"run_worker_first": true` in `wrangler.jsonc` | Ensures blocklist executes before asset serving | Sensitive paths return 404 (verified) |
+| Worker-first execution | `run_worker_first: true` in `wrangler.jsonc` | Ensures blocklist executes before asset serving | Sensitive paths return 404 (verified) |
 
 **Implemented across commits `70b82be`, `7c06235`, `4fd897c`, and `519ae3d`.** The four-commit sequence is documented in [D005](./decisions.md) — each attempt addressed part of the problem, and only the final combination (build-time exclusion + runtime blocklist + worker-first execution) was effective.
 
-**The complete list of protected paths lives in `.assetsignore` in the repository** — that file is the source of truth. It is not duplicated here because publishing the exact list tells an attacker precisely which paths are guarded, allowing them to probe for gaps.
+**The complete list of protected paths lives in `.assetsignore` in the repository** — that file is the source of truth. It is not duplicated here because publishing the exact list tells an attacker precisely which paths are guarded.
 
 **This is the control most likely to silently regress.** Post-deploy verification Section 4b in the [runbook](./runbook.md) exists specifically to catch this.
 
 ---
 
-## 6. Supply Chain Integrity
+## 7. Supply Chain Integrity
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
@@ -82,7 +94,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 ---
 
-## 7. Authentication and Access (Repository and Cloudflare)
+## 8. Authentication and Access (Repository and Cloudflare)
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
@@ -93,7 +105,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 ---
 
-## 8. Privacy Controls
+## 9. Privacy Controls
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
@@ -105,7 +117,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 ---
 
-## 9. Incident Response Readiness
+## 10. Incident Response Readiness
 
 | Control | Implementation | Threat mitigated | Verified by |
 | :--- | :--- | :--- | :--- |
@@ -118,20 +130,23 @@ A complete inventory of security controls implemented, mapped to the risks they 
 
 ---
 
-## 10. Known Gaps and Residual Risk
+## 11. Known Gaps and Residual Risk
 
 | Gap | Residual risk | Mitigation plan |
 | :--- | :--- | :--- |
 | ~~Old `qryu` Worker verification~~ | ✅ **Closed** — verified 7 Nov 2026: all paths return 404 | N/A |
-| No WAF (free tier) | DDoS / targeted attack relies on Cloudflare's default DDoS protection | Accept; upgrade if threat materialises |
-| No CSP reporting endpoint | CSP violations are not logged | Accept; add `report-uri` if needed |
-| No automated post-deploy verification | Human error possible in manual checks | Backlog: add a shell script for the runbook checklist |
-| No dependency vulnerability scanning | CVE in a pinned library may go unnoticed | Backlog: add GitHub Dependabot |
-| No custom domain | `workers.dev` BIC may block Googlebot occasionally | Accept; upgrade to custom domain when justified |
-| Manual cache purge after every deploy | Forgetting to purge = stale content served | Documented in runbook as mandatory step |
-| Deployment root is project root | Future files added at root may be unintentionally uploaded | Backlog: consider restructuring to `public/` for served files only |
+| **No WAF** | No edge-level blocking of known attack signatures, IP reputation, or geo-based rules. Cloudflare WAF requires a zone, and `workers.dev` is not a zone. | Accept while on free tier. Upgrade to custom domain (~₹800/year) when traffic or threat profile justifies it. |
+| **No Bot Fight Mode** | Automated scrapers and known bots not challenged at the edge. Zone-level feature, unavailable on `workers.dev`. | Same as WAF — requires custom domain. |
+| No CSP reporting endpoint | CSP violations are not logged centrally. Detected only in individual browser consoles. | Accept. Add `report-to` and a reporting endpoint if a zone becomes available. |
+| No automated post-deploy verification | Human error possible in the 4a–4e checks in the runbook. | Backlog: add a shell script that runs the verification suite. |
+| No dependency vulnerability scanning | CVE in a pinned library may go unnoticed until an incident. | Backlog: add GitHub Dependabot with weekly scans. |
+| No custom domain | `workers.dev` BIC may block Googlebot occasionally; also blocks access to all zone-level security features. | Accept. Upgrade when justified by traffic or WAF requirement. |
+| Manual cache purge after every deploy | Forgetting to purge = stale content served. | Documented as mandatory step in runbook §8. |
+| Deployment root is project root | Future files added at root may be unintentionally uploaded. | Backlog: consider restructuring to `public/` for served files only. |
 
 **All items from INC-2026-001 are now closed.** The old `qryu` Worker was verified returning 404 on all paths on 7 November 2026. There are no open security items from the incident.
+
+**The WAF and Bot Fight Mode gaps are the two that require a paid decision, not technical work.** Every other gap is either already mitigated or tracked as backlog work.
 
 ---
 
@@ -140,8 +155,9 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial inventory |
-| 1.1 | 7 November 2026 | Piyush Gahlawat | Post-INC-2026-001: added commit references, expanded Section 5, added 4b check reference, added open item for old `qryu` Worker |
+| 1.1 | 7 November 2026 | Piyush Gahlawat | Post-INC-2026-001: added commit references, expanded Section 6, added 4b check reference, added open item for old `qryu` Worker |
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Closed old `qryu` Worker verification item — verified returning 404 |
-| 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exact blocklist in Section 5; removed named library versions from Sections 6 and 10 where they added no informational value |
+| 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exact blocklist in Section 6; removed named library versions where they added no informational value |
+| **1.4** | **8 November 2026** | **Piyush Gahlawat** | **Header hardening: expanded Section 2 to cover 14 CSP directives and disabled legacy XSS auditor; expanded Section 4 to 16 Permissions-Policy features; added Section 5 (Cross-Origin Isolation); added WAF and Bot Fight Mode gaps to Section 11** |
 
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
