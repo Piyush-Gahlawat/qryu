@@ -1,4 +1,4 @@
-/* index.css — hub page styles */
+/* index.css — jade palette hub page */
 
 .hero {
     text-align: center;
@@ -10,6 +10,7 @@
     font-weight: 800;
     letter-spacing: -0.03em;
     margin-bottom: 8px;
+    color: var(--text);
 }
 
 .hero .subtitle {
@@ -32,8 +33,9 @@
     font-weight: 600;
     padding: 5px 12px;
     border-radius: 99px;
-    background: #eef2ff;
+    background: var(--brand-soft);
     color: var(--brand-dark);
+    letter-spacing: 0.01em;
 }
 
 .tools {
@@ -46,18 +48,18 @@
     display: block;
     background: var(--card);
     border-radius: var(--radius);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow);
     padding: 20px 20px 22px;
     text-decoration: none;
     color: inherit;
-    transition: transform 0.12s, box-shadow 0.12s;
-    border: 1px solid transparent;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
 
 .tool:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
-    border-color: #e0e7ff;
+    box-shadow: var(--shadow-hover);
+    border-color: #cbe5d9;
 }
 
 .tool:active {
@@ -93,13 +95,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    .badge {
-        background: #1e1b3a;
-        color: #c7cdff;
-    }
-
     .tool:hover {
-        border-color: #2a2e3a;
+        border-color: var(--border-hover);
     }
 }
 

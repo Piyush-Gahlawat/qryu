@@ -1,4 +1,4 @@
-/* shared.css — common styles for all QRyu tools */
+/* shared.css — jade palette, soft on eyes, professional */
 
 *,
 *::before,
@@ -9,18 +9,35 @@
 }
 
 :root {
-    --bg: #f5f7fb;
-    --card: #ffffff;
-    --text: #1a1d29;
-    --muted: #6b7280;
-    --brand: #4f46e5;
-    --brand-dark: #4338ca;
-    --border: #e5e7eb;
-    --error: #dc2626;
-    --ok: #059669;
-    --warn: #d97706;
+    /* Backgrounds — warm jade off-whites, not cold greys */
+    --bg: #eef4f0;
+    --card: #fbfdfc;
+    --input-bg: #f4faf6;
+
+    /* Text — warm forest darks, not pure black */
+    --text: #1c2f28;
+    --muted: #526b60;
+
+    /* Brand — professional jade */
+    --brand: #0a7a58;
+    --brand-dark: #086b4d;
+    --brand-soft: #e0f0e9;
+
+    /* UI */
+    --border: #d6e5dd;
+    --border-hover: #b8cfc5;
+
+    /* Semantic */
+    --error: #b3352f;
+    --error-bg: #fcf0ee;
+    --error-border: #f0d0cc;
+    --ok: #0a7a58;
+    --warn: #a87828;
+
     --radius: 14px;
-    --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    --radius-sm: 10px;
+    --shadow: 0 1px 2px rgba(16, 40, 32, 0.04), 0 4px 16px rgba(16, 40, 32, 0.06);
+    --shadow-hover: 0 2px 4px rgba(16, 40, 32, 0.06), 0 8px 24px rgba(16, 40, 32, 0.08);
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
@@ -29,11 +46,14 @@ body {
     background: var(--bg);
     color: var(--text);
     line-height: 1.55;
+    letter-spacing: -0.005em;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -41,6 +61,7 @@ body {
     max-width: 460px;
     background: var(--card);
     border-radius: var(--radius);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow);
     padding: 24px 22px 26px;
 }
@@ -59,10 +80,11 @@ body {
     color: var(--brand);
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.15s;
 }
 
 .nav a:hover {
-    text-decoration: underline;
+    color: var(--brand-dark);
 }
 
 h1 {
@@ -70,6 +92,7 @@ h1 {
     font-weight: 700;
     letter-spacing: -0.02em;
     margin-bottom: 6px;
+    color: var(--text);
 }
 
 .subtitle {
@@ -98,22 +121,23 @@ input[type="text"] {
     font-size: 1rem;
     padding: 14px 16px;
     border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: #fafbfc;
+    border-radius: var(--radius-sm);
+    background: var(--input-bg);
     color: var(--text);
-    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     -webkit-appearance: none;
+    font-family: inherit;
 }
 
 input[type="text"]::placeholder {
-    color: #9ca3af;
+    color: #93a89d;
 }
 
 input[type="text"]:focus {
     outline: none;
     border-color: var(--brand);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    background: var(--card);
+    box-shadow: 0 0 0 3px rgba(10, 122, 88, 0.12);
 }
 
 textarea {
@@ -124,22 +148,22 @@ textarea {
     line-height: 1.6;
     padding: 14px 16px;
     border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: #fafbfc;
+    border-radius: var(--radius-sm);
+    background: var(--input-bg);
     color: var(--text);
     resize: vertical;
-    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 textarea::placeholder {
-    color: #9ca3af;
+    color: #93a89d;
 }
 
 textarea:focus {
     outline: none;
     border-color: var(--brand);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    background: var(--card);
+    box-shadow: 0 0 0 3px rgba(10, 122, 88, 0.12);
 }
 
 .btn {
@@ -150,7 +174,7 @@ textarea:focus {
     font-family: inherit;
     padding: 14px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: transform 0.08s, background 0.15s, box-shadow 0.15s;
     -webkit-tap-highlight-color: transparent;
@@ -162,14 +186,14 @@ textarea:focus {
 }
 
 .btn:focus-visible {
-    outline: 3px solid rgba(79, 70, 229, 0.4);
+    outline: 3px solid rgba(10, 122, 88, 0.35);
     outline-offset: 2px;
 }
 
 .btn-primary {
     background: var(--brand);
     color: #fff;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28);
+    box-shadow: 0 1px 2px rgba(16, 40, 32, 0.10), 0 2px 8px rgba(10, 122, 88, 0.18);
 }
 
 .btn-primary:hover {
@@ -177,19 +201,19 @@ textarea:focus {
 }
 
 .btn-primary:disabled {
-    background: #c7d2fe;
+    background: #b8d4c6;
     box-shadow: none;
     cursor: not-allowed;
 }
 
 .btn-secondary {
-    background: #eef2ff;
+    background: var(--brand-soft);
     color: var(--brand-dark);
     margin-top: 10px;
 }
 
 .btn-secondary:hover {
-    background: #e0e7ff;
+    background: #cbe5d9;
 }
 
 .btn-sm {
@@ -199,7 +223,7 @@ textarea:focus {
     padding: 8px 14px;
     border: 1.5px solid var(--border);
     border-radius: 8px;
-    background: #fff;
+    background: var(--card);
     color: var(--text);
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s, transform 0.08s;
@@ -207,8 +231,8 @@ textarea:focus {
 }
 
 .btn-sm:hover {
-    background: #f3f4f6;
-    border-color: #d1d5db;
+    background: var(--input-bg);
+    border-color: var(--border-hover);
 }
 
 .btn-sm:active {
@@ -223,6 +247,7 @@ textarea:focus {
 
 .btn-sm.primary:hover {
     background: var(--brand-dark);
+    border-color: var(--brand-dark);
 }
 
 .checks {
@@ -255,7 +280,8 @@ textarea:focus {
 .check code {
     font-family: var(--mono);
     font-size: 0.82rem;
-    background: #f3f4f6;
+    background: var(--input-bg);
+    color: var(--brand-dark);
     padding: 1px 5px;
     border-radius: 4px;
 }
@@ -264,8 +290,8 @@ textarea:focus {
     display: none;
     font-size: 0.88rem;
     color: var(--error);
-    background: #fef2f2;
-    border: 1px solid #fecaca;
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
     border-radius: 8px;
     padding: 10px 12px;
     margin-top: 12px;
@@ -306,9 +332,9 @@ textarea:focus {
 }
 
 .stat {
-    background: #fafbfc;
+    background: var(--input-bg);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     padding: 10px;
     text-align: center;
 }
@@ -339,9 +365,12 @@ textarea:focus {
 .footer-note a {
     color: var(--brand);
     text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
 }
 
 .footer-note a:hover {
+    color: var(--brand-dark);
     text-decoration: underline;
 }
 
@@ -367,54 +396,61 @@ textarea:focus {
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg: #0f1117;
-        --card: #171a23;
-        --text: #e8eaf0;
-        --muted: #9096a3;
-        --border: #2a2e3a;
-        --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+        --bg: #0c1410;
+        --card: #152420;
+        --input-bg: #0f1a16;
+        --text: #e6f0eb;
+        --muted: #8fa89d;
+        --brand: #3fb891;
+        --brand-dark: #4dc9a0;
+        --brand-soft: #1c3a2f;
+        --border: #2a3d35;
+        --border-hover: #3a5045;
+        --error: #f0a29e;
+        --error-bg: #2a1715;
+        --error-border: #4a2926;
+        --ok: #4dc9a0;
+        --warn: #e0b86b;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+        --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.30);
     }
 
     input[type="text"],
     textarea {
-        background: #0f1117;
         color: var(--text);
+    }
+
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+        color: #5c7066;
     }
 
     input[type="text"]:focus,
     textarea:focus {
-        background: #0f1117;
+        background: var(--input-bg);
+        box-shadow: 0 0 0 3px rgba(63, 184, 145, 0.18);
     }
 
-    .btn-secondary {
-        background: #1e2230;
-        color: #c7cdff;
+    .btn-primary:disabled {
+        background: #2a4a3d;
+        color: #6a8076;
     }
 
     .btn-secondary:hover {
-        background: #262b3c;
-    }
-
-    .btn-sm {
-        background: #1e2230;
-        color: var(--text);
-        border-color: #2a2e3a;
+        background: #244638;
     }
 
     .btn-sm:hover {
-        background: #262b3c;
+        background: #1e2f28;
+        border-color: var(--border-hover);
     }
 
     .check code {
-        background: #2a2e3a;
+        background: var(--input-bg);
+        color: #7dd5b0;
     }
 
     .stat {
-        background: #0f1117;
-    }
-
-    #error-msg {
-        background: #2a1416;
-        border-color: #4a1f24;
+        background: var(--input-bg);
     }
 }
