@@ -116,6 +116,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Accurate claims | "Your files never leave your browser" (not "nothing leaves") | Misrepresentation, transparency violation | Privacy policy review |
 | DPDP Grievance Officer | Named officer with contact, acknowledgment SLA, 90-day resolution commitment, DPB escalation path | DPDP Section 13 / Rule 14(3) non-compliance | Privacy policy review |
 | DPDP lawful basis documented | ROPA Section 4 — reasoned Section 7(a) position with explicit caveat | DPDP Act processing without lawful basis | ROPA review |
+| **Rate limiting** | Workers rate-limiting binding is configured in `wrangler.jsonc` with a fail-open guard in `worker.js`. **Not stress-tested** — the specific threshold (100 req/60s) has not been verified in production. | Denial-of-wallet from sustained request floods. Low risk: site has no user data and no login. | Backlog: run a proper load test with concurrent requests from a single IP to verify the binding triggers. Upgrade to a zone-level rule if a custom domain is added. |
 
 ---
 
@@ -163,6 +164,6 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Closed old `qryu` Worker verification item — verified returning 404 |
 | 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio |
 | 1.4 | 8 November 2026 | Piyush Gahlawat | Header hardening: expanded Section 2 (14 CSP directives, disabled legacy XSS auditor), expanded Section 4 (16 Permissions-Policy features), added Section 5 (Cross-Origin Isolation), added WAF and Bot Fight Mode gaps |
-| **1.5** | **8 November 2026** | **Piyush Gahlawat** | **Closed DPDP compliance documentation gap — privacy policy, ROPA, and runbook updated with DPDP Act 2023 obligations; added DPDP controls to Section 9; added DPDP breach procedure reference to Section 10; updated ROPA cross-reference from Section 8 to Section 9** |
-
+| 1.5 | 8 November 2026 | Piyush Gahlawat | Closed DPDP compliance documentation gap — privacy policy, ROPA, and runbook updated with DPDP Act 2023 obligations; added DPDP controls to Section 9; added DPDP breach procedure reference to Section 10; updated ROPA cross-reference from Section 8 to Section 9 |
+| **1.6** | **8 November 2026** | **Piyush Gahlawat** | **Rate limiting — status clarified to "configured but not stress-tested" (previously claimed as verified). Honest status per assessment.** |
 **Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
