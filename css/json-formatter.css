@@ -1,4 +1,4 @@
-/* json-formatter.css — JSON-formatter-specific styles */
+/* json-formatter.css — JSON formatter, jade palette */
 
 .options {
     display: flex;
@@ -27,7 +27,7 @@
     padding: 6px 10px;
     border: 1.5px solid var(--border);
     border-radius: 8px;
-    background: #fff;
+    background: var(--card);
     color: var(--text);
     cursor: pointer;
 }
@@ -50,9 +50,9 @@
     display: flex;
     flex-direction: column;
     border: 1.5px solid var(--border);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
-    background: #fafbfc;
+    background: var(--input-bg);
 }
 
 .panel-head {
@@ -60,13 +60,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
-    background: #f3f4f6;
+    background: var(--brand-soft);
     border-bottom: 1px solid var(--border);
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--muted);
+    color: var(--brand-dark);
     gap: 8px;
 }
 
@@ -92,7 +92,7 @@
     padding: 4px 9px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    background: #fff;
+    background: var(--card);
     color: var(--text);
     cursor: pointer;
     transition: background 0.15s;
@@ -101,7 +101,7 @@
 }
 
 .btn-mini:hover {
-    background: #e5e7eb;
+    background: var(--input-bg);
 }
 
 .btn-mini.copied {
@@ -110,15 +110,15 @@
     border-color: #a7f3d0;
 }
 
-/* Editor wrap — overlay technique for syntax highlighting */
+/* Editor overlay for syntax highlighting */
 .editor-wrap {
     position: relative;
-    background: #fafbfc;
+    background: var(--input-bg);
+    flex: 1;
 }
 
 .editor-wrap textarea,
 .editor-wrap pre.highlight {
-    /* identical box model so text lines up perfectly */
     width: 100%;
     min-height: 300px;
     font-family: var(--mono);
@@ -136,7 +136,6 @@
     box-sizing: border-box;
 }
 
-/* The transparent textarea on top */
 .editor-wrap textarea {
     position: relative;
     background: transparent;
@@ -147,7 +146,7 @@
 }
 
 .editor-wrap textarea::placeholder {
-    color: #9ca3af;
+    color: #93a89d;
 }
 
 .editor-wrap textarea:focus {
@@ -155,11 +154,10 @@
 }
 
 .editor-wrap textarea::selection {
-    background: rgba(79, 70, 229, 0.25);
+    background: rgba(10, 122, 88, 0.25);
     color: transparent;
 }
 
-/* The highlighted pre behind the textarea */
 .editor-wrap pre.highlight {
     position: absolute;
     top: 0;
@@ -170,9 +168,7 @@
     color: var(--text);
     background: transparent;
     overflow: scroll;
-    /* allows programmatic scrollTop */
     scrollbar-width: none;
-    /* hide the pre's own scrollbar */
     z-index: 0;
 }
 
@@ -180,41 +176,59 @@
     display: none;
 }
 
-/* JSON token colors — light mode */
+/* JSON token colors */
 .json-key {
-    color: #2563eb;
+    color: #1a6cb0;
 }
 
-/* blue   */
 .json-string {
-    color: #16a34a;
+    color: #0a7a58;
 }
 
-/* green  */
 .json-number {
-    color: #ea580c;
+    color: #b85c00;
 }
 
-/* orange */
 .json-boolean {
-    color: #9333ea;
+    color: #8a4a8a;
 }
 
-/* purple */
 .json-null {
-    color: #dc2626;
+    color: #b3352f;
 }
 
-/* red    */
 .json-punctuation {
-    color: #6b7280;
+    color: #526b60;
 }
-
-/* grey   */
 
 @media (prefers-color-scheme: dark) {
+    .options select {
+        background: var(--card);
+        color: var(--text);
+        border-color: var(--border);
+    }
+
+    .panel {
+        background: var(--input-bg);
+    }
+
+    .panel-head {
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+    }
+
+    .btn-mini {
+        background: var(--card);
+        color: var(--text);
+        border-color: var(--border);
+    }
+
+    .btn-mini:hover {
+        background: var(--input-bg);
+    }
+
     .editor-wrap {
-        background: #0f1117;
+        background: var(--input-bg);
     }
 
     .json-key {
@@ -238,36 +252,6 @@
     }
 
     .json-punctuation {
-        color: #9ca3af;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .options select {
-        background: #1e2230;
-        color: var(--text);
-        border-color: #2a2e3a;
-    }
-
-    .panel {
-        background: #0f1117;
-    }
-
-    .panel-head {
-        background: #1e2230;
-    }
-
-    .btn-mini {
-        background: #1e2230;
-        color: var(--text);
-        border-color: #2a2e3a;
-    }
-
-    .btn-mini:hover {
-        background: #262b3c;
-    }
-
-    .editor-wrap {
-        background: #0f1117;
+        color: #8fa89d;
     }
 }

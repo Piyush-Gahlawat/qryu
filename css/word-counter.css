@@ -1,4 +1,4 @@
-/* word-counter.css — Word-counter-specific styles only */
+/* word-counter.css — word counter, jade palette */
 
 .container-wide {
     max-width: 760px;
@@ -12,9 +12,9 @@
 }
 
 .stat {
-    background: #fafbfc;
+    background: var(--input-bg);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     padding: 12px 14px;
     text-align: center;
 }
@@ -49,6 +49,6 @@ textarea {
 
 @media (prefers-color-scheme: dark) {
     .stat {
-        background: #0f1117;
+        background: var(--input-bg);
     }
 }

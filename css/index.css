@@ -1,4 +1,4 @@
-/* index.css — jade palette hub page */
+/* index.css — jade + gold hub page */
 
 .hero {
     text-align: center;
@@ -38,6 +38,11 @@
     letter-spacing: 0.01em;
 }
 
+.badge.accent {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
 .tools {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -58,8 +63,8 @@
 
 .tool:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
-    border-color: #cbe5d9;
+    box-shadow: var(--shadow-gold);
+    border-color: #e8d9b8;
 }
 
 .tool:active {
@@ -91,12 +96,17 @@
     margin-top: 10px;
     font-size: 0.82rem;
     font-weight: 600;
-    color: var(--brand);
+    color: var(--accent);
 }
 
 @media (prefers-color-scheme: dark) {
     .tool:hover {
-        border-color: var(--border-hover);
+        border-color: #4a3f1f;
+    }
+
+    .badge.accent {
+        background: var(--accent-soft);
+        color: var(--accent);
     }
 }
 

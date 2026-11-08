@@ -1,4 +1,4 @@
-/* privacy.css — styles for the privacy policy page */
+/* privacy.css — privacy policy, jade palette */
 
 .prose {
     font-size: 0.95rem;
@@ -38,17 +38,25 @@
 .prose a {
     color: var(--brand);
     text-decoration: none;
+    font-weight: 500;
 }
 
 .prose a:hover {
+    color: var(--brand-dark);
     text-decoration: underline;
+}
+
+.prose strong {
+    color: var(--text);
+    font-weight: 700;
 }
 
 @media (prefers-color-scheme: dark) {
 
     .prose p,
     .prose h2,
-    .prose h3 {
+    .prose h3,
+    .prose strong {
         color: var(--text);
     }
 }

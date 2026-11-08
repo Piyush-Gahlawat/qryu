@@ -1,4 +1,4 @@
-/* qr.css — QR-generator-specific styles only */
+/* qr.css — QR generator, jade palette */
 
 #qr-container {
     display: flex;
@@ -14,7 +14,7 @@
     border-radius: 8px;
     margin-top: 20px;
     padding: 10px;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid var(--border);
 }
 
@@ -22,6 +22,7 @@
 
     #qr-container img,
     #qr-container canvas {
-        background: #fff;
+        background: #ffffff;
+        border-color: var(--border);
     }
 }

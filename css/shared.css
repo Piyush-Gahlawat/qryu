@@ -1,4 +1,4 @@
-/* shared.css — jade palette, soft on eyes, professional */
+/* shared.css — jade + gold dual palette */
 
 *,
 *::before,
@@ -9,35 +9,41 @@
 }
 
 :root {
-    /* Backgrounds — warm jade off-whites, not cold greys */
+    /* Backgrounds */
     --bg: #eef4f0;
     --card: #fbfdfc;
     --input-bg: #f4faf6;
 
-    /* Text — warm forest darks, not pure black */
+    /* Text */
     --text: #1c2f28;
     --muted: #526b60;
 
-    /* Brand — professional jade */
+    /* Jade — identity */
     --brand: #0a7a58;
     --brand-dark: #086b4d;
     --brand-soft: #e0f0e9;
 
+    /* Gold — accent */
+    --accent: #a67c00;
+    --accent-bright: #d4a13a;
+    --accent-soft: #faf3e0;
+
     /* UI */
     --border: #d6e5dd;
-    --border-hover: #b8cfc5;
+    --border-hover: #c3dcd1;
 
     /* Semantic */
     --error: #b3352f;
     --error-bg: #fcf0ee;
     --error-border: #f0d0cc;
     --ok: #0a7a58;
-    --warn: #a87828;
+    --warn: #a67c00;
 
     --radius: 14px;
     --radius-sm: 10px;
     --shadow: 0 1px 2px rgba(16, 40, 32, 0.04), 0 4px 16px rgba(16, 40, 32, 0.06);
     --shadow-hover: 0 2px 4px rgba(16, 40, 32, 0.06), 0 8px 24px rgba(16, 40, 32, 0.08);
+    --shadow-gold: 0 2px 4px rgba(120, 90, 10, 0.06), 0 8px 24px rgba(166, 124, 0, 0.10);
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
@@ -101,6 +107,16 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Utility — add class="accent" to any element for gold */
+.accent {
+    color: var(--accent);
+}
+
+.accent-bg {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
 .field {
     text-align: left;
     margin-bottom: 14px;
@@ -126,6 +142,7 @@ input[type="text"] {
     color: var(--text);
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     -webkit-appearance: none;
+    appearance: none;
     font-family: inherit;
 }
 
@@ -320,6 +337,10 @@ textarea:focus {
     font-weight: 500;
 }
 
+.status.warn {
+    color: var(--warn);
+}
+
 .stats {
     display: none;
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -374,6 +395,11 @@ textarea:focus {
     text-decoration: underline;
 }
 
+.footer-note strong {
+    color: var(--accent);
+    font-weight: 700;
+}
+
 @media (max-width: 360px) {
     .container {
         padding: 22px 16px 20px;
@@ -404,6 +430,9 @@ textarea:focus {
         --brand: #3fb891;
         --brand-dark: #4dc9a0;
         --brand-soft: #1c3a2f;
+        --accent: #e0b86b;
+        --accent-bright: #f0c674;
+        --accent-soft: #2a2213;
         --border: #2a3d35;
         --border-hover: #3a5045;
         --error: #f0a29e;
@@ -413,6 +442,7 @@ textarea:focus {
         --warn: #e0b86b;
         --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
         --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.30);
+        --shadow-gold: 0 2px 4px rgba(224, 184, 107, 0.06), 0 8px 24px rgba(224, 184, 107, 0.12);
     }
 
     input[type="text"],
