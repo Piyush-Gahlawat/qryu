@@ -24,7 +24,7 @@ This threat model identifies the realistic threats against the Shiryu Kit deploy
 - **Request flow:** Visitor → Cloudflare edge → Worker script → asset binding → HTML/CSS/JS response.
 - **Client-side processing:** All six tools run entirely in the browser.
 - **No backend:** No server-side code, no database, no user accounts.
-- **No user data retention:** The site processes no personal data beyond transient IP addresses at the edge.
+- **No user-supplied data retention:** No resume, JSON, password, or text content the user enters into a tool is ever stored. The only retained personal data is 3-day request logs at the Cloudflare edge, disclosed in the privacy policy and ROPA.
 
 This architecture dramatically reduces the attack surface. There is no login to brute-force, no database to inject into, no API to abuse, no session to hijack.
 
@@ -189,7 +189,7 @@ This architecture dramatically reduces the attack surface. There is no login to 
 
 **Impact:** Low-to-Medium. The site is a free tool suite; being offline for a few hours has no financial or data impact. It is inconvenient for users.
 
-**Likelihood before controls:** Low. The site has no adversaries; the traffic since launch has been ~1,600 requests total.
+**Likelihood before controls:** Low. The site has no adversaries; traffic since launch has been under 2,000 requests total (per Cloudflare Workers metrics dashboard).
 
 **Existing controls:**
 - Cloudflare's default DDoS protection
@@ -232,7 +232,7 @@ This architecture dramatically reduces the attack surface. There is no login to 
 | Server-side request forgery (SSRF) | No server-side outbound requests |
 | Broken access control | No access-controlled resources |
 | Insecure direct object references | No object references exist |
-| User data breach | No user-supplied data (resumes, JSON, passwords) is stored. The only retained data is 3-day request logs at the Cloudflare edge. |
+| User data breach | No user-supplied data (resumes, JSON, passwords) is stored at rest. In-session data could be exfiltrated by an XSS or supply-chain attack, but those are covered by T-02 and T-03. The only retained data is 3-day request logs at the Cloudflare edge. |
 | Payment card data exposure | No payment processing |
 
 The absence of these common threats is a direct consequence of the architecture: no backend, no database, no user accounts. The threat model is short because the attack surface is small, not because the analysis is shallow.
@@ -255,6 +255,6 @@ This threat model shall be reviewed:
 | :--- | :--- | :--- | :--- |
 | 1.0 | 9 November 2026 | Piyush Gahlawat | Initial threat model — 8 STRIDE-classified threats with mitigations and residual risk |
 | 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Runbook and Decision Log |
-| 1.2 | 9 November 2026 | Piyush Gahlawat | "User data breach" exclusion clarified — request logs retained for 3 days by Cloudflare; no user-supplied content ever stored |
+| 1.2 | 9 November 2026 | Piyush Gahlawat | Observability disclosure — Section 2 narrowed to "no user-supplied data retention" with 3-day log disclosure; Section 5 "User data breach" clarified (in-session data covered by T-02/T-03, no data stored at rest); T-08 traffic figure sourced to Workers metrics dashboard |
 
 **Related documents:** [SRS](./srs.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
