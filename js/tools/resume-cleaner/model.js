@@ -255,14 +255,75 @@ export function extractPlainText(xmlDoc) {
     const lines = [];
 
     paragraphs.forEach(p => {
-        const texts = Array.from(p.getElementsByTagNameNS(WORD_NS, 't'));
-        const text = texts.map(t => t.textContent).join('').trim();
-        if (text) lines.push(text);
+        // Collect every text-bearing element in document order.
+        // Handle <w:t> (text), <w:br> / <w:cr> (line break), <w:tab> (tab).
+        const pieces = [];
+        const walker = xmlDoc.createTreeWalker(
+            p,
+            NodeFilter.SHOW_ELEMENT,
+            {
+                acceptNode(node) {
+                    if (node.namespaceURI !== WORD_NS) return NodeFilter.FILTER_SKIP;
+                    const name = node.localName;
+                    if (name === 't' || name === 'br' || name === 'cr' || name === 'tab') {
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                    return NodeFilter.FILTER_SKIP;
+                }
+            }
+        );
+
+        let node;
+        while ((node = walker.nextNode())) {
+            const name = node.localName;
+            if (name === 't') {
+                pieces.push({ type: 'text', text: node.textContent || '' });
+            } else if (name === 'br' || name === 'cr') {
+                pieces.push({ type: 'break' });
+            } else if (name === 'tab') {
+                pieces.push({ type: 'tab' });
+            }
+        }
+
+        // Assemble, inserting a space between adjacent text runs when both sides
+        // have non-whitespace characters at the boundary. This matches how most
+        // ATS parsers reconstruct word boundaries from DOCX runs.
+        let out = '';
+        let prevType = null;
+
+        for (const piece of pieces) {
+            if (piece.type === 'text') {
+                const val = piece.text;
+                if (prevType === 'text' && out.length > 0 && val.length > 0) {
+                    const prevChar = out[out.length - 1];
+                    const nextChar = val[0];
+                    if (/\S/.test(prevChar) && /\S/.test(nextChar)) {
+                        out += ' ';
+                    }
+                }
+                out += val;
+                prevType = 'text';
+            } else if (piece.type === 'break') {
+                out += '\n';
+                prevType = 'break';
+            } else if (piece.type === 'tab') {
+                out += ' ';
+                prevType = 'tab';
+            }
+        }
+
+        // Normalize: collapse runs of spaces/tabs, trim each line
+        out = out
+            .split('\n')
+            .map(l => l.replace(/[ \t]+/g, ' ').trim())
+            .filter(Boolean)
+            .join('\n');
+
+        if (out) lines.push(out);
     });
 
     return lines.join('\n');
 }
-
 /* ---------- Header / footer detection ---------- */
 
 export async function detectHeadersFooters(zip) {
