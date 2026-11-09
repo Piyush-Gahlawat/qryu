@@ -291,6 +291,6 @@ The system is accepted as meeting this specification when all of the following a
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
 | 1.0 | 9 November 2026 | Piyush Gahlawat | Initial SRS — 15 sections documenting the deployed system |
-| 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Threat Model, PIR, ROPA, Runbook, Decision Log, and Security Controls |
+| 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Threat Model, PIR, ROPA, Runbook, Decision Log, and Security Controls; DR-04 corrected (6→8 pages, 24→25 paths); acceptance criterion #3 clarified for SPA fallback accuracy |
 
 **Related documents:** [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
