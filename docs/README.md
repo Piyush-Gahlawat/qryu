@@ -31,6 +31,7 @@ Shiryu Kit is a personal project. These documents exist for two reasons:
 ## Honest framing
 
 These are **practitioner documents**, not enterprise documents. They demonstrate the process and the judgment behind it. They do not claim to be audited, certified, or reviewed by legal counsel.
+
 ## What's published vs. what's private
 
 These documents are published as portfolio artifacts — evidence that governance work was actually done, not just claimed. Some operational specifics are intentionally generalized:

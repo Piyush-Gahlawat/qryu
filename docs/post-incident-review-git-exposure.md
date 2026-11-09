@@ -1,5 +1,9 @@
 # Post-Incident Review — Exposure of Version Control and Configuration Files
 
+**Document version:** 1.4
+**Date:** 9 November 2026
+**Author:** Piyush Gahlawat
+
 | Field | Detail |
 | :--- | :--- |
 | **Incident ID** | INC-2026-001 |
@@ -109,8 +113,11 @@ The lesson: `.assetsignore` and `run_worker_first` are **separate controls** doc
 ### What was NOT exposed
 
 - No user data was ever transmitted to any server (tools process everything in browser memory)
-- No API keys or credentials were in the repository. Verified with:
-  ```bash
+- No API keys or credentials were in the repository.
+
+Verified with:
+
+```bash
   git log -p --all -S 'API_KEY'
   git log -p --all -S 'SECRET'
   git log -p --all -S 'token'
@@ -235,4 +242,5 @@ The `.git/logs/HEAD` file contained the author's email address. This is the cont
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Action item 8 closed — old `qryu` Worker verified returning 404 on all paths |
 | 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: author email redacted from Section 4 |
 | 1.4 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS and Threat Model |
+
 **Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
