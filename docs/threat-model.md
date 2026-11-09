@@ -1,6 +1,6 @@
 # Threat Model — Shiryu Kit
 
-**Document version:** 1.0
+**Document version:** 1.2
 **Date:** 9 November 2026
 **Author:** Piyush Gahlawat
 **Methodology:** STRIDE with likelihood × impact scoring
@@ -232,7 +232,7 @@ This architecture dramatically reduces the attack surface. There is no login to 
 | Server-side request forgery (SSRF) | No server-side outbound requests |
 | Broken access control | No access-controlled resources |
 | Insecure direct object references | No object references exist |
-| User data breach | No user data is stored |
+| User data breach | No user-supplied data (resumes, JSON, passwords) is stored. The only retained data is 3-day request logs at the Cloudflare edge. |
 | Payment card data exposure | No payment processing |
 
 The absence of these common threats is a direct consequence of the architecture: no backend, no database, no user accounts. The threat model is short because the attack surface is small, not because the analysis is shallow.
@@ -255,5 +255,6 @@ This threat model shall be reviewed:
 | :--- | :--- | :--- | :--- |
 | 1.0 | 9 November 2026 | Piyush Gahlawat | Initial threat model — 8 STRIDE-classified threats with mitigations and residual risk |
 | 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Runbook and Decision Log |
+| 1.2 | 9 November 2026 | Piyush Gahlawat | "User data breach" exclusion clarified — request logs retained for 3 days by Cloudflare; no user-supplied content ever stored |
 
 **Related documents:** [SRS](./srs.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)

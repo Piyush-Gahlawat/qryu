@@ -1,6 +1,6 @@
 # Security Controls Inventory — Shiryu Kit
 
-**Document version:** 1.7
+**Document version:** 1.8
 **Date:** 9 November 2026
 **Author:** Piyush Gahlawat
 
@@ -120,6 +120,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Accurate claims | "Your files never leave your browser" (not "nothing leaves") | Misrepresentation, transparency violation | Privacy policy review |
 | DPDP Grievance Officer | Named officer with contact, acknowledgment SLA, 90-day resolution commitment, DPB escalation path | DPDP Section 13 / Rule 14(3) non-compliance | Privacy policy review |
 | DPDP lawful basis documented | ROPA Section 4 — reasoned Section 7(a) position with explicit caveat | DPDP Act processing without lawful basis | ROPA review |
+| Automatic log retention limit | Cloudflare Workers Logs are automatically purged after 3 days on the free plan. No manual log management is possible — the retention is enforced by the platform. | Excessive retention of personal data | Cloudflare documentation; plan limits |
 
 ---
 
@@ -172,5 +173,6 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | 1.5 | 8 November 2026 | Piyush Gahlawat | Closed DPDP compliance documentation gap — privacy policy, ROPA, and runbook updated with DPDP Act 2023 obligations; added DPDP controls to Section 9; added DPDP breach procedure reference to Section 10; updated ROPA cross-reference from Section 8 to Section 9 |
 | 1.6 | 8 November 2026 | Piyush Gahlawat | Rate limiting — status clarified to "configured but not stress-tested" (previously claimed as verified). Honest status per assessment. |
 | 1.7 | 9 November 2026 | Piyush Gahlawat | Rate limiting moved from Section 9 to Section 11 (DoS, not privacy, control). Threat model coverage row formatted with strikethrough. Cross-references updated to include SRS and Threat Model |
+| 1.8 | 9 November 2026 | Piyush Gahlawat | Added log retention control to Section 9 — 3-day automatic purge enforced by Cloudflare Workers free tier |
 
 **Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)

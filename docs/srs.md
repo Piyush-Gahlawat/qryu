@@ -1,6 +1,6 @@
 # Software Requirements Specification — Shiryu Kit
 
-**Document version:** 1.1
+**Document version:** 1.2
 **Date:** 9 November 2026
 **Author:** Piyush Gahlawat
 **Status:** Implemented and deployed
@@ -88,7 +88,7 @@ Six utility functions and one hub navigation page:
 
 ### 4.5 Design and implementation constraints
 - Zero cost: no paid services, no domain purchases, no paid analytics or monitoring.
-- No user data retention: the site must not store personal data at any point.
+- No user-supplied data retention: the site must not store any content the user enters into a tool (resumes, JSON, passwords, text). The only retained personal data is 3-day request logs at the Cloudflare edge (see PR-08).
 - Client-side only: no server-side processing of user content.
 
 ---
@@ -251,6 +251,7 @@ Six utility functions and one hub navigation page:
 | PR-05 | The system shall publish a GDPR Article 30 Records of Processing Activities. | `docs/ropa.md` |
 | PR-06 | The system shall designate and publish a DPDP Grievance Officer with a 90-day resolution commitment. | `/privacy.html` Grievance Redressal section |
 | PR-07 | The system shall document a DPDP lawful-basis analysis with interpretive caveat. | `docs/ropa.md` Section 4 |
+| PR-08 | Request logs shall be retained for no more than 3 days. | Cloudflare free-tier retention policy is 3 days and cannot be extended without a paid plan |
 
 ---
 
@@ -292,5 +293,6 @@ The system is accepted as meeting this specification when all of the following a
 | :--- | :--- | :--- | :--- |
 | 1.0 | 9 November 2026 | Piyush Gahlawat | Initial SRS — 15 sections documenting the deployed system |
 | 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Threat Model, PIR, ROPA, Runbook, Decision Log, and Security Controls; DR-04 corrected (6→8 pages, 24→25 paths); acceptance criterion #3 clarified for SPA fallback accuracy |
+| 1.2 | 9 November 2026 | Piyush Gahlawat | §4.5 constraint clarified — "no user data retention" narrowed to "no user-supplied data retention"; request logs disclosed as the only retained personal data; Added PR-08 — request logs retained for 3 days, matching Cloudflare free-tier enforcement |
 
 **Related documents:** [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
