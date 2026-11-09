@@ -1,5 +1,9 @@
 # Records of Processing Activities (ROPA)
 
+**Document version:** 1.3
+**Date:** 9 November 2026
+**Author:** Piyush Gahlawat
+
 **GDPR Article 30 + DPDP Act 2023 — Record of Processing Activities**
 
 | Field | Detail |
@@ -28,7 +32,7 @@
 | **Recipients** | Cloudflare, Inc. (hosting and CDN) |
 | **International transfers** | Yes — Cloudflare global network; SCCs and DPA in place via Cloudflare's standard terms |
 | **Retention** | Not retained by controller; transient only at Cloudflare edge |
-| **Security measures** | HTTPS with HSTS; standard security headers applied (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP, CORP); SRI on third-party scripts; sensitive paths blocked at the Worker layer |
+| **Security measures** | HTTPS with HSTS; nine security header families applied (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP, CORP, X-XSS-Protection, Cache-Control); SRI on third-party scripts; sensitive paths blocked at the Worker layer |
 
 **Legitimate Interests Assessment summary (GDPR):** The processing of IP addresses and request metadata is inherent to serving any HTTP response. The controller has a legitimate interest in operating a functional, secure website. The impact on data subjects is minimal — data is transient, not stored, not correlated, and not used for profiling. No less-intrusive means of serving a website exists. See [decisions.md#d004](./decisions.md) for the reasoning behind the no-analytics posture.
 
@@ -45,7 +49,7 @@
 | **Data subjects** | Visitors who use the QR generator or ATS resume cleaner |
 | **Legal basis (GDPR)** | Article 6(1)(f) — legitimate interests (efficient, reliable delivery of website functionality) |
 | **Legal basis (DPDP)** | Section 7(a) — voluntary provision (see Section 4) |
-| **Recipients** | jsDelivr, cdnjs (Cloudflare) |
+| **Recipients** | jsDelivr; cdnjs (Cloudflare) — separate providers, listed separately in the Sub-Processor Register (Section 6) |
 | **International transfers** | Yes — CDN global networks; providers operate under their standard DPA terms |
 | **Retention** | Not retained by controller; transient at CDN edge |
 | **Security measures** | Subresource Integrity (SHA-384 hashes) on every external script — see commit `6f83e53` |
@@ -199,6 +203,7 @@ This ROPA is reviewed:
 | :--- | :--- | :--- | :--- |
 | 1.0 | 7 November 2026 | Piyush Gahlawat | Initial ROPA |
 | 1.1 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio |
-| **1.2** | **8 November 2026** | **Piyush Gahlawat** | **Added Section 4 — DPDP Act 2023 lawful-basis analysis, including interpretive position and caveat; added DPDP columns to Sections 1–3; added nomination and grievance rights to Section 8; added DPDP classification and dual-regime procedure to Section 9; renumbered subsequent sections** |
+| 1.2 | 8 November 2026 | Piyush Gahlawat | Added Section 4 — DPDP Act 2023 lawful-basis analysis, including interpretive position and caveat; added DPDP columns to Sections 1–3; added nomination and grievance rights to Section 8; added DPDP classification and dual-regime procedure to Section 9; renumbered subsequent sections |
+| 1.3 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS, Threat Model, and Runbook |
 
-**Related documents:** [Privacy Policy](../privacy.html) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [Runbook](./runbook.md)
+**Related documents:** [Privacy Policy](../privacy.html) · [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)

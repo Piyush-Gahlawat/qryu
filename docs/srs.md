@@ -1,6 +1,6 @@
 # Software Requirements Specification — Shiryu Kit
 
-**Document version:** 1.0
+**Document version:** 1.1
 **Date:** 9 November 2026
 **Author:** Piyush Gahlawat
 **Status:** Implemented and deployed
@@ -261,7 +261,7 @@ Six utility functions and one hub navigation page:
 | DR-01 | Deployment shall be triggered automatically by pushing to the `main` branch. |
 | DR-02 | Deployment shall be reversible via `git revert` or the Cloudflare dashboard. |
 | DR-03 | The deployment process shall be documented in `docs/runbook.md`. |
-| DR-04 | Post-deploy verification shall confirm 6 pages return 200 and 24 sensitive paths return 404 or SPA fallback. |
+| DR-04 | Post-deploy verification shall confirm 8 pages return 200 and 25 sensitive paths return 404 or SPA fallback. |
 | DR-05 | Cache shall be purged after every deploy. |
 | DR-06 | A Post-Incident Review shall be written after any production security incident. |
 | DR-07 | A breach assessment shall be conducted under both GDPR Article 33 and DPDP Rule 7 after any incident involving personal data. |
@@ -275,7 +275,7 @@ The system is accepted as meeting this specification when all of the following a
 
 1. All six tools function correctly on desktop and mobile browsers.
 2. All eight pages return HTTP 200 in production.
-3. All sensitive paths return HTTP 404 (verified by content-aware check, not status-only).
+3. All sensitive paths return either HTTP 404 or SPA fallback with the homepage HTML — never actual file content. Verified by content-aware check, not status-only.
 4. All ten security header families are present in production responses.
 5. The Content Security Policy produces zero console violations during normal tool use.
 6. Both CDN scripts load with valid SRI hashes.
@@ -291,5 +291,6 @@ The system is accepted as meeting this specification when all of the following a
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
 | 1.0 | 9 November 2026 | Piyush Gahlawat | Initial SRS — 15 sections documenting the deployed system |
+| 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Threat Model, PIR, ROPA, Runbook, Decision Log, and Security Controls |
 
-**Related documents:** [PIR](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
+**Related documents:** [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)

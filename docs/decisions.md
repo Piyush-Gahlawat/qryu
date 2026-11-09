@@ -1,5 +1,9 @@
 # Decision Log — Shiryu Kit
 
+**Document version:** 1.4
+**Date:** 9 November 2026
+**Author:** Piyush Gahlawat
+
 Every significant architectural or operational decision, with the alternatives that were considered and the reasoning for the choice made.
 
 **Why this exists:** So that future-me — or an interviewer, or a collaborator — can understand *why* the project is shaped the way it is, not just *what* it looks like. Where a decision's reasoning changed after an incident, that's recorded too.
@@ -7,6 +11,7 @@ Every significant architectural or operational decision, with the alternatives t
 **📌 Portfolio note:** This decision log is published as a portfolio artifact. The entries document the actual reasoning behind each choice — including the failed attempts, not just the successes. Some operational specifics (commit SHAs, exact configuration values) are referenced by commit so they remain verifiable in the repository history, but are not duplicated here as copy-paste-able operational recipes.
 
 ---
+
 
 ## D001 — Hosting: Cloudflare Workers over Vercel, Netlify, or a VPS
 
@@ -33,6 +38,7 @@ Every significant architectural or operational decision, with the alternatives t
 
 ---
 
+
 ## D002 — Framework: Vanilla JS + ES Modules over React, Vue, or Svelte
 
 **Date:** 3 November 2026
@@ -56,6 +62,7 @@ Every significant architectural or operational decision, with the alternatives t
 **Reversibility:** Medium. Individual tools can be migrated independently because they share no framework state.
 
 ---
+
 
 ## D003 — Architecture: MVC Separation per Tool
 
@@ -88,6 +95,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 
 ---
 
+
 ## D004 — Analytics: No Analytics in v1
 
 **Date:** 6 November 2026
@@ -111,6 +119,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Reversibility:** High. Adding Cloudflare Web Analytics is a 10-minute change with no GDPR impact.
 
 ---
+
 
 ## D005 — Security: `run_worker_first: true` After `.git` Exposure
 
@@ -138,6 +147,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 
 ---
 
+
 ## D006 — URLs: `.html` extensions with `html_handling: "none"`
 
 **Date:** 6 November 2026
@@ -159,6 +169,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Reversibility:** Medium. Requires a find-and-replace across 8 HTML files + sitemap if changed later.
 
 ---
+
 
 ## D007 — No Backend, No Database
 
@@ -183,6 +194,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Reversibility:** High. Persistence can be added later with appropriate privacy controls. But the current stateless design is a significant privacy advantage that should not be given up lightly.
 
 ---
+
 
 ## D008 — Security: SRI on All CDN Dependencies
 
@@ -209,6 +221,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 
 ---
 
+
 ## D009 — Resume Templates: PDF Output, with ATS Disclaimer
 
 **Date:** 7 November 2026
@@ -233,6 +246,7 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 
 ---
 
+
 ## D010 — Email: Dedicated Gmail, Rejecting `+privacy` Sub-address
 
 **Date:** 7 November 2026
@@ -256,7 +270,9 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 **Reversibility:** Medium. Changing the contact email requires updating the privacy policy and any external listings that reference it.
 
 ---
-# D011 — Resume Templates: Comprehensive Heading Detection via Synonym Map
+
+
+## D011 — Resume Templates: Comprehensive Heading Detection via Synonym Map
 
 **Date:** 8 November 2026
 **Status:** Decided
@@ -267,15 +283,16 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 
 | Option | Pros | Cons | Decision |
 | :--- | :--- | :--- | :--- |
-**Regex-only matching** | Flexible, catches unexpected variants | Fragile — adding a new variant requires careful regex editing; false positives common (e.g. "Note:" in prose would match a heading pattern) | ❌ Rejected
-**Machine learning classification** | Handles arbitrary headings | Overkill for a browser-side tool; requires an external model or a bundled trained classifier; adds latency and complexity | ❌ Rejected
-**Hardcoded synonym map with normalization** | Explicit, extensible, no false positives (exact match on normalized string) | Adding new headings requires a map entry | ✅ Chosen
+| **Regex-only matching** | Flexible; catches unexpected variants | Fragile — adding a new variant requires careful regex editing; false positives common (e.g. "Note:" in prose would match a heading pattern) | ❌ Rejected |
+| **Machine learning classification** | Handles arbitrary headings | Overkill for a browser-side tool; requires an external model or a bundled trained classifier; adds latency and complexity | ❌ Rejected |
+| **Hardcoded synonym map with normalization** | Explicit, extensible; no false positives (exact match on normalized string) | Adding new headings requires a map entry | ✅ **Chosen** |
 
-**Decision:** A hardcoded synonym map of approximately 300 heading variations across 18 categories. Normalization strips decorations (colons, dashes, asterisks, equals signs, numbering), lowercases, removes articles, and standardizes & / and. Matching is exact on the normalized string, which eliminates false positives entirely.
+**Decision:** A hardcoded synonym map of over 300 heading variations across 18 categories. Normalization strips decorations (colons, dashes, asterisks, equals signs, numbering), lowercases, removes articles, and standardizes `&` / `and`. Matching is exact on the normalized string, which eliminates false positives entirely.
 
 **Trade-off accepted:** New headings require manual map extension. This is intentional friction — it forces a decision about every synonym, rather than accepting regex false positives silently.
 
-**Reversibility:** High. The map can be replaced with a different approach (regex, ML classifier, external service) without changing the caller API — the parseResume(text) function signature stays stable.
+**Reversibility:** High. The map can be replaced with a different approach (regex, ML classifier, external service) without changing the caller API — the `parseResume(text)` function signature stays stable.
+
 ---
 
 ## Document Control
@@ -286,5 +303,6 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 | 1.1 | 7 November 2026 | Piyush Gahlawat | D005 corrected to document the four-attempt remediation from actual git log; commit references added throughout |
 | 1.2 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: added portfolio note; generalized exposed-path list in D005; removed specific library names and email address from D008 and D010 where they added no informational value beyond "open-source JavaScript libraries" and "dedicated Gmail" |
 | 1.3 | 8 November 2026 | Piyush Gahlawat | D011 added — comprehensive heading detection via synonym map |
+| 1.4 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS and Threat Model |
 
-**Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Security Controls](./security-controls.md)
+**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Security Controls](./security-controls.md)

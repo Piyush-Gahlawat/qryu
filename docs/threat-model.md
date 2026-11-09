@@ -254,5 +254,6 @@ This threat model shall be reviewed:
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
 | 1.0 | 9 November 2026 | Piyush Gahlawat | Initial threat model — 8 STRIDE-classified threats with mitigations and residual risk |
+| 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Runbook and Decision Log |
 
-**Related documents:** [SRS](./srs.md) · [PIR](./post-incident-review-git-exposure.md) · [Security Controls](./security-controls.md) · [ROPA](./ropa.md)
+**Related documents:** [SRS](./srs.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)

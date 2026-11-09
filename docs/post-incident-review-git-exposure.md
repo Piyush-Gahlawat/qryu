@@ -230,9 +230,9 @@ The `.git/logs/HEAD` file contained the author's email address. This is the cont
 
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
-| 1.0 | 7 Nov 2026 | Piyush Gahlawat | Initial fictional timeline (rejected) |
-| 1.1 | 7 Nov 2026 | Piyush Gahlawat | Corrected using actual git log — real commit SHAs, real times, four-attempt remediation documented |
-| 1.2 | 7 Nov 2026 | Piyush Gahlawat | Action item 8 closed — old `qryu` Worker verified returning 404 on all paths |
-| 1.3 | 7 Nov 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: author email redacted from Section 4 |
-
-**Related documents:** [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
+| 1.0 | 7 November 2026 | Piyush Gahlawat | Initial fictional timeline (rejected) |
+| 1.1 | 7 November 2026 | Piyush Gahlawat | Corrected using actual git log — real commit SHAs, real times, four-attempt remediation documented |
+| 1.2 | 7 November 2026 | Piyush Gahlawat | Action item 8 closed — old `qryu` Worker verified returning 404 on all paths |
+| 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: author email redacted from Section 4 |
+| 1.4 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS and Threat Model |
+**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)

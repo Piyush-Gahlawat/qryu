@@ -1,5 +1,9 @@
 # Security Controls Inventory — Shiryu Kit
 
+**Document version:** 1.7
+**Date:** 9 November 2026
+**Author:** Piyush Gahlawat
+
 A complete inventory of security controls implemented, mapped to the risks they mitigate.
 
 **Purpose:** Demonstrates that security was implemented deliberately, not accidentally. Each control exists for a specific reason and addresses a specific threat.
@@ -116,7 +120,6 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | Accurate claims | "Your files never leave your browser" (not "nothing leaves") | Misrepresentation, transparency violation | Privacy policy review |
 | DPDP Grievance Officer | Named officer with contact, acknowledgment SLA, 90-day resolution commitment, DPB escalation path | DPDP Section 13 / Rule 14(3) non-compliance | Privacy policy review |
 | DPDP lawful basis documented | ROPA Section 4 — reasoned Section 7(a) position with explicit caveat | DPDP Act processing without lawful basis | ROPA review |
-| **Rate limiting** | Workers rate-limiting binding is configured in `wrangler.jsonc` with a fail-open guard in `worker.js`. **Not stress-tested** — the specific threshold (100 req/60s) has not been verified in production. | Denial-of-wallet from sustained request floods. Low risk: site has no user data and no login. | Backlog: run a proper load test with concurrent requests from a single IP to verify the binding triggers. Upgrade to a zone-level rule if a custom domain is added. |
 
 ---
 
@@ -140,6 +143,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | :--- | :--- | :--- |
 | ~~Old `qryu` Worker verification~~ | ✅ **Closed** — verified 7 Nov 2026: all paths return 404 | N/A |
 | ~~DPDP compliance documentation~~ | ✅ **Closed 8 Nov 2026** — privacy policy updated with Grievance Officer and DPDP rights; ROPA Section 4 added with DPDP lawful-basis analysis and caveat; runbook Section 7a added with Rule 7 breach procedure | N/A |
+| ~~Threat model coverage~~ | ✅ **Closed 9 Nov 2026** — 8 STRIDE threats analysed with controls and residual risk documented in [Threat Model](./threat-model.md) | N/A |
 | **No WAF** | No edge-level blocking of known attack signatures, IP reputation, or geo-based rules. Cloudflare WAF requires a zone, and `workers.dev` is not a zone. | Accept while on free tier. Upgrade to custom domain (~₹800/year) when traffic or threat profile justifies it. |
 | **No Bot Fight Mode** | Automated scrapers and known bots not challenged at the edge. Zone-level feature, unavailable on `workers.dev`. | Same as WAF — requires custom domain. |
 | No CSP reporting endpoint | CSP violations are not logged centrally. Detected only in individual browser consoles. | Accept. Add `report-to` and a reporting endpoint if a zone becomes available. |
@@ -148,6 +152,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | No custom domain | `workers.dev` BIC may block Googlebot occasionally; also blocks access to all zone-level security features. | Accept. Upgrade when justified by traffic or WAF requirement. |
 | Manual cache purge after every deploy | Forgetting to purge = stale content served. | Documented as mandatory step in runbook §8. |
 | Deployment root is project root | Future files added at root may be unintentionally uploaded. | Backlog: consider restructuring to `public/` for served files only. |
+| **Rate limiting** — Workers rate-limiting binding configured in `wrangler.jsonc` with fail-open guard in `worker.js`, deployed via commit `43730969`. Not stress-tested — the 100 req/60s threshold has not been verified under load. | Denial-of-wallet from sustained request floods. Low: site has no user data, no login, no financial impact. | Backlog: run a concurrent load test from a single IP to verify the binding triggers. Add a zone-level rate rule if a custom domain is added. |
 
 **All items from INC-2026-001 are now closed.** The old `qryu` Worker was verified returning 404 on all paths on 7 November 2026. There are no open security items from the incident.
 
@@ -165,5 +170,7 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio |
 | 1.4 | 8 November 2026 | Piyush Gahlawat | Header hardening: expanded Section 2 (14 CSP directives, disabled legacy XSS auditor), expanded Section 4 (16 Permissions-Policy features), added Section 5 (Cross-Origin Isolation), added WAF and Bot Fight Mode gaps |
 | 1.5 | 8 November 2026 | Piyush Gahlawat | Closed DPDP compliance documentation gap — privacy policy, ROPA, and runbook updated with DPDP Act 2023 obligations; added DPDP controls to Section 9; added DPDP breach procedure reference to Section 10; updated ROPA cross-reference from Section 8 to Section 9 |
-| **1.6** | **8 November 2026** | **Piyush Gahlawat** | **Rate limiting — status clarified to "configured but not stress-tested" (previously claimed as verified). Honest status per assessment.** |
-**Related documents:** [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
+| 1.6 | 8 November 2026 | Piyush Gahlawat | Rate limiting — status clarified to "configured but not stress-tested" (previously claimed as verified). Honest status per assessment. |
+| 1.7 | 9 November 2026 | Piyush Gahlawat | Rate limiting moved from Section 9 to Section 11 (DoS, not privacy, control). Threat model coverage row formatted with strikethrough. Cross-references updated to include SRS and Threat Model |
+
+**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
