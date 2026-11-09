@@ -13,8 +13,8 @@
 | **Location** | India |
 | **EU representative** | Not required — Article 27 exemption applies (see Section 7) |
 | **Significant Data Fiduciary (DPDP)** | Not classified — Section 10 thresholds not met (see Section 4) |
-| **Last updated** | 8 November 2026 |
-| **Next review** | 8 November 2027 |
+| **Last updated** | 9 November 2026 |
+| **Next review** | 9 November 2027 |
 
 **📌 Portfolio note:** This ROPA is published as a portfolio artifact — a real Article 30 record and DPDP processing inventory produced for a live service. Processing purposes, legal bases, retention periods, and sub-processors are stated in full because a ROPA without that content is useless. Exact security header values are generalized; the operational configuration is maintained privately.
 
