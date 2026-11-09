@@ -23,7 +23,7 @@
         <nav class="nav"><a href="/">← Shiryu Kit home</a></nav>
 
         <h1>Privacy Policy</h1>
-        <p class="subtitle">Last updated: 8 November 2026</p>
+        <p class="subtitle">Last updated: 9 November 2026</p>
 
         <div class="prose">
 
@@ -52,13 +52,12 @@
                 Every website receives the IP address of the device connecting to it. This is technically necessary to
                 serve a page over the internet. Our hosting and content delivery provider (Cloudflare) processes the
                 IP address, browser user-agent, and requested URL as part of delivering the site and protecting it
-                from abuse.
+                from abuse. We do not build user profiles. We do not sell or share this data.
             </p>
             <p>
                 For operational debugging and security purposes, Cloudflare automatically retains request logs
-                (including IP address and requested path) for a maximum of 3 days on our free-tier plan. We do not use
-                these logs for profiling or analytics. We do not build user
-                profiles. We do not sell or share this data.
+                (including IP address and requested path) for a maximum of 3 days on our free-tier plan. We do not
+                use these logs for profiling or analytics.
             </p>
             <p>
                 <strong>GDPR legal basis:</strong> legitimate interests (Article 6(1)(f) GDPR) — operating a
@@ -82,8 +81,9 @@
                 We recognise that the DPDP Act's legitimate-use list is closed and that this position may be
                 clarified as the Data Protection Board of India issues guidance. We have documented the reasoning in
                 our Records of Processing Activities, and we will update this notice if the position changes. We do
-                not process special-category data, do not profile, do not sell data, and do not retain IP addresses
-                beyond the transient edge request.
+                not process special-category data, do not profile, and do not sell data. IP addresses are processed
+                only as a transient part of serving each request, and are retained in Cloudflare's request logs for
+                a maximum of 3 days (see Section 1).
             </p>
 
             <h3>2. Files and text you enter into our tools</h3>
@@ -135,9 +135,11 @@
 
             <h2>How long we keep data</h2>
             <p>
-                We do not retain personal data. Any transient request data processed by Cloudflare is governed by
-                Cloudflare's own retention policies and data processing agreement with us. Emails sent to our privacy
-                contact address are retained only as long as necessary to handle your request.
+                <strong>We do not retain any data you supply</strong> — resumes, JSON, passwords, or text entered into a
+                tool are never transmitted to a server. The only retained personal data is request logs (IP address and
+                requested path) at the Cloudflare edge, automatically purged after <strong>3 days</strong> on the free
+                plan. Emails sent to our privacy contact address are retained only as long as necessary to handle your
+                request, then deleted within 30 days of resolution.
             </p>
 
             <h2>Your rights under GDPR and the DPDP Act</h2>
@@ -191,9 +193,10 @@
                 with us. We do not require an account or a customer number because we do not operate user accounts.
             </p>
             <p>
-                Because we do not store personal data beyond transient IP addresses that are not retained, the
-                response to most requests will be a statement of what we do <em>not</em> hold. We will still respond
-                within the timelines above, and we will confirm in writing what processing, if any, applies to you.
+                Because we retain no user-supplied data and the only logs are transient request metadata
+                (retained by Cloudflare for 3 days, as described in Section 1), the response to most requests
+                will be a statement of what we do <em>not</em> hold. We will still respond within the timelines
+                above, and we will confirm in writing what processing, if any, applies to you.
             </p>
 
             <h3>Identity verification</h3>
@@ -234,7 +237,8 @@
             <p>
                 Under Article 27 of the GDPR, a representative in the EU is only required for controllers outside
                 the EU that process personal data on a large scale or as a core activity. Our processing is limited
-                to transient IP addresses incidental to hosting static files, which does not meet that threshold.
+                to transient request metadata and 3-day request logs incidental to hosting static files, which does
+                not meet that threshold.
             </p>
 
         </div>
