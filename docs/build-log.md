@@ -1,6 +1,6 @@
 # Build Log — Shiryu Kit
 
-**Document version:** 1.0
+**Document version:** 1.2
 **Date:** 11 November 2026
 **Author:** Piyush Gahlawat
 **Purpose:** Chronological record of the build — what was done, when, why, and what was learned. This is not the Decision Log (which records architectural choices) or the Post-Incident Review (which records a specific failure). This is the running history of the project.
@@ -167,14 +167,14 @@
 | Log retention disclosed | ✅ 3 days, in 5 documents |
 | Document control dates | ✅ Match header dates |
 | All session edits committed | ✅ Committed 11 Nov 2026 alongside this build log |
+| **Resume Cleaner space-loss bug** | ✅ Fixed and verified against a real resume (11 Nov 2026). Root cause was twofold: `flattenTables` joined `<w:t>` nodes with the empty string, dropping `<w:br/>`, `<w:tab/>`, and paragraph boundaries inside cells (`with5+`, `yearsof`, `ManagerDS`); and `stripLatex` called `.trim()` on every text node, stripping the boundary spaces that separated runs after LaTeX removal — so the preview looked right while the downloaded DOCX was still glued. Fix: shared boundary-aware extraction (`collectTextPieces` + `assembleText`) used by both the preview and table flattening, and `.trim()` removed from `stripLatex`. |
+| **Favicon + hub logo** | ✅ Jade "S" SVG (`/favicon.svg`), linked from all 8 pages; same asset reused as the logo mark in the hub header (11 Nov 2026) |
 
 ### What is NOT complete
 
 | Item | Status | Why it matters |
 | :--- | :--- | :--- |
-| **Resume Cleaner space-loss bug** | ✅ Fixed and verified with a real two-page resume (11 Nov 2026) | Root cause was twofold: `flattenTables` joined `<w:t>` nodes with the empty string, dropping `<w:br/>`, `<w:tab/>`, and paragraph boundaries inside cells (`with5+`, `yearsof`, `ManagerDS`); and `stripLatex` called `.trim()` on every text node, stripping the boundary spaces that separated runs after LaTeX removal — so the preview looked right while the downloaded DOCX was still glued. Fix: shared boundary-aware extraction (`collectTextPieces` + `assembleText`) used by both the preview and table flattening, and `.trim()` removed from `stripLatex`. |
 | **Rate limiter** | ⚠️ Configured in `wrangler.jsonc`, deployed, but not stress-tested | The `security-controls.md` §11 honestly documents this as "not stress-tested". A 110-request test has been attempted twice but never completed under load. |
-| **Favicon** | ❌ Still indigo placeholder | A dragon-S design was drafted in chat (jade background, white dragon body, 12 dorsal spikes, open mouth, dark blue eyes) but never saved to disk. All 8 pages still use the placeholder fill value. |
 | **Launch** | ❌ Zero distribution | No Product Hunt, no directories, no LinkedIn Featured section, no Reddit post. No confirmed human visitors since day one (see §12). |
 | **GSC indexing** | ⏳ Sitemap submitted, some pages requested, not all | 8 URLs in sitemap; 4 requested for indexing; 4 not. |
 | **Custom domain** | ❌ Deferred | ~₹800/year; deferred until traffic or revenue justifies it |
@@ -298,4 +298,6 @@ Shiryu Kit is a fully-functional, security-hardened, privacy-compliant, well-doc
 | :--- | :--- | :--- | :--- |
 | 1.0 | 11 November 2026 | Piyush Gahlawat | Initial build log — 5 phases (3–9 Nov), 54-hour time accounting, state assessment, traffic analysis. Includes the INC-2026-001 incident record by reference and the honest distribution finding in §11. |
 | 1.1 | 11 November 2026 | Piyush Gahlawat | §7: Resume Cleaner space-loss bug marked fixed and verified; recorded twofold root cause (table flattening + stripLatex trim) and the shared extraction fix |
+| 1.2 | 11 November 2026 | Piyush Gahlawat | §7 restructured: resume cleaner space-loss bug moved from NOT-complete to complete; favicon row updated from placeholder to jade "S" SVG + hub logo; §1 Phase 5 outcome corrected. NOT-complete table now holds only the rate limiter and distribution items. |
+
 **Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [README](./README.md)
