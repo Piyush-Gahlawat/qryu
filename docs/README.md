@@ -20,6 +20,7 @@ Shiryu Kit is a personal project. These documents exist for two reasons:
 | [Deployment Runbook](./runbook.md) | Pre-deploy, deploy, verification, and rollback procedures |
 | [Decision Log](./decisions.md) | Architectural and operational decisions with alternatives considered |
 | [Security Controls Inventory](./security-controls.md) | Implemented controls mapped to the risks they mitigate |
+| [Build Log](./build-log.md) | Dated chronology of the build, time accounting, and state assessment |
 
 ## Context
 
@@ -43,9 +44,10 @@ These documents are published as portfolio artifacts — evidence that governanc
 | Post-Incident Review | Full narrative, timeline, root cause, four-attempt remediation, lessons | Author email in git metadata (redacted) |
 | ROPA | Full processing inventory, legal basis, sub-processors, rights procedures | Exact security header values (generalized) |
 | Runbook | Structure, verification approach, rollback principles, common failures | Exact commit SHAs, complete `.assetsignore` blocklist |
-| Decision Log | All 11 decisions with alternatives and reasoning | Exact configuration values (referenced by commit instead) |
+| Decision Log | All 12 decisions with alternatives and reasoning | Exact configuration values (referenced by commit instead) |
 | Security Controls | Control categories, threat mapping, verification approach, known gaps | Exact header values, complete blocklist paths |
+| Build Log | Full phase chronology (3–9 Nov), 54-hour time accounting, traffic analysis, honest state assessment including the 0% distribution finding | None — published in full; a sanitised build log has no evidentiary value |
 
-The reasoning: publishing the *process* demonstrates competence; publishing the *exact operational values* would help an attacker without helping the reader. The Threat Model is the exception — publishing it in full strengthens rather than weakens the publication, because a threat model describes what is already defended, not what remains vulnerable.
+The reasoning: publishing the *process* demonstrates competence; publishing the *exact operational values* would help an attacker without helping the reader. Two documents are exceptions — the Threat Model and the Build Log — both published in full, for different reasons: a threat model describes what is already defended, not what remains vulnerable; and a sanitised build log has no evidentiary value, because its entire point is that it records the failures, the wasted hours, and an unfavourable distribution finding.
 
 **📌 Portfolio note:** This README is the index for a published governance artifact set. The documents it links to are accurate and complete in their reasoning; operational specifics are generalized where disclosure would help an attacker more than a reader.
