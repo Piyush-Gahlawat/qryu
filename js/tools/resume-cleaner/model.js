@@ -31,8 +31,7 @@ export function stripLatex(text) {
 
     t = t.replace(/\\[a-zA-Z]+\*?/g, '');
     t = t.replace(/\\/g, '');
-    t = t.replace(/\s{2,}/g, ' ').trim();
-
+    t = t.replace(/\s{2,}/g, ' ');
     return t;
 }
 
@@ -194,6 +193,102 @@ function stripLatexFromTextNodes(doc) {
     return changed;
 }
 
+/* ---------- Boundary-preserving text extraction ----------
+ *
+ * A DOCX paragraph is a sequence of runs, each holding <w:t> text plus
+ * structural markers like <w:br/> (line break), <w:cr/>, and <w:tab/>.
+ * Word routinely splits a single visible line across several runs — often
+ * at formatting boundaries (a bold word, a spellcheck fix, a manual
+ * revision). The <w:br/> that separates "with" from "5+ years" is NOT a
+ * text node, so any code that gathers `<w:t>` elements and joins them with
+ * the empty string will glue words together: "with5+", "yearsof",
+ * "ManagerDS".
+ *
+ * The fix is to traverse the paragraph in document order, treat <w:t>,
+ * <w:br>, <w:cr>, and <w:tab> uniformly, and insert a space at any
+ * text-to-text boundary where two non-whitespace characters meet — unless
+ * the following character is punctuation, which must not be preceded by a
+ * space ("DS Solutions" + ", New Delhi" → "DS Solutions, New Delhi").
+ */
+
+function collectTextPieces(p) {
+    const pieces = [];
+    const doc = p.ownerDocument || p;
+
+    const walker = doc.createTreeWalker(
+        p,
+        NodeFilter.SHOW_ELEMENT,
+        {
+            acceptNode(node) {
+                if (node.namespaceURI !== WORD_NS) return NodeFilter.FILTER_SKIP;
+                const name = node.localName;
+                if (name === 't' || name === 'br' || name === 'cr' || name === 'tab') {
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+                return NodeFilter.FILTER_SKIP;
+            }
+        }
+    );
+
+    let node;
+    while ((node = walker.nextNode())) {
+        const name = node.localName;
+        if (name === 't') {
+            pieces.push({ type: 'text', text: node.textContent || '' });
+        } else if (name === 'br' || name === 'cr') {
+            pieces.push({ type: 'break' });
+        } else if (name === 'tab') {
+            pieces.push({ type: 'tab' });
+        }
+    }
+
+    return pieces;
+}
+
+function assembleText(pieces, breakReplacement) {
+    let out = '';
+    let prevType = null;
+
+    for (const piece of pieces) {
+        if (piece.type === 'text') {
+            const val = piece.text;
+            if (prevType === 'text' && out.length > 0 && val.length > 0) {
+                const prevChar = out[out.length - 1];
+                const nextChar = val[0];
+                const nextIsPunct = /[.,;:!?)\]]/.test(nextChar);
+                if (/\S/.test(prevChar) && /\S/.test(nextChar) && !nextIsPunct) {
+                    out += ' ';
+                }
+            }
+            out += val;
+            prevType = 'text';
+        } else if (piece.type === 'break') {
+            out += breakReplacement;
+            prevType = 'break';
+        } else if (piece.type === 'tab') {
+            out += ' ';
+            prevType = 'tab';
+        }
+    }
+
+    return out;
+}
+
+// Single line of text from a paragraph, breaks collapsed to spaces.
+function extractParagraphText(p) {
+    return assembleText(collectTextPieces(p), ' ').trim();
+}
+
+// All paragraphs in a table cell, joined with a space. Paragraph boundaries
+// inside a cell become spaces — a flattened table row is one line per row.
+function extractCellText(cell) {
+    const paragraphs = Array.from(cell.getElementsByTagNameNS(WORD_NS, 'p'));
+    return paragraphs
+        .map(extractParagraphText)
+        .filter(t => t)
+        .join(' ');
+}
+
 /* ---------- Table flattening (high-impact ATS fix) ---------- */
 
 function makeParagraph(doc, text) {
@@ -229,10 +324,7 @@ function flattenTables(doc) {
         rows.forEach(row => {
             const cells = Array.from(row.getElementsByTagNameNS(WORD_NS, 'tc'));
             const rowText = cells
-                .map(cell => {
-                    const texts = Array.from(cell.getElementsByTagNameNS(WORD_NS, 't'));
-                    return texts.map(t => t.textContent).join('').trim();
-                })
+                .map(extractCellText)
                 .filter(t => t)
                 .join(' | ');
 
@@ -255,75 +347,21 @@ export function extractPlainText(xmlDoc) {
     const lines = [];
 
     paragraphs.forEach(p => {
-        // Collect every text-bearing element in document order.
-        // Handle <w:t> (text), <w:br> / <w:cr> (line break), <w:tab> (tab).
-        const pieces = [];
-        const walker = xmlDoc.createTreeWalker(
-            p,
-            NodeFilter.SHOW_ELEMENT,
-            {
-                acceptNode(node) {
-                    if (node.namespaceURI !== WORD_NS) return NodeFilter.FILTER_SKIP;
-                    const name = node.localName;
-                    if (name === 't' || name === 'br' || name === 'cr' || name === 'tab') {
-                        return NodeFilter.FILTER_ACCEPT;
-                    }
-                    return NodeFilter.FILTER_SKIP;
-                }
-            }
-        );
-
-        let node;
-        while ((node = walker.nextNode())) {
-            const name = node.localName;
-            if (name === 't') {
-                pieces.push({ type: 'text', text: node.textContent || '' });
-            } else if (name === 'br' || name === 'cr') {
-                pieces.push({ type: 'break' });
-            } else if (name === 'tab') {
-                pieces.push({ type: 'tab' });
-            }
-        }
-
-        // Assemble, inserting a space between adjacent text runs when both sides
-        // have non-whitespace characters at the boundary. This matches how most
-        // ATS parsers reconstruct word boundaries from DOCX runs.
-        let out = '';
-        let prevType = null;
-
-        for (const piece of pieces) {
-            if (piece.type === 'text') {
-                const val = piece.text;
-                if (prevType === 'text' && out.length > 0 && val.length > 0) {
-                    const prevChar = out[out.length - 1];
-                    const nextChar = val[0];
-                    if (/\S/.test(prevChar) && /\S/.test(nextChar)) {
-                        out += ' ';
-                    }
-                }
-                out += val;
-                prevType = 'text';
-            } else if (piece.type === 'break') {
-                out += '\n';
-                prevType = 'break';
-            } else if (piece.type === 'tab') {
-                out += ' ';
-                prevType = 'tab';
-            }
-        }
+        const raw = assembleText(collectTextPieces(p), '\n');
 
         // Normalize: collapse runs of spaces/tabs, trim each line
-        out = out
+        const normalized = raw
             .split('\n')
             .map(l => l.replace(/[ \t]+/g, ' ').trim())
             .filter(Boolean)
             .join('\n');
 
-        if (out) lines.push(out);
+        if (normalized) lines.push(normalized);
     });
 
     return lines.join('\n');
 }
+
 /* ---------- Header / footer detection ---------- */
 
 export async function detectHeadersFooters(zip) {
