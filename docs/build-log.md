@@ -172,7 +172,7 @@
 
 | Item | Status | Why it matters |
 | :--- | :--- | :--- |
-| **Resume Cleaner space-loss bug** | ⚠️ Fix provided in session (TreeWalker run-boundary space preservation); not yet confirmed applied — retest with a real two-page resume required | The ATS preview previously glued words together at formatting boundaries (`with5+`, `yearsof`, `ManagerDS`). Until retested, the tool cannot be described as working. |
+| **Resume Cleaner space-loss bug** | ✅ Fixed and verified with a real two-page resume (11 Nov 2026) | Root cause was twofold: `flattenTables` joined `<w:t>` nodes with the empty string, dropping `<w:br/>`, `<w:tab/>`, and paragraph boundaries inside cells (`with5+`, `yearsof`, `ManagerDS`); and `stripLatex` called `.trim()` on every text node, stripping the boundary spaces that separated runs after LaTeX removal — so the preview looked right while the downloaded DOCX was still glued. Fix: shared boundary-aware extraction (`collectTextPieces` + `assembleText`) used by both the preview and table flattening, and `.trim()` removed from `stripLatex`. |
 | **Rate limiter** | ⚠️ Configured in `wrangler.jsonc`, deployed, but not stress-tested | The `security-controls.md` §11 honestly documents this as "not stress-tested". A 110-request test has been attempted twice but never completed under load. |
 | **Favicon** | ❌ Still indigo placeholder | A dragon-S design was drafted in chat (jade background, white dragon body, 12 dorsal spikes, open mouth, dark blue eyes) but never saved to disk. All 8 pages still use the placeholder fill value. |
 | **Launch** | ❌ Zero distribution | No Product Hunt, no directories, no LinkedIn Featured section, no Reddit post. No confirmed human visitors since day one (see §12). |
@@ -297,5 +297,5 @@ Shiryu Kit is a fully-functional, security-hardened, privacy-compliant, well-doc
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
 | 1.0 | 11 November 2026 | Piyush Gahlawat | Initial build log — 5 phases (3–9 Nov), 54-hour time accounting, state assessment, traffic analysis. Includes the INC-2026-001 incident record by reference and the honest distribution finding in §11. |
-
+| 1.1 | 11 November 2026 | Piyush Gahlawat | §7: Resume Cleaner space-loss bug marked fixed and verified; recorded twofold root cause (table flattening + stripLatex trim) and the shared extraction fix |
 **Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [README](./README.md)
