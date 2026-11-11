@@ -175,4 +175,4 @@ A complete inventory of security controls implemented, mapped to the risks they 
 | 1.7 | 9 November 2026 | Piyush Gahlawat | Rate limiting moved from Section 9 to Section 11 (DoS, not privacy, control). Threat model coverage row formatted with strikethrough. Cross-references updated to include SRS and Threat Model |
 | 1.8 | 9 November 2026 | Piyush Gahlawat | Added log retention control to Section 9 — 3-day automatic purge enforced by Cloudflare Workers free tier |
 
-**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md)
+**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Build Log](./build-log.md)

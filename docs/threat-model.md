@@ -257,4 +257,4 @@ This threat model shall be reviewed:
 | 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Runbook and Decision Log |
 | 1.2 | 9 November 2026 | Piyush Gahlawat | Observability disclosure — Section 2 narrowed to "no user-supplied data retention" with 3-day log disclosure; Section 5 "User data breach" clarified (in-session data covered by T-02/T-03, no data stored at rest); T-08 traffic figure sourced to Workers metrics dashboard |
 
-**Related documents:** [SRS](./srs.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
+**Related documents:** [SRS](./srs.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [Build Log](./build-log.md)

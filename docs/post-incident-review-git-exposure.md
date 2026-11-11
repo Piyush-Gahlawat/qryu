@@ -243,4 +243,4 @@ The `.git/logs/HEAD` file contained the author's email address. This is the cont
 | 1.3 | 7 November 2026 | Piyush Gahlawat | Sanitization pass for public portfolio: author email redacted from Section 4 |
 | 1.4 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS and Threat Model |
 
-**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
+**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [Build Log](./build-log.md)

@@ -305,4 +305,4 @@ Implemented progressively across commits `a189f10` (QR), `45ce1fa` (password), `
 | 1.3 | 8 November 2026 | Piyush Gahlawat | D011 added — comprehensive heading detection via synonym map |
 | 1.4 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS and Threat Model |
 
-**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Security Controls](./security-controls.md)
+**Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Security Controls](./security-controls.md) · [Build Log](./build-log.md)

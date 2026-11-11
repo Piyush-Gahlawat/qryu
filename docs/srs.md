@@ -295,4 +295,4 @@ The system is accepted as meeting this specification when all of the following a
 | 1.1 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include Threat Model, PIR, ROPA, Runbook, Decision Log, and Security Controls; DR-04 corrected (6→8 pages, 24→25 paths); acceptance criterion #3 clarified for SPA fallback accuracy |
 | 1.2 | 9 November 2026 | Piyush Gahlawat | §4.5 constraint clarified — "no user data retention" narrowed to "no user-supplied data retention"; request logs disclosed as the only retained personal data; Added PR-08 — request logs retained for 3 days, matching Cloudflare free-tier enforcement |
 
-**Related documents:** [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
+**Related documents:** [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [Build Log](./build-log.md)

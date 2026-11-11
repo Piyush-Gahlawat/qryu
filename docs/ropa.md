@@ -207,4 +207,4 @@ This ROPA is reviewed:
 | 1.3 | 9 November 2026 | Piyush Gahlawat | Cross-references updated to include SRS, Threat Model, and Runbook |
 | 1.4 | 9 November 2026 | Piyush Gahlawat | Retention field updated — Cloudflare Workers Logs retain IP and request path for 3 days; disclosed under Article 30 transparency |
 
-**Related documents:** [Privacy Policy](../privacy.html) · [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md)
+**Related documents:** [Privacy Policy](../privacy.html) · [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [Build Log](./build-log.md)
