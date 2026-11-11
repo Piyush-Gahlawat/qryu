@@ -1,7 +1,7 @@
 # Build Log — Shiryu Kit
 
 **Document version:** 1.0
-**Date:** 9 November 2026
+**Date:** 11 November 2026
 **Author:** Piyush Gahlawat
 **Purpose:** Chronological record of the build — what was done, when, why, and what was learned. This is not the Decision Log (which records architectural choices) or the Post-Incident Review (which records a specific failure). This is the running history of the project.
 
@@ -18,7 +18,7 @@
 | **2. Rebrand** | 6 Nov 2026 | QRyu → Shiryu Kit; URL change; DPDP initial work |
 | **3. Security incident + hardening** | 7 Nov 2026 | INC-2026-001; header hardening; DPDP breach procedure |
 | **4. Documentation expansion** | 8–9 Nov 2026 | SRS, Threat Model added; full doc set review; observability disclosure |
-| **5. Open issues** | ongoing | Resume cleaner space-loss bug; rate limiter untested; zero distribution |
+| **5. Open issues** | ongoing | Resume cleaner retest; rate limiter untested; zero distribution |
 
 ---
 
@@ -117,9 +117,7 @@
 
 **What happened:** This phase is the reason this build log exists. It is honest about an imbalance that needs naming.
 
-**What was produced:**
-- 8 governance documents total: SRS, Threat Model, PIR, ROPA, Runbook, Decision Log, Security Controls, README
-- All cross-referenced, all with version tables, all internally consistent
+**What was produced:** 9 documentation artifacts in total — 8 governance documents (SRS, Threat Model, PIR, ROPA, Runbook, Decision Log, Security Controls, README) plus this build log. All cross-referenced, all with version tables, all internally consistent.
 
 **What this phase cost:**
 - Roughly **20+ hours** across two days
@@ -128,7 +126,7 @@
 
 **What it produced for the site's quality:** A governance documentation set genuinely better than most small professional products have. Every claim is verifiable against the live system. Every retention period is disclosed. Every version table matches its header date.
 
-**What it produced for the site's traffic:** Zero. Nothing in this phase touched a potential user.
+**What it produced for the site's traffic:** Nothing. Nothing in this phase touched a potential user.
 
 **The lesson, recorded for future-me:** Documentation is necessary but not urgent. The 20+ hours spent on doc review in this phase could have been split as **4 hours on the essential docs** (README, privacy policy, one ROPA) and **16 hours on distribution**. The result would have been slightly weaker docs and significantly stronger traffic.
 
@@ -140,7 +138,7 @@
    - Threat model: "no user data" exclusion clarification
    - Security controls: new control row
    - SRS: new PR-08 requirement
-   
+
    The first time I fixed the privacy policy, I introduced a contradiction elsewhere in the same file (the "How long we keep data" section still said "we do not retain personal data"). This required two more rounds to catch. **The lesson: after adding a disclosure, grep the entire document for the old claim before committing.**
 
 2. **The `Shiryru` typo** — the word "Shiryu" was misspelled as "Shiryru" in the README link line for several commits. It only got caught on a final pass. **The lesson: after any find-and-replace, grep for the old pattern to confirm zero matches.**
@@ -151,7 +149,7 @@
 
 ---
 
-## 7. Phase 5 — Current State (9 November 2026)
+## 7. Current State (11 November 2026)
 
 ### What is complete
 
@@ -163,30 +161,28 @@
 | Sensitive path blocklist | ✅ Verified live |
 | SRI on both CDN scripts | ✅ |
 | GDPR + DPDP privacy policy | ✅ |
-| 8 governance documents | ✅ Complete, cross-referenced, version-controlled |
+| 9 documentation artifacts (8 governance + this build log) | ✅ Complete, cross-referenced, version-controlled |
 | Observability disclosure | ✅ In all 5 documents that make retention claims |
 | Jade + gold palette | ✅ Live |
 | Log retention disclosed | ✅ 3 days, in 5 documents |
 | Document control dates | ✅ Match header dates |
+| All session edits committed | ✅ Committed 11 Nov 2026 alongside this build log |
 
 ### What is NOT complete
 
 | Item | Status | Why it matters |
 | :--- | :--- | :--- |
-| **All Session 2 edits uncommitted** | ❌ On disk only | If the disk fails, ~20 hours of doc work is gone. Commit is the first action of the next session. |
-| **Resume Cleaner space-loss bug** | ⚠️ Fix provided in chat, not confirmed applied | The ATS preview glues words together at formatting boundaries (`with5+`, `yearsof`, `ManagerDS`). Fix uses TreeWalker to preserve run-boundary spaces. |
+| **Resume Cleaner space-loss bug** | ⚠️ Fix provided in session (TreeWalker run-boundary space preservation); not yet confirmed applied — retest with a real two-page resume required | The ATS preview previously glued words together at formatting boundaries (`with5+`, `yearsof`, `ManagerDS`). Until retested, the tool cannot be described as working. |
 | **Rate limiter** | ⚠️ Configured in `wrangler.jsonc`, deployed, but not stress-tested | The `security-controls.md` §11 honestly documents this as "not stress-tested". A 110-request test has been attempted twice but never completed under load. |
-| **Favicon** | ❌ Still indigo placeholder | A dragon-S design was drafted in chat (jade background, white dragon body, 12 dorsal spikes, open mouth, dark blue eyes) but never saved to disk. All 8 pages still use `fill='%234f4
-
-6e5'`. |
-| **Launch** | ❌ Zero distribution | No Product Hunt, no directories, no LinkedIn Featured section, no Reddit post. Zero visitors since day one. |
+| **Favicon** | ❌ Still indigo placeholder | A dragon-S design was drafted in chat (jade background, white dragon body, 12 dorsal spikes, open mouth, dark blue eyes) but never saved to disk. All 8 pages still use the placeholder fill value. |
+| **Launch** | ❌ Zero distribution | No Product Hunt, no directories, no LinkedIn Featured section, no Reddit post. No confirmed human visitors since day one (see §12). |
 | **GSC indexing** | ⏳ Sitemap submitted, some pages requested, not all | 8 URLs in sitemap; 4 requested for indexing; 4 not. |
 | **Custom domain** | ❌ Deferred | ~₹800/year; deferred until traffic or revenue justifies it |
 
 ### What the site actually has
 
 - 8 pages, technically excellent
-- Zero users
+- No confirmed human users
 - Every governance claim verifiable against the live system
 - No one knows it exists
 
@@ -235,13 +231,64 @@ Patterns to carry forward and patterns to break, based on what actually happened
 | Multiple review cycles per document | **Cap at one** | After one review, commit and move on. Further review is polish, not accuracy. |
 | Favicon / palette / decoration | **Defer until traffic** | These were the least valuable hours spent on Shiryu Kit. |
 | Distribution | **Do first, not last** | Zero hours on distribution is the primary bottleneck. For product #2, distribution should be Week 1 work, not Week 4. |
-| Commit after each meaningful change | **Keep** | The uncommitted 20-hour doc session is the current risk. Small commits are cheap insurance. |
+| Commit after each meaningful change | **Keep** | The uncommitted 20-hour doc session was a real risk until committed. Small commits are cheap insurance. |
 
 ---
 
 ## 11. The Honest One-Paragraph Summary
 
-Shiryu Kit is a fully-functional, security-hardened, privacy-compliant, well-documented small product that nobody uses. It took ~54 hours to build and reached a quality level comparable to a professionally-governed small SaaS. 36% of those hours went to documentation; 0% went to telling anyone the product exists. The next action that produces a user is not more code, more docs, or a better favicon — it is `git commit`, then `Product Hunt`, then `directories`. Every additional hour on the current site before distribution is a mistake.
+Shiryu Kit is a fully-functional, security-hardened, privacy-compliant, well-documented small product that no confirmed human has used. It took ~54 hours to build and reached a quality level comparable to a professionally-governed small SaaS. 36% of those hours went to documentation; 0% went to telling anyone the product exists. The next action that produces a user is not more code, more docs, or a better favicon — it is `git commit`, then `Product Hunt`, then `directories`. Every additional hour on the current site before distribution is a mistake.
+
+---
+
+## 12. Traffic Analysis (11 November 2026)
+
+**Why this section exists:** To record what the request metrics actually show, and to prevent a future reviewer — or future-me — from mistaking request volume for an audience.
+
+**Observed data (Workers metrics, production, all-time to date):**
+
+| Metric | Value |
+| :--- | :--- |
+| Asset requests | ~1.8k |
+| Invocations | ~1.38k |
+| Subrequests | ~1.18k |
+| Asset cache hit rate | 83.19% |
+| Asset 4xx responses | 10 |
+| Asset 5xx responses | 0 |
+| CPU time (median) | 524 µs |
+| Wall time | 11 ms |
+
+**Request distribution by Cloudflare data centre:**
+
+| Colo | Requests |
+| :--- | :--- |
+| Singapore, SG (SIN) | ~1,000 (≈72%) |
+| Hong Kong, HK (HKG) | ~70 |
+| Seattle, US (SEA) | ~60 |
+| Frankfurt, DE (FRA) | ~20 |
+| Amsterdam, NL (AMS) | ~10 |
+| Paris, FR (CDG) | ~10 |
+| Bucharest, RO (OTP) | ~10 |
+| Newark, US (EWR) | ~10 |
+| Atlanta, US (ATL) | ~10 |
+| Dhaka, BD (DAC) | ~10 |
+| Tokyo, JP (NRT) | ~10 |
+| Dulles, US (IAD) | ~10 |
+
+**Interpretation:**
+
+1. **These are data-centre locations, not user locations.** Cloudflare Workers metrics report the colo that served the request. They do not identify where a visitor is. Country-level attribution therefore cannot be inferred from this table.
+2. **The distribution is not organic.** Organic traffic is diffuse. A single colo accounting for ~72% of requests, against single-digit long-tail counts everywhere else, is the signature of automated traffic — and Singapore hosts a large share of the cloud infrastructure that scanning and scraping tools run from.
+3. **The SPA fallback converts probes into successful-looking requests.** Because `not_found_handling: "single-page-application"` returns `index.html` with status 200 for any unmatched path, a scanner probing `/.env` or `/wp-login.php` produces an invocation, a subrequest, and a 200 — never a 4xx. Only 10 asset 4xx responses were recorded, which is consistent with almost nothing being able to fail.
+4. **Request counts are not visitor counts.** A single page load fetches HTML, CSS, several ES modules, and a favicon. At roughly 10–15 requests per visit, ~1.38k invocations is on the order of 100–150 page visits at the very most, with the caveat above applied to that figure.
+
+**Conclusion:** There are **no confirmed human visitors**. The request volume is dominated by automated traffic, most plausibly infrastructure scanners against a public `workers.dev` subdomain. The site is technically healthy — zero 5xx, zero errors, low CPU — but it has not been distributed.
+
+**Actions taken or planned:**
+
+- Enable **Cloudflare Web Analytics** (free, cookieless, JS-based) to obtain a visitor count that excludes non-executing clients. This is the only metric on this stack that distinguishes a browser from a script.
+- Consider a WAF rule to rate-limit or challenge the dominant source if it begins to approach the free-tier ceiling (100,000 requests/day). Not urgent at current volume.
+- Re-check **Search Console** impressions to determine whether any real search traffic exists, independent of Workers metrics.
 
 ---
 
@@ -249,6 +296,6 @@ Shiryu Kit is a fully-functional, security-hardened, privacy-compliant, well-doc
 
 | Version | Date | Author | Changes |
 | :--- | :--- | :--- | :--- |
-| 1.0 | 9 November 2026 | Piyush Gahlawat | Initial build log — 5 phases documented, 54-hour time accounting, honest state assessment |
+| 1.0 | 11 November 2026 | Piyush Gahlawat | Initial build log — 5 phases (3–9 Nov), 54-hour time accounting, state assessment, traffic analysis. Includes the INC-2026-001 incident record by reference and the honest distribution finding in §11. |
 
 **Related documents:** [SRS](./srs.md) · [Threat Model](./threat-model.md) · [PIR — .git exposure](./post-incident-review-git-exposure.md) · [ROPA](./ropa.md) · [Runbook](./runbook.md) · [Decision Log](./decisions.md) · [Security Controls](./security-controls.md) · [README](./README.md)
